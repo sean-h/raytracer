@@ -1,8 +1,11 @@
+extern crate rand;
+
 mod vector3;
 mod ray;
 mod hitable;
 mod sphere;
 mod world;
+mod camera;
 
 use std::fs::File;
 use std::io::prelude::*;
@@ -11,10 +14,13 @@ use ray::Ray;
 use hitable::Hitable;
 use sphere::Sphere;
 use world::World;
+use camera::Camera;
+use rand::Rng;
 
 fn main() -> std::io::Result<()> {
     let nx = 200;
     let ny = 100;
+    let ns = 100;
 
     let mut file = File::create("image.ppm")?;
     file.write(format!("P3\n{} {}\n255\n", nx, ny).as_bytes()).expect("Unable to write to file");
@@ -30,13 +36,20 @@ fn main() -> std::io::Result<()> {
     world.add_hitable(Box::new(sphere1));
     world.add_hitable(Box::new(sphere2));
 
+    let camera = Camera::new();
+    let mut rng = rand::thread_rng();
 
     for j in (0..ny).rev() {
         for i in 0..nx {
-            let u = i as f32 / nx as f32;
-            let v = j as f32 / ny as f32;
-            let r = Ray::new(origin, lower_left_corner + horizontal * u + vertical * v);
-            let col = color(r, &world);
+            let mut col = Vector3::zero();
+            for s in 0..ns {
+                let u = (i as f32 + rng.gen::<f32>()) / nx as f32;
+                let v = (j as f32 + rng.gen::<f32>()) / ny as f32;
+
+                let r = camera.get_ray(u, v);
+                col = col + color(r, &world);
+            }
+            col = col / ns as f32;
 
             let ir = (255.99 * col.r()) as i32;
             let ig = (255.99 * col.g()) as i32;

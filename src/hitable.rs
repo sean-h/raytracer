@@ -20,6 +20,10 @@ impl HitRecord {
         self.t
     }
 
+    pub fn p(&self) -> Vector3 {
+        self.p
+    }
+
     pub fn normal(&self) -> Vector3 {
         self.normal
     }

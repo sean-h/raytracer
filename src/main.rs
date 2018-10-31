@@ -50,6 +50,7 @@ fn main() -> std::io::Result<()> {
                 col = col + color(r, &world);
             }
             col = col / ns as f32;
+            col = Vector3::new(col.r().sqrt(), col.g().sqrt(), col.b().sqrt());
 
             let ir = (255.99 * col.r()) as i32;
             let ig = (255.99 * col.g()) as i32;
@@ -63,11 +64,12 @@ fn main() -> std::io::Result<()> {
 }
 
 fn color(ray: Ray, world: &Hitable) -> Vector3 {
-    let hit_record = world.hit(ray, 0.0, std::f32::MAX);
+    let hit_record = world.hit(ray, 0.001, std::f32::MAX);
 
     match hit_record {
         Some(hit) => {
-            return Vector3::new(hit.normal().x + 1.0, hit.normal().y + 1.0, hit.normal().z + 1.0) * 0.5;
+            let target = hit.p() + hit.normal() + random_in_unit_sphere();
+            return color(Ray::new(hit.p(), target - hit.p()), world) * 0.5;
         },
         None => {
             let unit_direction = ray.direction().normalized();
@@ -75,6 +77,20 @@ fn color(ray: Ray, world: &Hitable) -> Vector3 {
             return Vector3::new(1.0, 1.0, 1.0) * (1.0 - t) + Vector3::new(0.5, 0.7, 1.0) * t;
         }
     }
+}
+
+fn random_in_unit_sphere() -> Vector3 {
+    let mut rng = rand::thread_rng();
+    let mut p = Vector3::zero();
+    loop {
+        p = Vector3::new(rng.gen::<f32>(), rng.gen::<f32>(), rng.gen::<f32>()) * 2.0 - Vector3::new(1.0, 1.0, 1.0);
+
+        if p.length_squared() < 1.0 {
+            break;
+        }
+    }
+
+    p
 }
 
 fn hit_sphere(center: Vector3, radius: f32, r: Ray) -> f32 {

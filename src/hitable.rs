@@ -1,18 +1,21 @@
 use ray::Ray;
 use vector3::Vector3;
+use material::Material;
 
-pub struct HitRecord {
+pub struct HitRecord<'a> {
     t: f32,
     p: Vector3,
     normal: Vector3,
+    material: &'a Box<Material>,
 }
 
-impl HitRecord {
-    pub fn new(t: f32, p: Vector3, normal: Vector3) -> HitRecord {
+impl<'a> HitRecord<'a> {
+    pub fn new(t: f32, p: Vector3, normal: Vector3, material: &Box<Material>) -> HitRecord {
         HitRecord {
             t,
             p,
             normal,
+            material,
         }
     }
 
@@ -26,6 +29,10 @@ impl HitRecord {
 
     pub fn normal(&self) -> Vector3 {
         self.normal
+    }
+
+    pub fn material(&self) -> &Box<Material> {
+        self.material
     }
 }
 

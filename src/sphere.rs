@@ -1,17 +1,20 @@
 use hitable::*;
 use vector3::Vector3;
 use ray::Ray;
+use material::Material;
 
 pub struct Sphere {
     center: Vector3,
     radius: f32,
+    material: Box<Material>,
 }
 
 impl Sphere {
-    pub fn new(center: Vector3, radius: f32) -> Sphere {
+    pub fn new(center: Vector3, radius: f32, material: Box<Material>) -> Sphere {
         Sphere {
             center,
             radius,
+            material,
         }
     }
 }
@@ -31,7 +34,7 @@ impl Hitable for Sphere {
                 let p = ray.point_at_parameter(temp);
                 let normal = (p - self.center) / self.radius;
 
-                return Some(HitRecord::new(t, p, normal));
+                return Some(HitRecord::new(t, p, normal, &self.material));
             }
 
             let temp = (-b + (b * b - a * c).sqrt()) / a;
@@ -40,7 +43,7 @@ impl Hitable for Sphere {
                 let p = ray.point_at_parameter(temp);
                 let normal = (p - self.center) / self.radius;
 
-                return Some(HitRecord::new(t, p, normal));
+                return Some(HitRecord::new(t, p, normal, &self.material));
             }
         }
 

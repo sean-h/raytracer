@@ -1,4 +1,7 @@
+extern crate rand;
+
 use std::ops::{Add, Sub, Mul, Div, Neg};
+use rand::Rng;
 
 /// A 3 axis vector of `f32` values.
 #[derive(Debug, Copy, Clone)]
@@ -92,6 +95,24 @@ impl Vector3 {
     pub fn b(&self) -> f32 {
         self.z
     }
+
+    pub fn random_in_unit_sphere() -> Vector3 {
+        let mut rng = rand::thread_rng();
+        let mut p = Vector3::zero();
+        loop {
+            p = Vector3::new(rng.gen::<f32>(), rng.gen::<f32>(), rng.gen::<f32>()) * 2.0 - Vector3::new(1.0, 1.0, 1.0);
+
+            if p.length_squared() < 1.0 {
+                break;
+            }
+        }
+
+        p
+    }
+
+    pub fn reflect(v: Vector3, n: Vector3) -> Vector3 {
+        v - n * 2.0 * Vector3::dot(v, n)
+    }
 }
 
 impl Add for Vector3 {
@@ -121,6 +142,16 @@ impl Mul<f32> for Vector3 {
         Vector3 {x: self.x * other,
                  y: self.y * other,
                  z: self.z * other}
+    }
+}
+
+impl Mul<Vector3> for Vector3 {
+    type Output = Vector3;
+
+    fn mul(self, other: Vector3) -> Vector3 {
+        Vector3 {x: self.x * other.x,
+                 y: self.y * other.y,
+                 z: self.z * other.z}
     }
 }
 

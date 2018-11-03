@@ -39,7 +39,7 @@ fn main() -> std::io::Result<()> {
     world.add_hitable(Box::new(sphere4));
     world.add_hitable(Box::new(sphere5));
 
-    let camera = Camera::new();
+    let camera = Camera::new(Vector3::new(-2.0, 2.0, 1.0), Vector3::new(0.0, 0.0, -1.0), Vector3::up(), 90.0, nx as f32 / ny as f32);
     let mut rng = rand::thread_rng();
 
     for j in (0..ny).rev() {

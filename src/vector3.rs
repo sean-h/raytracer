@@ -110,6 +110,20 @@ impl Vector3 {
         p
     }
 
+    pub fn random_in_unit_disk() -> Vector3 {
+        let mut rng = rand::thread_rng();
+        let mut p = Vector3::zero();
+        loop {
+            p = Vector3::new(rng.gen::<f32>(), rng.gen::<f32>(), 0.0) * 2.0 - Vector3::new(1.0, 1.0, 0.0);
+
+            if Vector3::dot(p, p) < 1.0 {
+                break;
+            }
+        }
+
+        p
+    }
+
     pub fn reflect(v: Vector3, n: Vector3) -> Vector3 {
         v - n * 2.0 * Vector3::dot(v, n)
     }

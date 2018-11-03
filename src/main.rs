@@ -20,29 +20,19 @@ use rand::Rng;
 use material::*;
 
 fn main() -> std::io::Result<()> {
-    let nx = 200;
-    let ny = 100;
+    let nx = 800;
+    let ny = 400;
     let ns = 100;
 
     let mut file = File::create("image.ppm")?;
     file.write(format!("P3\n{} {}\n255\n", nx, ny).as_bytes()).expect("Unable to write to file");;
 
-    let mut world = World::new();
-    let sphere1 = Sphere::new(Vector3::new(0.0, 0.0, -1.0), 0.5, Box::new(Lambertion::new(Vector3::new(0.8, 0.3, 0.3))));
-    let sphere2 = Sphere::new(Vector3::new(0.0, -100.5, -1.0), 100.0, Box::new(Lambertion::new(Vector3::new(0.8, 0.8, 0.0))));
-    let sphere3 = Sphere::new(Vector3::new(1.0, 0.0, -1.0), 0.5, Box::new(Metal::new(Vector3::new(0.8, 0.6, 0.2), 1.0)));
-    let sphere4 = Sphere::new(Vector3::new(-1.0, 0.0, -1.0), 0.5, Box::new(Dielectric::new(1.5)));
-    let sphere5 = Sphere::new(Vector3::new(-1.0, 0.0, -1.0), -0.45, Box::new(Dielectric::new(1.5)));
-    world.add_hitable(Box::new(sphere1));
-    world.add_hitable(Box::new(sphere2));
-    world.add_hitable(Box::new(sphere3));
-    world.add_hitable(Box::new(sphere4));
-    world.add_hitable(Box::new(sphere5));
+    let world = random_scene();
 
-    let lookfrom = Vector3::new(3.0, 3.0, 2.0);
-    let lookat = Vector3::new(0.0, 0.0, -1.0);
-    let dist_to_focus = (lookfrom - lookat).length();
-    let aperture = 2.0;
+    let lookfrom = Vector3::new(13.0, 2.0, 3.0);
+    let lookat = Vector3::new(0.0, 0.0, 0.0);
+    let dist_to_focus = 10.0;
+    let aperture = 0.1;
 
     let camera = Camera::new(lookfrom, lookat, Vector3::up(), 20.0, nx as f32 / ny as f32, aperture, dist_to_focus);
     let mut rng = rand::thread_rng();
@@ -95,16 +85,40 @@ fn color(ray: Ray, world: &Hitable, depth: i32) -> Vector3 {
     }
 }
 
-fn hit_sphere(center: Vector3, radius: f32, r: Ray) -> f32 {
-    let oc = r.origin() - center;
-    let a = Vector3::dot(r.direction(), r.direction());
-    let b = 2.0 * Vector3::dot(oc, r.direction());
-    let c = Vector3::dot(oc, oc) - radius * radius;
-    let discriminant = b * b - 4.0 * a * c;
+fn random_scene() -> World {
+    let mut world = World::new();
+    let mut rng = rand::thread_rng();
 
-    if discriminant < 0.0 {
-        -1.0
-    } else {
-        (-b - discriminant.sqrt()) / (2.0 * a)
+    let ground = Sphere::new(Vector3::new(0.0, -1000.0, 0.0), 1000.0, Box::new(Lambertion::new(Vector3::new(0.5, 0.5, 0.5))));
+    world.add_hitable(Box::new(ground));
+
+    for a in -11..11 {
+        for b in -11..11 {
+            let choose_mat = rng.gen::<f32>();
+            let center = Vector3::new(a as f32 + 0.9 * rng.gen::<f32>(), 0.2, b as f32 + 0.9 * rng.gen::<f32>());
+            if (center - Vector3::new(4.0, 0.2, 0.0)).length() > 0.9 {
+                if choose_mat < 0.8 {
+                    let color = Vector3::new(rng.gen::<f32>() * rng.gen::<f32>(), rng.gen::<f32>() * rng.gen::<f32>(), rng.gen::<f32>() * rng.gen::<f32>());
+                    let sphere = Sphere::new(center, 0.2, Box::new(Lambertion::new(color)));
+                    world.add_hitable(Box::new(sphere));
+                } else if choose_mat < 0.95 {
+                    let color = Vector3::new(0.5 * (1.0 + rng.gen::<f32>()), 0.5 * (1.0 + rng.gen::<f32>()), 0.5 * (1.0 + rng.gen::<f32>()));
+                    let sphere = Sphere::new(center, 0.2, Box::new(Metal::new(color, 0.5 * rng.gen::<f32>())));
+                } else {
+                    let sphere = Sphere::new(center, 0.2, Box::new(Dielectric::new(1.5)));
+                    world.add_hitable(Box::new(sphere));
+                }
+            }
+        }
     }
+
+    let sphere1 = Sphere::new(Vector3::new(0.0, 1.0, 0.0), 1.0, Box::new(Dielectric::new(1.5)));
+    let sphere2 = Sphere::new(Vector3::new(-4.0, 1.0, 0.0), 1.0, Box::new(Lambertion::new(Vector3::new(0.4, 0.2, 0.1))));
+    let sphere3 = Sphere::new(Vector3::new(4.0, 1.0, 0.0), 1.0, Box::new(Metal::new(Vector3::new(0.7, 0.6, 0.5), 0.0)));
+
+    world.add_hitable(Box::new(sphere1));
+    world.add_hitable(Box::new(sphere2));
+    world.add_hitable(Box::new(sphere3));
+
+    world
 }

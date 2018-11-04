@@ -49,7 +49,7 @@ impl Material for Lambertion {
         let target = hit_record.p() + hit_record.normal() + Vector3::random_in_unit_sphere();
 
         Some(ScatterRecord {
-            scattered: Ray::new(hit_record.p(), target - hit_record.p()),
+            scattered: Ray::new(hit_record.p(), target - hit_record.p(), ray.time()),
             attenuation: self.albedo,
         })
     }
@@ -79,7 +79,7 @@ impl Metal {
 impl Material for Metal {
     fn scatter(&self, ray: Ray, hit_record: &HitRecord) -> Option<ScatterRecord> {
         let reflected = Vector3::reflect(ray.direction().normalized(), hit_record.normal());
-        let scattered = Ray::new(hit_record.p(), reflected + Vector3::random_in_unit_sphere() * self.fuzz);
+        let scattered = Ray::new(hit_record.p(), reflected + Vector3::random_in_unit_sphere() * self.fuzz, ray.time());
 
         Some(ScatterRecord {
             scattered,
@@ -148,9 +148,9 @@ impl Material for Dielectric {
 
         let mut rng = rand::thread_rng();
         let scattered = if rng.gen::<f32>() < reflect_prob {
-            Ray::new(hit_record.p(), reflected)
+            Ray::new(hit_record.p(), reflected, ray.time())
         } else {
-            Ray::new(hit_record.p(), refracted)
+            Ray::new(hit_record.p(), refracted, ray.time())
         };
 
         return Some(ScatterRecord::new(attenuation, scattered));

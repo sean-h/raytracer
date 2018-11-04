@@ -13,7 +13,7 @@ use std::io::prelude::*;
 use vector3::Vector3;
 use ray::Ray;
 use hitable::Hitable;
-use sphere::Sphere;
+use sphere::{Sphere, MovingSphere};
 use world::World;
 use camera::Camera;
 use rand::Rng;
@@ -32,9 +32,9 @@ fn main() -> std::io::Result<()> {
     let lookfrom = Vector3::new(13.0, 2.0, 3.0);
     let lookat = Vector3::new(0.0, 0.0, 0.0);
     let dist_to_focus = 10.0;
-    let aperture = 0.1;
+    let aperture = 0.0;
 
-    let camera = Camera::new(lookfrom, lookat, Vector3::up(), 20.0, nx as f32 / ny as f32, aperture, dist_to_focus);
+    let camera = Camera::new(lookfrom, lookat, Vector3::up(), 20.0, nx as f32 / ny as f32, aperture, dist_to_focus, 0.0, 1.0);
     let mut rng = rand::thread_rng();
 
     for j in (0..ny).rev() {
@@ -99,11 +99,13 @@ fn random_scene() -> World {
             if (center - Vector3::new(4.0, 0.2, 0.0)).length() > 0.9 {
                 if choose_mat < 0.8 {
                     let color = Vector3::new(rng.gen::<f32>() * rng.gen::<f32>(), rng.gen::<f32>() * rng.gen::<f32>(), rng.gen::<f32>() * rng.gen::<f32>());
-                    let sphere = Sphere::new(center, 0.2, Box::new(Lambertion::new(color)));
+                    let center2 = center + Vector3::new(0.0, 0.5 * rng.gen::<f32>(), 0.0);
+                    let sphere = MovingSphere::new(center, center2, 0.0, 1.0, 0.2, Box::new(Lambertion::new(color)));
                     world.add_hitable(Box::new(sphere));
                 } else if choose_mat < 0.95 {
                     let color = Vector3::new(0.5 * (1.0 + rng.gen::<f32>()), 0.5 * (1.0 + rng.gen::<f32>()), 0.5 * (1.0 + rng.gen::<f32>()));
                     let sphere = Sphere::new(center, 0.2, Box::new(Metal::new(color, 0.5 * rng.gen::<f32>())));
+                    world.add_hitable(Box::new(sphere));
                 } else {
                     let sphere = Sphere::new(center, 0.2, Box::new(Dielectric::new(1.5)));
                     world.add_hitable(Box::new(sphere));

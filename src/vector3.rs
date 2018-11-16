@@ -1,6 +1,6 @@
 extern crate rand;
 
-use std::ops::{Add, Sub, Mul, Div, Neg};
+use std::ops::{Add, Sub, Mul, Div, Neg, Index};
 use rand::Rng;
 
 /// A 3 axis vector of `f32` values.
@@ -194,6 +194,19 @@ impl Neg for Vector3 {
 
     fn neg(self) -> Vector3 {
         Vector3 {x: -self.x, y: -self.y, z: -self.z}
+    }
+}
+
+impl Index<usize> for Vector3 {
+    type Output = f32;
+
+    fn index(&self, index: usize) -> &f32 {
+        match index {
+            0 => &self.x,
+            1 => &self.y,
+            2 => &self.z,
+            _ => panic!("Invalid Vector3 Index"),
+        }
     }
 }
 

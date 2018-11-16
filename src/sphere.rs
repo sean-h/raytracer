@@ -2,6 +2,7 @@ use hitable::*;
 use vector3::Vector3;
 use ray::Ray;
 use material::Material;
+use aabb::AABB;
 
 pub struct Sphere {
     center: Vector3,
@@ -49,6 +50,12 @@ impl Hitable for Sphere {
 
         None
     }
+
+    fn bounding_box(&self, _t0: f32, _t1: f32) -> Option<AABB> {
+        let min = self.center - Vector3::new(self.radius, self.radius, self.radius);
+        let max = self.center + Vector3::new(self.radius, self.radius, self.radius);
+        Some(AABB::new(min, max))
+    }
 }
 
 pub struct MovingSphere {
@@ -70,6 +77,10 @@ impl MovingSphere {
             time0,
             time1,
         }
+    }
+
+    fn center_at_time(&self, t: f32) -> Vector3 {
+        self.center0 + ((t - self.time0) / (self.time1 - self.time0)) * (self.center1 - self.center0)
     }
 }
 
@@ -103,5 +114,19 @@ impl Hitable for MovingSphere {
         }
 
         None
+    }
+
+    fn bounding_box(&self, t0: f32, t1: f32) -> Option<AABB> {
+        let center = self.center_at_time(t0);
+        let min = center - Vector3::new(self.radius, self.radius, self.radius);
+        let max = center + Vector3::new(self.radius, self.radius, self.radius);
+        let b0 = AABB::new(min, max);
+
+        let center = self.center_at_time(t1);
+        let min = center - Vector3::new(self.radius, self.radius, self.radius);
+        let max = center + Vector3::new(self.radius, self.radius, self.radius);
+        let b1 = AABB::new(min, max);
+
+        Some(AABB::surrounding_box(b0, b1))
     }
 }

@@ -7,6 +7,8 @@ mod sphere;
 mod world;
 mod camera;
 mod material;
+mod aabb;
+mod bvh;
 
 use std::fs::File;
 use std::io::prelude::*;
@@ -18,10 +20,12 @@ use world::World;
 use camera::Camera;
 use rand::Rng;
 use material::*;
+use std::time::{SystemTime};
 
 fn main() -> std::io::Result<()> {
-    let nx = 800;
-    let ny = 400;
+    let now = SystemTime::now();
+    let nx = 400;
+    let ny = 200;
     let ns = 100;
 
     let mut file = File::create("image.ppm")?;
@@ -58,10 +62,15 @@ fn main() -> std::io::Result<()> {
         }
     }
 
+    match now.elapsed() {
+        Ok(t) => println!("Took {} seconds to render", t.as_secs()),
+        Err(e) => println!("Unable to determine render time: {}", e),
+    }
+
     Ok(())
 }
 
-fn color(ray: Ray, world: &Hitable, depth: i32) -> Vector3 {
+fn color(ray: Ray, world: &Box<Hitable>, depth: i32) -> Vector3 {
     let hit_record = world.hit(ray, 0.001, std::f32::MAX);
 
     match hit_record {
@@ -85,7 +94,7 @@ fn color(ray: Ray, world: &Hitable, depth: i32) -> Vector3 {
     }
 }
 
-fn random_scene() -> World {
+fn random_scene() -> Box<Hitable> {
     let mut world = World::new();
     let mut rng = rand::thread_rng();
 
@@ -117,10 +126,9 @@ fn random_scene() -> World {
     let sphere1 = Sphere::new(Vector3::new(0.0, 1.0, 0.0), 1.0, Box::new(Dielectric::new(1.5)));
     let sphere2 = Sphere::new(Vector3::new(-4.0, 1.0, 0.0), 1.0, Box::new(Lambertion::new(Vector3::new(0.4, 0.2, 0.1))));
     let sphere3 = Sphere::new(Vector3::new(4.0, 1.0, 0.0), 1.0, Box::new(Metal::new(Vector3::new(0.7, 0.6, 0.5), 0.0)));
-
     world.add_hitable(Box::new(sphere1));
     world.add_hitable(Box::new(sphere2));
     world.add_hitable(Box::new(sphere3));
 
-    world
+    Box::new(world)
 }

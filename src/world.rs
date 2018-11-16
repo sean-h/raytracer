@@ -1,5 +1,6 @@
 use hitable::*;
 use ray::Ray;
+use aabb::AABB;
 
 pub struct World {
     hitables: Vec<Box<Hitable>>,
@@ -33,5 +34,27 @@ impl Hitable for World {
         }
 
         hit_record
+    }
+
+    fn bounding_box(&self, t0: f32, t1: f32) -> Option<AABB> {
+        if self.hitables.len() == 0 {
+            return None;
+        }
+
+        let mut bbox = match self.hitables[0].bounding_box(t0, t1) {
+            Some(aabb) => aabb,
+            None => return None,
+        };
+
+        for hitable in &self.hitables {
+            let aabb = match hitable.bounding_box(t0, t1) {
+                Some(aabb) => aabb,
+                None => return None,
+            };
+
+            bbox = AABB::surrounding_box(bbox, aabb);
+        }
+
+        Some(bbox)
     }
 }

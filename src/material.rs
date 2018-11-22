@@ -4,6 +4,7 @@ use ray::Ray;
 use hitable::HitRecord;
 use vector3::Vector3;
 use rand::Rng;
+use texture::Texture;
 
 pub struct ScatterRecord {
     attenuation: Vector3,
@@ -31,13 +32,12 @@ pub trait Material {
     fn scatter(&self, ray: Ray, hit_record: &HitRecord) -> Option<ScatterRecord>;
 }
 
-#[derive(Debug, Copy, Clone)]
 pub struct Lambertion {
-    albedo: Vector3,
+    albedo: Box<Texture>,
 }
 
 impl Lambertion {
-    pub fn new(albedo: Vector3) -> Lambertion {
+    pub fn new(albedo: Box<Texture>) -> Lambertion {
         Lambertion {
             albedo,
         }
@@ -50,7 +50,7 @@ impl Material for Lambertion {
 
         Some(ScatterRecord {
             scattered: Ray::new(hit_record.p(), target - hit_record.p(), ray.time()),
-            attenuation: self.albedo,
+            attenuation: self.albedo.value(0.0, 0.0, hit_record.p()),
         })
     }
 }

@@ -9,6 +9,7 @@ mod camera;
 mod material;
 mod aabb;
 mod bvh;
+mod texture;
 
 use std::fs::File;
 use std::io::prelude::*;
@@ -21,11 +22,12 @@ use camera::Camera;
 use rand::Rng;
 use material::*;
 use std::time::{SystemTime};
+use texture::*;
 
 fn main() -> std::io::Result<()> {
     let now = SystemTime::now();
-    let nx = 400;
-    let ny = 200;
+    let nx = 200;
+    let ny = 100;
     let ns = 100;
 
     let mut file = File::create("image.ppm")?;
@@ -98,7 +100,11 @@ fn random_scene() -> Box<Hitable> {
     let mut world = World::new();
     let mut rng = rand::thread_rng();
 
-    let ground = Sphere::new(Vector3::new(0.0, -1000.0, 0.0), 1000.0, Box::new(Lambertion::new(Vector3::new(0.5, 0.5, 0.5))));
+    let texture1 = ConstantTexture::new(Vector3::new(0.2, 0.3, 0.1));
+    let texture2 = ConstantTexture::new(Vector3::new(0.9, 0.9, 0.9));
+    let checker = CheckerTexture::new(Box::new(texture1), Box::new(texture2));
+    let ground_material = Lambertion::new(Box::new(checker));
+    let ground = Sphere::new(Vector3::new(0.0, -1000.0, 0.0), 1000.0, Box::new(ground_material));
     world.add_hitable(Box::new(ground));
 
     for a in -11..11 {
@@ -109,7 +115,8 @@ fn random_scene() -> Box<Hitable> {
                 if choose_mat < 0.8 {
                     let color = Vector3::new(rng.gen::<f32>() * rng.gen::<f32>(), rng.gen::<f32>() * rng.gen::<f32>(), rng.gen::<f32>() * rng.gen::<f32>());
                     let center2 = center + Vector3::new(0.0, 0.5 * rng.gen::<f32>(), 0.0);
-                    let sphere = MovingSphere::new(center, center2, 0.0, 1.0, 0.2, Box::new(Lambertion::new(color)));
+                    let albedo = ConstantTexture::new(color);
+                    let sphere = MovingSphere::new(center, center2, 0.0, 1.0, 0.2, Box::new(Lambertion::new(Box::new(albedo))));
                     world.add_hitable(Box::new(sphere));
                 } else if choose_mat < 0.95 {
                     let color = Vector3::new(0.5 * (1.0 + rng.gen::<f32>()), 0.5 * (1.0 + rng.gen::<f32>()), 0.5 * (1.0 + rng.gen::<f32>()));
@@ -124,7 +131,7 @@ fn random_scene() -> Box<Hitable> {
     }
 
     let sphere1 = Sphere::new(Vector3::new(0.0, 1.0, 0.0), 1.0, Box::new(Dielectric::new(1.5)));
-    let sphere2 = Sphere::new(Vector3::new(-4.0, 1.0, 0.0), 1.0, Box::new(Lambertion::new(Vector3::new(0.4, 0.2, 0.1))));
+    let sphere2 = Sphere::new(Vector3::new(-4.0, 1.0, 0.0), 1.0, Box::new(Lambertion::new(Box::new(ConstantTexture::new(Vector3::new(0.4, 0.2, 0.1))))));
     let sphere3 = Sphere::new(Vector3::new(4.0, 1.0, 0.0), 1.0, Box::new(Metal::new(Vector3::new(0.7, 0.6, 0.5), 0.0)));
     world.add_hitable(Box::new(sphere1));
     world.add_hitable(Box::new(sphere2));

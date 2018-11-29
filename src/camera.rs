@@ -1,7 +1,8 @@
 extern crate rand;
+extern crate tdmath;
 
-use vector3::Vector3;
-use ray::Ray;
+use tdmath::Vector3;
+use tdmath::Ray;
 use std::f32::consts;
 use rand::Rng;
 

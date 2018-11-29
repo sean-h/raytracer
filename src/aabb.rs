@@ -1,5 +1,7 @@
-use vector3::Vector3;
-use ray::Ray;
+extern crate tdmath;
+
+use tdmath::Vector3;
+use tdmath::Ray;
 
 #[derive(Debug, Copy, Clone)]
 pub struct AABB {

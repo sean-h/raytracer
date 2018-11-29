@@ -1,9 +1,10 @@
 extern crate rand;
+extern crate tdmath;
 
 use hitable::*;
 use aabb::AABB;
-use vector3::Vector3;
-use ray::Ray;
+use tdmath::Vector3;
+use tdmath::Ray;
 use rand::Rng;
 
 pub struct BVH {

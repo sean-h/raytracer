@@ -1,6 +1,8 @@
+extern crate tdmath;
+
 use hitable::*;
-use vector3::Vector3;
-use ray::Ray;
+use tdmath::Vector3;
+use tdmath::Ray;
 use material::Material;
 use aabb::AABB;
 

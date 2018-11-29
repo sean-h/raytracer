@@ -1,5 +1,7 @@
-use ray::Ray;
-use vector3::Vector3;
+extern crate tdmath;
+
+use tdmath::Ray;
+use tdmath::Vector3;
 use material::Material;
 use aabb::AABB;
 

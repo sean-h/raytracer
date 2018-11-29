@@ -1,5 +1,7 @@
+extern crate tdmath;
+
 use hitable::*;
-use ray::Ray;
+use tdmath::Ray;
 use aabb::AABB;
 
 pub struct World {

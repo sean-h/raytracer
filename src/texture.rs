@@ -1,4 +1,6 @@
-use vector3::Vector3;
+extern crate tdmath;
+
+use tdmath::Vector3;
 
 pub trait Texture {
     fn value(&self, u: f32, v: f32, p: Vector3) -> Vector3;

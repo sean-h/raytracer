@@ -1,8 +1,8 @@
 extern crate rand;
 
-use ray::Ray;
+use tdmath::Ray;
 use hitable::HitRecord;
-use vector3::Vector3;
+use tdmath::Vector3;
 use rand::Rng;
 use texture::Texture;
 

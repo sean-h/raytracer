@@ -1,7 +1,6 @@
 extern crate rand;
+extern crate tdmath;
 
-mod vector3;
-mod ray;
 mod hitable;
 mod sphere;
 mod world;
@@ -13,8 +12,7 @@ mod texture;
 
 use std::fs::File;
 use std::io::prelude::*;
-use vector3::Vector3;
-use ray::Ray;
+use tdmath::{Vector3, Ray};
 use hitable::Hitable;
 use sphere::{Sphere, MovingSphere};
 use world::World;

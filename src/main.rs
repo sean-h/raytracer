@@ -9,18 +9,20 @@ mod material;
 mod aabb;
 mod bvh;
 mod texture;
+mod noise;
 
 use std::fs::File;
 use std::io::prelude::*;
 use tdmath::{Vector3, Ray};
 use hitable::Hitable;
-use sphere::{Sphere, MovingSphere};
 use world::World;
 use camera::Camera;
 use rand::Rng;
-use material::*;
 use std::time::{SystemTime};
+use material::*;
+use sphere::{Sphere, MovingSphere};
 use texture::*;
+use noise::Perlin;
 
 fn main() -> std::io::Result<()> {
     let now = SystemTime::now();
@@ -100,12 +102,14 @@ fn random_scene() -> Box<Hitable> {
 
     let texture1 = ConstantTexture::new(Vector3::new(0.2, 0.3, 0.1));
     let texture2 = ConstantTexture::new(Vector3::new(0.9, 0.9, 0.9));
-    let checker = CheckerTexture::new(Box::new(texture1), Box::new(texture2));
-    let ground_material = Lambertion::new(Box::new(checker));
+    //let checker = CheckerTexture::new(Box::new(texture1), Box::new(texture2));
+    let perlin = Perlin::new();
+    let noise_texture = NoiseTexture::new(Box::new(perlin));
+    let ground_material = Lambertion::new(Box::new(noise_texture));
     let ground = Sphere::new(Vector3::new(0.0, -1000.0, 0.0), 1000.0, Box::new(ground_material));
     world.add_hitable(Box::new(ground));
 
-    for a in -11..11 {
+    /*for a in -11..11 {
         for b in -11..11 {
             let choose_mat = rng.gen::<f32>();
             let center = Vector3::new(a as f32 + 0.9 * rng.gen::<f32>(), 0.2, b as f32 + 0.9 * rng.gen::<f32>());
@@ -126,7 +130,7 @@ fn random_scene() -> Box<Hitable> {
                 }
             }
         }
-    }
+    }*/
 
     let sphere1 = Sphere::new(Vector3::new(0.0, 1.0, 0.0), 1.0, Box::new(Dielectric::new(1.5)));
     let sphere2 = Sphere::new(Vector3::new(-4.0, 1.0, 0.0), 1.0, Box::new(Lambertion::new(Box::new(ConstantTexture::new(Vector3::new(0.4, 0.2, 0.1))))));

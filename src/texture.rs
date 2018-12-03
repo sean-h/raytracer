@@ -1,6 +1,7 @@
 extern crate tdmath;
 
 use tdmath::Vector3;
+use noise::Perlin;
 
 pub trait Texture {
     fn value(&self, u: f32, v: f32, p: Vector3) -> Vector3;
@@ -46,5 +47,23 @@ impl Texture for CheckerTexture {
         } else {
             self.even.value(u, v, p)
         }
+    }
+}
+
+pub struct NoiseTexture {
+    perlin: Box<Perlin>,
+}
+
+impl NoiseTexture {
+    pub fn new(perlin: Box<Perlin>) -> NoiseTexture {
+        NoiseTexture {
+            perlin
+        }
+    }
+}
+
+impl Texture for NoiseTexture {
+    fn value(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
+        Vector3::new(1.0, 1.0, 1.0) * self.perlin.noise(p)
     }
 }

@@ -6,7 +6,7 @@ use tdmath::Vector3;
 use std::num::Wrapping;
 
 pub struct Perlin {
-    ranfloat: Vec<f32>,
+    ranvec: Vec<Vector3>,
     perm_x: Vec<usize>,
     perm_y: Vec<usize>,
     perm_z: Vec<usize>,
@@ -15,7 +15,7 @@ pub struct Perlin {
 impl Perlin {
     pub fn new() -> Perlin {
         Perlin {
-            ranfloat: Perlin::perlin_generate(),
+            ranvec: Perlin::perlin_generate(),
             perm_x: Perlin::perlin_generate_perm(),
             perm_y: Perlin::perlin_generate_perm(),
             perm_z: Perlin::perlin_generate_perm(),
@@ -29,7 +29,7 @@ impl Perlin {
         let i = Wrapping(p.x.floor() as u8);
         let j = Wrapping(p.y.floor() as u8);
         let k = Wrapping(p.z.floor() as u8);
-        let mut c: [[[f32; 2]; 2]; 2] = [[[0.0; 2]; 2]; 2];
+        let mut c: [[[Vector3; 2]; 2]; 2] = [[[Vector3::zero(); 2]; 2]; 2];
         for di in 0..2 {
             for dj in 0..2 {
                 for dk in 0..2 {
@@ -40,20 +40,24 @@ impl Perlin {
                     let y = self.perm_y[yi as usize];
                     let z = self.perm_z[zi as usize];
 
-                    c[di][dj][dk] = self.ranfloat[x ^ y ^ z];
+                    c[di][dj][dk] = self.ranvec[x ^ y ^ z];
                 }
             }
         }
 
-        return Perlin::trilinear_interp(c, u, v, w);
+        return Perlin::perlin_interp(c, u, v, w);
     }
 
-    fn perlin_generate() -> Vec<f32> {
+    fn perlin_generate() -> Vec<Vector3> {
         let mut p = Vec::with_capacity(256);
         let mut rng = rand::thread_rng();
 
         for _ in 0..256 {
-            p.push(rng.gen::<f32>());
+            let x = -1.0 + 2.0 * rng.gen::<f32>();
+            let y = -1.0 + 2.0 * rng.gen::<f32>();
+            let z = -1.0 + 2.0 * rng.gen::<f32>();
+
+            p.push(Vector3::new(x, y, z).normalized());
         }
 
         return p;
@@ -79,17 +83,35 @@ impl Perlin {
         return p;
     }
 
-    fn trilinear_interp(c: [[[f32; 2]; 2]; 2], u: f32, v: f32, w: f32) -> f32 {      
+    fn perlin_interp(c: [[[Vector3; 2]; 2]; 2], u: f32, v: f32, w: f32) -> f32 {      
+        let uu = u * u * (3.0 - 2.0 * u);
+        let vv = v * v * (3.0 - 2.0 * v);
+        let ww = w * w * (3.0 - 2.0 * w);
         let mut accum = 0.0;
+
         for i in 0..2 {
             for j in 0..2 {
                 for k in 0..2 {
-                    accum += (i as f32 * u + (1.0 - i as f32) * (1.0-u)) *
-                             (j as f32 * v + (1.0 - j as f32) * (1.0-v)) *
-                             (k as f32 * w + (1.0 - k as f32) * (1.0-w)) *
-                             c[i][j][k]
+                    let weight = Vector3::new(u - i as f32, v - j as f32, w - k as f32);
+                    accum += (i as f32 * uu + (1.0 - i as f32) * (1.0-uu)) *
+                             (j as f32 * vv + (1.0 - j as f32) * (1.0-vv)) *
+                             (k as f32 * ww + (1.0 - k as f32) * (1.0-ww)) *
+                             Vector3::dot(c[i][j][k], weight)
                 }
             }
+        }
+
+        return accum;
+    }
+
+    pub fn turb(&self, p: Vector3, depth: u32) -> f32 {
+        let mut accum = 0.0;
+        let mut temp_p = p;
+        let mut weight = 1.0;
+        for _ in 0..depth {
+            accum += weight * self.noise(temp_p);
+            weight *= 0.5;
+            temp_p = temp_p * 2.0;
         }
 
         return accum.abs();

@@ -104,7 +104,7 @@ fn random_scene() -> Box<Hitable> {
     let texture2 = ConstantTexture::new(Vector3::new(0.9, 0.9, 0.9));
     //let checker = CheckerTexture::new(Box::new(texture1), Box::new(texture2));
     let perlin = Perlin::new();
-    let noise_texture = NoiseTexture::new(Box::new(perlin));
+    let noise_texture = NoiseTexture::new(Box::new(perlin), 4.0, 7);
     let ground_material = Lambertion::new(Box::new(noise_texture));
     let ground = Sphere::new(Vector3::new(0.0, -1000.0, 0.0), 1000.0, Box::new(ground_material));
     world.add_hitable(Box::new(ground));

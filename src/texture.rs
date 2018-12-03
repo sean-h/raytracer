@@ -52,18 +52,27 @@ impl Texture for CheckerTexture {
 
 pub struct NoiseTexture {
     perlin: Box<Perlin>,
+    scale: f32,
+    turb: u32,
 }
 
 impl NoiseTexture {
-    pub fn new(perlin: Box<Perlin>) -> NoiseTexture {
+    pub fn new(perlin: Box<Perlin>, scale: f32, turb: u32) -> NoiseTexture {
         NoiseTexture {
-            perlin
+            perlin,
+            scale,
+            turb,
         }
     }
 }
 
 impl Texture for NoiseTexture {
     fn value(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
-        Vector3::new(1.0, 1.0, 1.0) * self.perlin.noise(p)
+        if self.turb > 0 {
+            let noise = 1.0 + (self.scale * p.z + 10.0 * self.perlin.turb(p, 7)).sin();
+            Vector3::new(1.0, 1.0, 1.0) * 0.5 * noise
+        } else {
+            Vector3::new(1.0, 1.0, 1.0) * self.perlin.turb(p * self.scale, 7)
+        }
     }
 }

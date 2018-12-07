@@ -29,7 +29,7 @@ impl Settings {
 
         let output = match commandline.get_parameter_value("output") {
             ParameterValue::Path(path) => PathBuf::from(path),
-            _ => PathBuf::from("output.ppm"),
+            _ => PathBuf::from("output.png"),
         };
 
         Settings {

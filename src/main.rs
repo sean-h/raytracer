@@ -1,6 +1,7 @@
 extern crate rand;
 extern crate tdmath;
 extern crate cmdpro;
+extern crate image;
 
 mod hitable;
 mod sphere;
@@ -13,8 +14,6 @@ mod texture;
 mod noise;
 mod settings;
 
-use std::fs::File;
-use std::io::prelude::*;
 use tdmath::{Vector3, Ray};
 use hitable::Hitable;
 use world::World;
@@ -27,8 +26,9 @@ use texture::*;
 use noise::Perlin;
 use cmdpro::{CommandLineProcessor, ParameterType};
 use settings::Settings;
+use image::{ImageBuffer, Rgb};
 
-fn main() -> std::io::Result<()> {
+fn main() {
     let mut command_line_processor = CommandLineProcessor::new();
     command_line_processor.add_parameter("width", ParameterType::UInteger, vec!["--width".to_owned(), "--w".to_owned()]);
     command_line_processor.add_parameter("height", ParameterType::UInteger, vec!["--height".to_owned(), "--h".to_owned()]);
@@ -37,7 +37,7 @@ fn main() -> std::io::Result<()> {
     command_line_processor.parse_command_line();
 
     if command_line_processor.abort_flag() {
-        return Ok(());
+        return;
     }
 
     let settings = Settings::from_commandline(&command_line_processor);
@@ -47,8 +47,7 @@ fn main() -> std::io::Result<()> {
     let ny = settings.height();
     let ns = settings.samples();
 
-    let mut file = File::create(settings.export_path())?;
-    file.write(format!("P3\n{} {}\n255\n", nx, ny).as_bytes()).expect("Unable to write to file");;
+    let mut image = ImageBuffer::new(settings.width(), settings.height());
 
     let world = random_scene();
 
@@ -73,11 +72,11 @@ fn main() -> std::io::Result<()> {
             col = col / ns as f32;
             col = Vector3::new(col.r().sqrt(), col.g().sqrt(), col.b().sqrt());
 
-            let ir = (255.99 * col.r()) as i32;
-            let ig = (255.99 * col.g()) as i32;
-            let ib = (255.99 * col.b()) as i32;
+            let ir = (255.99 * col.r()) as u8;
+            let ig = (255.99 * col.g()) as u8;
+            let ib = (255.99 * col.b()) as u8;
 
-            file.write(format!("{} {} {}\n", ir, ig, ib).as_bytes()).expect("Unable to write to file");
+            image.put_pixel(i, ny - j - 1, Rgb { data: [ir, ig, ib] })
         }
     }
 
@@ -86,7 +85,7 @@ fn main() -> std::io::Result<()> {
         Err(e) => println!("Unable to determine render time: {}", e),
     }
 
-    Ok(())
+    image.save(settings.export_path()).unwrap();
 }
 
 fn color(ray: Ray, world: &Box<Hitable>, depth: i32) -> Vector3 {

@@ -5,6 +5,7 @@ use tdmath::Vector3;
 use tdmath::Ray;
 use material::Material;
 use aabb::AABB;
+use std::f32;
 
 pub struct Sphere {
     center: Vector3,
@@ -19,6 +20,15 @@ impl Sphere {
             radius,
             material,
         }
+    }
+
+    pub fn get_sphere_uv(p: Vector3) -> (f32, f32) {
+        let phi = p.z.atan2(p.x);
+        let theta = p.y.asin();
+        let u = 1.0 - (phi + f32::consts::PI) / (2.0 * f32::consts::PI);
+        let v = (theta + f32::consts::PI / 2.0) / f32::consts::PI;
+
+        (u, v)
     }
 }
 
@@ -35,18 +45,20 @@ impl Hitable for Sphere {
             if temp < t_max && temp > t_min {
                 let t = temp;
                 let p = ray.point_at_parameter(temp);
+                let (u, v) = Sphere::get_sphere_uv((p - self.center) / self.radius);
                 let normal = (p - self.center) / self.radius;
-
-                return Some(HitRecord::new(t, p, normal, &self.material));
+                
+                return Some(HitRecord::new(t, p, u, v, normal, &self.material));
             }
 
             let temp = (-b + (b * b - a * c).sqrt()) / a;
             if temp < t_max && temp > t_min {
                 let t = temp;
                 let p = ray.point_at_parameter(temp);
+                let (u, v) = Sphere::get_sphere_uv((p - self.center) / self.radius);
                 let normal = (p - self.center) / self.radius;
 
-                return Some(HitRecord::new(t, p, normal, &self.material));
+                return Some(HitRecord::new(t, p, u, v, normal, &self.material));
             }
         }
 
@@ -100,18 +112,20 @@ impl Hitable for MovingSphere {
             if temp < t_max && temp > t_min {
                 let t = temp;
                 let p = ray.point_at_parameter(temp);
+                let (u, v) = Sphere::get_sphere_uv((p - center) / self.radius);
                 let normal = (p - center) / self.radius;
 
-                return Some(HitRecord::new(t, p, normal, &self.material));
+                return Some(HitRecord::new(t, p, u, v, normal, &self.material));
             }
 
             let temp = (-b + (b * b - a * c).sqrt()) / a;
             if temp < t_max && temp > t_min {
                 let t = temp;
                 let p = ray.point_at_parameter(temp);
+                let (u, v) = Sphere::get_sphere_uv((p - center) / self.radius);
                 let normal = (p - center) / self.radius;
 
-                return Some(HitRecord::new(t, p, normal, &self.material));
+                return Some(HitRecord::new(t, p, u, v, normal, &self.material));
             }
         }
 

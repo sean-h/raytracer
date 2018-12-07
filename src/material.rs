@@ -50,7 +50,7 @@ impl Material for Lambertion {
 
         Some(ScatterRecord {
             scattered: Ray::new(hit_record.p(), target - hit_record.p(), ray.time()),
-            attenuation: self.albedo.value(0.0, 0.0, hit_record.p()),
+            attenuation: self.albedo.value(hit_record.u(), hit_record.v(), hit_record.p()),
         })
     }
 }

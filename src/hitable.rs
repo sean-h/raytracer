@@ -8,15 +8,19 @@ use aabb::AABB;
 pub struct HitRecord<'a> {
     t: f32,
     p: Vector3,
+    u: f32,
+    v: f32,
     normal: Vector3,
     material: &'a Box<Material>,
 }
 
 impl<'a> HitRecord<'a> {
-    pub fn new(t: f32, p: Vector3, normal: Vector3, material: &Box<Material>) -> HitRecord {
+    pub fn new(t: f32, p: Vector3, u: f32, v: f32, normal: Vector3, material: &Box<Material>) -> HitRecord {
         HitRecord {
             t,
             p,
+            u,
+            v,
             normal,
             material,
         }
@@ -28,6 +32,14 @@ impl<'a> HitRecord<'a> {
 
     pub fn p(&self) -> Vector3 {
         self.p
+    }
+
+    pub fn u(&self) -> f32 {
+        self.u
+    }
+
+    pub fn v(&self) -> f32 {
+        self.v
     }
 
     pub fn normal(&self) -> Vector3 {

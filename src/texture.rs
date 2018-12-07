@@ -1,7 +1,9 @@
 extern crate tdmath;
+extern crate image;
 
 use tdmath::Vector3;
 use noise::Perlin;
+use image::{ImageBuffer, Rgb};
 
 pub trait Texture {
     fn value(&self, u: f32, v: f32, p: Vector3) -> Vector3;
@@ -74,5 +76,51 @@ impl Texture for NoiseTexture {
         } else {
             Vector3::new(1.0, 1.0, 1.0) * self.perlin.turb(p * self.scale, 7)
         }
+    }
+}
+
+pub struct ImageTexture {
+    image: Box<ImageBuffer<Rgb<u8>, Vec<u8>>>
+}
+
+impl ImageTexture {
+    pub fn new(image: Box<ImageBuffer<Rgb<u8>, Vec<u8>>>) -> ImageTexture {
+        ImageTexture {
+            image
+        }
+    }
+}
+
+impl Texture for ImageTexture {
+    fn value(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
+        let (width, height) = self.image.dimensions();
+        
+        let i = u * width as f32;
+        let i = if i < 0.0 {
+            0.0
+        } else if i > width as f32 - 1.0 {
+            width as f32 - 1.0
+        } else {
+            i
+        };
+
+
+        let j = (1.0 - v) * height as f32 - 0.001;
+        let j = if j < 0.0 {
+            0.0
+        } else if j > height as f32 - 1.0 {
+            height as f32 - 1.0
+        } else {
+            j
+        };
+
+        //println!("{} {}", u, v);
+
+        let pixel = self.image.get_pixel(i as u32, j as u32);
+        let r = pixel[0] as f32 / 255.0;
+        let g = pixel[1] as f32 / 255.0;
+        let b = pixel[2] as f32 / 255.0;
+
+        Vector3::new(r, g, b)
     }
 }

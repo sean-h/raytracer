@@ -6,3 +6,4 @@ authors = ["Sean Humeniuk <seanhumeniuk@gmail.com>"]
 [dependencies]
 rand = "*"
 tdmath = { path = "../tdmath" }
+cmdpro = { path = "../cmdpro" }

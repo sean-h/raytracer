@@ -1,5 +1,6 @@
 extern crate rand;
 extern crate tdmath;
+extern crate cmdpro;
 
 mod hitable;
 mod sphere;
@@ -10,6 +11,7 @@ mod aabb;
 mod bvh;
 mod texture;
 mod noise;
+mod settings;
 
 use std::fs::File;
 use std::io::prelude::*;
@@ -23,14 +25,29 @@ use material::*;
 use sphere::{Sphere, MovingSphere};
 use texture::*;
 use noise::Perlin;
+use cmdpro::{CommandLineProcessor, ParameterType};
+use settings::Settings;
 
 fn main() -> std::io::Result<()> {
-    let now = SystemTime::now();
-    let nx = 200;
-    let ny = 100;
-    let ns = 100;
+    let mut command_line_processor = CommandLineProcessor::new();
+    command_line_processor.add_parameter("width", ParameterType::UInteger, vec!["--width".to_owned(), "--w".to_owned()]);
+    command_line_processor.add_parameter("height", ParameterType::UInteger, vec!["--height".to_owned(), "--h".to_owned()]);
+    command_line_processor.add_parameter("samples", ParameterType::UInteger, vec!["--samples".to_owned(), "--s".to_owned()]);
+    command_line_processor.add_parameter("output", ParameterType::Path, vec!["--output".to_owned(), "--o".to_owned()]);
+    command_line_processor.parse_command_line();
 
-    let mut file = File::create("image.ppm")?;
+    if command_line_processor.abort_flag() {
+        return Ok(());
+    }
+
+    let settings = Settings::from_commandline(&command_line_processor);
+
+    let now = SystemTime::now();
+    let nx = settings.width();
+    let ny = settings.height();
+    let ns = settings.samples();
+
+    let mut file = File::create(settings.export_path())?;
     file.write(format!("P3\n{} {}\n255\n", nx, ny).as_bytes()).expect("Unable to write to file");;
 
     let world = random_scene();

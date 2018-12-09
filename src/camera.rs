@@ -1,10 +1,12 @@
 extern crate rand;
 extern crate tdmath;
+extern crate toml;
 
 use tdmath::Vector3;
 use tdmath::Ray;
 use std::f32::consts;
 use rand::Rng;
+use toml::Value;
 
 pub struct Camera {
     origin: Vector3,
@@ -53,5 +55,27 @@ impl Camera {
 
         Ray::new(self.origin + offset,
             self.lower_left_corner + self.horizontal * u + self.vertical * v - self.origin - offset, time)
+    }
+
+    pub fn from_toml(toml: &Value, aspect: f32) -> Camera {
+        let position = toml["position"].as_array().unwrap();
+        let x = position[0].as_float().unwrap() as f32;
+        let y = position[1].as_float().unwrap() as f32;
+        let z = position[2].as_float().unwrap() as f32;
+        let look_from = Vector3::new(x, y, z);
+
+        let look = toml["look"].as_array().unwrap();
+        let x = look[0].as_float().unwrap() as f32;
+        let y = look[1].as_float().unwrap() as f32;
+        let z = look[2].as_float().unwrap() as f32;
+        let lookat = Vector3::new(x, y, z);
+
+        let focus_dist = toml["focus_dist"].as_float().unwrap() as f32;
+        let aperture = toml["aperture"].as_float().unwrap() as f32;
+        let fov = toml["fov"].as_float().unwrap() as f32;
+        let t0 = toml["t0"].as_float().unwrap() as f32;
+        let t1 = toml["t1"].as_float().unwrap() as f32;
+
+        Camera::new(look_from, lookat, Vector3::up(), fov, aspect, aperture, focus_dist, t0, t1)
     }
 }

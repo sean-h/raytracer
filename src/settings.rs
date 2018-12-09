@@ -8,6 +8,7 @@ pub struct Settings {
     height: u32,
     samples: u32,
     export_path: PathBuf,
+    scene_path: PathBuf,
 }
 
 impl Settings {
@@ -32,11 +33,17 @@ impl Settings {
             _ => PathBuf::from("output.png"),
         };
 
+        let scene = match commandline.get_parameter_value("scene") {
+            ParameterValue::Path(path) => PathBuf::from(path),
+            _ => panic!("No scene specified"),
+        };
+
         Settings {
             width,
             height,
             samples,
             export_path: output,
+            scene_path: scene,
         }
     }
 
@@ -54,5 +61,9 @@ impl Settings {
 
     pub fn export_path(&self) -> &PathBuf {
         &self.export_path
+    }
+
+    pub fn scene_path(&self) -> &PathBuf {
+        &self.scene_path
     }
 }

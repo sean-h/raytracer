@@ -6,8 +6,9 @@ use tdmath::{Ray, Vector3};
 use aabb::AABB;
 use self::toml::Value;
 use sphere::Sphere;
-use material::Lambertion;
-use texture::ConstantTexture;
+use material::*;
+use texture::*;
+use noise::Perlin;
 
 pub struct World {
     hitables: Vec<Box<Hitable>>,
@@ -24,7 +25,6 @@ impl World {
         let mut hitables: Vec<Box<Hitable>> = Vec::new();
 
         let objects = scene["objects"].as_table().unwrap();
-
         for (obj_name, obj_data) in objects.iter() {
             let obj_type = obj_data["type"].as_str().unwrap();
             let position = obj_data["position"].as_array().unwrap();
@@ -34,14 +34,57 @@ impl World {
             let radius = obj_data["radius"].as_float().unwrap() as f32;
             let material_name = obj_data["material"].as_str().unwrap();
 
-            let texture = ConstantTexture::new(Vector3::new(0.7, 0.7, 0.7));
-            let material = Lambertion::new(Box::new(texture));
-            let sphere = Sphere::new(Vector3::new(x, y, z), radius, Box::new(material));
+            let material_data = &scene["materials"].as_table().unwrap()[material_name];
+            let material = World::create_material_from_toml(material_data, &scene["textures"]);
+
+            let sphere = Sphere::new(Vector3::new(x, y, z), radius, material);
             hitables.push(Box::new(sphere));
         }
 
         World {
             hitables,
+        }
+    }
+
+    fn create_material_from_toml(material_data: &Value, textures: &Value) -> Box<Material> {
+        let material_type = material_data["type"].as_str().unwrap();
+        
+        if material_type == "lambertian" {
+            let texture_name = material_data["texture"].as_str().unwrap();
+            let texture_data = &textures[texture_name];
+            let texture = World::create_texture_from_toml(texture_data);
+            Box::new(Lambertion::new(texture))
+        } else if material_type == "dielectric" {
+            let ref_index = material_data["ref_index"].as_float().unwrap() as f32;
+            Box::new(Dielectric::new(ref_index))
+        } else if material_type == "metal" {
+            let albedo = material_data["albedo"].as_array().unwrap();
+            let r = albedo[0].as_float().unwrap() as f32;
+            let g = albedo[1].as_float().unwrap() as f32;
+            let b = albedo[2].as_float().unwrap() as f32;
+            let fuzz = material_data["fuzz"].as_float().unwrap() as f32;
+            Box::new(Metal::new(Vector3::new(r, g, b), fuzz))
+        } else {
+            panic!("Unknown material type")
+        }
+    }
+
+    fn create_texture_from_toml(texture_data: &Value) -> Box<Texture> {
+        let texture_type = texture_data["type"].as_str().unwrap();
+
+        if texture_type == "constant" {
+            let color = texture_data["color"].as_array().unwrap();
+            let r = color[0].as_float().unwrap() as f32;
+            let g = color[1].as_float().unwrap() as f32;
+            let b = color[2].as_float().unwrap() as f32;
+            Box::new(ConstantTexture::new(Vector3::new(r, g, b)))
+        } else if texture_type == "perlin" {
+            let perlin = Perlin::new();
+            let scale = texture_data["scale"].as_float().unwrap() as f32;
+            let turbulence = texture_data["turbulence"].as_integer().unwrap() as u32;
+            Box::new(NoiseTexture::new(Box::new(perlin), scale, turbulence))
+        } else {
+            panic!("Unknown texture type")
         }
     }
 

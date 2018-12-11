@@ -14,6 +14,7 @@ mod bvh;
 mod texture;
 mod noise;
 mod settings;
+mod rect;
 
 use tdmath::{Vector3, Ray};
 use hitable::Hitable;
@@ -98,21 +99,20 @@ fn color(ray: Ray, world: &Box<Hitable>, depth: i32) -> Vector3 {
 
     match hit_record {
         Some(hit) => {
+            let emitted = hit.material().emit(hit.u(), hit.v(), hit.p());
             if depth < 50 {
                 match hit.material().scatter(ray, &hit) {
                     Some(scatter) => {
-                        return scatter.attenuation() * color(scatter.scattered(), world, depth+1);
+                        return emitted + scatter.attenuation() * color(scatter.scattered(), world, depth+1);
                     },
-                    None => return Vector3::zero(),
+                    None => return emitted,
                 }
             } else {
-                return Vector3::zero();
+                return emitted;
             }
         },
         None => {
-            let unit_direction = ray.direction().normalized();
-            let t = 0.5 * (unit_direction.y + 1.0);
-            return Vector3::new(1.0, 1.0, 1.0) * (1.0 - t) + Vector3::new(0.5, 0.7, 1.0) * t;
+            return Vector3::zero();
         }
     }
 }

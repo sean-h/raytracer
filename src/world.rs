@@ -9,6 +9,7 @@ use sphere::Sphere;
 use material::*;
 use texture::*;
 use noise::Perlin;
+use rect::{XYRect, XZRect, YZRect};
 
 pub struct World {
     hitables: Vec<Box<Hitable>>,
@@ -27,18 +28,70 @@ impl World {
         let objects = scene["objects"].as_table().unwrap();
         for (obj_name, obj_data) in objects.iter() {
             let obj_type = obj_data["type"].as_str().unwrap();
-            let position = obj_data["position"].as_array().unwrap();
-            let x = position[0].as_float().unwrap() as f32;
-            let y = position[1].as_float().unwrap() as f32;
-            let z = position[2].as_float().unwrap() as f32;
-            let radius = obj_data["radius"].as_float().unwrap() as f32;
             let material_name = obj_data["material"].as_str().unwrap();
-
             let material_data = &scene["materials"].as_table().unwrap()[material_name];
             let material = World::create_material_from_toml(material_data, &scene["textures"]);
 
-            let sphere = Sphere::new(Vector3::new(x, y, z), radius, material);
-            hitables.push(Box::new(sphere));
+            if obj_type == "sphere" {
+                let position = obj_data["position"].as_array().unwrap();
+                let x = position[0].as_float().unwrap() as f32;
+                let y = position[1].as_float().unwrap() as f32;
+                let z = position[2].as_float().unwrap() as f32;
+                let radius = obj_data["radius"].as_float().unwrap() as f32;
+
+                let sphere = Sphere::new(Vector3::new(x, y, z), radius, material);
+                hitables.push(Box::new(sphere));
+            } else if obj_type == "xyrect" {
+                let bounds = obj_data["bounds"].as_array().unwrap();
+                let x0 = bounds[0].as_float().unwrap() as f32;
+                let x1 = bounds[1].as_float().unwrap() as f32;
+                let y0 = bounds[2].as_float().unwrap() as f32;
+                let y1 = bounds[3].as_float().unwrap() as f32;
+                let k = obj_data["k"].as_float().unwrap() as f32;
+
+                let rect = XYRect::new(x0, x1, y0, y1, k, material);
+                let flip = obj_data["flip"].as_bool().unwrap_or(false);
+                if flip {
+                    let flipped = FlipNormals::new(Box::new(rect));
+                    hitables.push(Box::new(flipped));
+                } else {
+                    hitables.push(Box::new(rect));
+                }
+            } else if obj_type == "xzrect" {
+                let bounds = obj_data["bounds"].as_array().unwrap();
+                let x0 = bounds[0].as_float().unwrap() as f32;
+                let x1 = bounds[1].as_float().unwrap() as f32;
+                let z0 = bounds[2].as_float().unwrap() as f32;
+                let z1 = bounds[3].as_float().unwrap() as f32;
+                let k = obj_data["k"].as_float().unwrap() as f32;
+
+                let rect = XZRect::new(x0, x1, z0, z1, k, material);
+                
+                let flip = obj_data["flip"].as_bool().unwrap_or(false);
+                if flip {
+                    let flipped = FlipNormals::new(Box::new(rect));
+                    hitables.push(Box::new(flipped));
+                } else {
+                    hitables.push(Box::new(rect));
+                }
+            } else if obj_type == "yzrect" {
+                let bounds = obj_data["bounds"].as_array().unwrap();
+                let y0 = bounds[0].as_float().unwrap() as f32;
+                let y1 = bounds[1].as_float().unwrap() as f32;
+                let z0 = bounds[2].as_float().unwrap() as f32;
+                let z1 = bounds[3].as_float().unwrap() as f32;
+                let k = obj_data["k"].as_float().unwrap() as f32;
+
+                let rect = YZRect::new(y0, y1, z0, z1, k, material);
+
+                let flip = obj_data["flip"].as_bool().unwrap_or(false);
+                if flip {
+                    let flipped = FlipNormals::new(Box::new(rect));
+                    hitables.push(Box::new(flipped));
+                } else {
+                    hitables.push(Box::new(rect));
+                }       
+            }
         }
 
         World {
@@ -64,6 +117,11 @@ impl World {
             let b = albedo[2].as_float().unwrap() as f32;
             let fuzz = material_data["fuzz"].as_float().unwrap() as f32;
             Box::new(Metal::new(Vector3::new(r, g, b), fuzz))
+        } else if material_type == "diffuse_light" {
+            let texture_name = material_data["texture"].as_str().unwrap();
+            let texture_data = &textures[texture_name];
+            let texture = World::create_texture_from_toml(texture_data);
+            Box::new(DiffuseLight::new(texture))
         } else {
             panic!("Unknown material type")
         }

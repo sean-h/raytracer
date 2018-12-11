@@ -49,9 +49,41 @@ impl<'a> HitRecord<'a> {
     pub fn material(&self) -> &Box<Material> {
         self.material
     }
+
+    pub fn flip_normal(&mut self) {
+        self.normal = -self.normal
+    }
 }
 
 pub trait Hitable {
     fn hit(&self, ray: Ray, t_min: f32, t_max: f32) -> Option<HitRecord>;
     fn bounding_box(&self, t0: f32, t1: f32) -> Option<AABB>;
+}
+
+pub struct FlipNormals {
+    hitable: Box<Hitable>
+}
+
+impl FlipNormals {
+    pub fn new(hitable: Box<Hitable>) -> FlipNormals {
+        FlipNormals {
+            hitable,
+        }
+    }
+}
+
+impl Hitable for FlipNormals {
+    fn hit(&self, ray: Ray, t_min: f32, t_max: f32) -> Option<HitRecord> {
+        match self.hitable.hit(ray, t_min, t_max) {
+            Some(mut hit) => {
+                hit.flip_normal();
+                Some(hit)
+            },
+            None => None
+        }
+    }
+    
+    fn bounding_box(&self, t0: f32, t1: f32) -> Option<AABB> {
+        self.hitable.bounding_box(t0, t1)
+    }
 }

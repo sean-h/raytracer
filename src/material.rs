@@ -30,6 +30,7 @@ impl ScatterRecord {
 
 pub trait Material {
     fn scatter(&self, ray: Ray, hit_record: &HitRecord) -> Option<ScatterRecord>;
+    fn emit(&self, u: f32, v: f32, p: Vector3) -> Vector3;
 }
 
 pub struct Lambertion {
@@ -52,6 +53,10 @@ impl Material for Lambertion {
             scattered: Ray::new(hit_record.p(), target - hit_record.p(), ray.time()),
             attenuation: self.albedo.value(hit_record.u(), hit_record.v(), hit_record.p()),
         })
+    }
+
+    fn emit(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
+        Vector3::zero()
     }
 }
 
@@ -85,6 +90,10 @@ impl Material for Metal {
             scattered,
             attenuation: self.albedo,
         })
+    }
+
+    fn emit(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
+        Vector3::zero()
     }
 }
 
@@ -154,5 +163,31 @@ impl Material for Dielectric {
         };
 
         return Some(ScatterRecord::new(attenuation, scattered));
+    }
+
+    fn emit(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
+        Vector3::zero()
+    }
+}
+
+pub struct DiffuseLight {
+    emit: Box<Texture>
+}
+
+impl DiffuseLight {
+    pub fn new(emit: Box<Texture>) -> DiffuseLight {
+        DiffuseLight {
+            emit,
+        }
+    }
+}
+
+impl Material for DiffuseLight {
+    fn scatter(&self, ray: Ray, hit_record: &HitRecord) -> Option<ScatterRecord> {
+        None
+    }
+
+    fn emit(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
+        self.emit.value(u, v, p)
     }
 }

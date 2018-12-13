@@ -15,6 +15,7 @@ mod texture;
 mod noise;
 mod settings;
 mod rect;
+mod cube;
 
 use tdmath::{Vector3, Ray};
 use hitable::Hitable;

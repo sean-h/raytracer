@@ -10,6 +10,7 @@ use material::*;
 use texture::*;
 use noise::Perlin;
 use rect::{XYRect, XZRect, YZRect};
+use cube::Cube;
 
 pub struct World {
     hitables: Vec<Box<Hitable>>,
@@ -91,6 +92,21 @@ impl World {
                 } else {
                     hitables.push(Box::new(rect));
                 }       
+            } else if obj_type == "cube" {
+                let min = obj_data["min"].as_array().unwrap();
+                let x = min[0].as_float().unwrap() as f32;
+                let y = min[1].as_float().unwrap() as f32;
+                let z = min[2].as_float().unwrap() as f32;
+                let min = Vector3::new(x, y, z);
+
+                let max = obj_data["max"].as_array().unwrap();
+                let x = max[0].as_float().unwrap() as f32;
+                let y = max[1].as_float().unwrap() as f32;
+                let z = max[2].as_float().unwrap() as f32;
+                let max = Vector3::new(x, y, z);
+
+                let cube = Cube::new(min, max, material);
+                hitables.push(Box::new(cube));
             }
         }
 

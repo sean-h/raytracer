@@ -7,10 +7,10 @@ use aabb::AABB;
 
 pub struct HitRecord<'a> {
     t: f32,
-    p: Vector3,
+    pub p: Vector3,
     u: f32,
     v: f32,
-    normal: Vector3,
+    pub normal: Vector3,
     material: &'a Box<Material>,
 }
 
@@ -52,6 +52,10 @@ impl<'a> HitRecord<'a> {
 
     pub fn flip_normal(&mut self) {
         self.normal = -self.normal
+    }
+
+    pub fn translate(&mut self, offset: Vector3) {
+        self.p = self.p + offset;
     }
 }
 

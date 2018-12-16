@@ -11,6 +11,7 @@ use texture::*;
 use noise::Perlin;
 use rect::{XYRect, XZRect, YZRect};
 use cube::Cube;
+use transform::{Translate, RotateY};
 
 pub struct World {
     hitables: Vec<Box<Hitable>>,
@@ -105,8 +106,29 @@ impl World {
                 let z = max[2].as_float().unwrap() as f32;
                 let max = Vector3::new(x, y, z);
 
-                let cube = Cube::new(min, max, material);
-                hitables.push(Box::new(cube));
+                let cube = Box::new(Cube::new(min, max, material));
+
+                let cube: Box<Hitable> = match obj_data.get("rotate_y") {
+                    Some(rotate_y) => {
+                        let y = rotate_y.as_float().unwrap() as f32;
+                        Box::new(RotateY::new(cube, y))
+                    },
+                    None => cube
+                };
+
+                let cube: Box<Hitable> = match obj_data.get("translate") {
+                    Some(translate) => {
+                        let translate = translate.as_array().unwrap();
+                        let x = translate[0].as_float().unwrap() as f32;
+                        let y = translate[1].as_float().unwrap() as f32;
+                        let z = translate[2].as_float().unwrap() as f32;
+
+                        Box::new(Translate::new(cube, Vector3::new(x, y, z)))
+                    },
+                    None => cube
+                };
+
+                hitables.push(cube);
             }
         }
 

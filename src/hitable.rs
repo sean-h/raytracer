@@ -6,7 +6,7 @@ use material::Material;
 use aabb::AABB;
 
 pub struct HitRecord<'a> {
-    t: f32,
+    pub t: f32,
     pub p: Vector3,
     u: f32,
     v: f32,

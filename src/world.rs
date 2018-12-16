@@ -12,6 +12,7 @@ use noise::Perlin;
 use rect::{XYRect, XZRect, YZRect};
 use cube::Cube;
 use transform::{Translate, RotateY};
+use volume::ConstantMedium;
 
 pub struct World {
     hitables: Vec<Box<Hitable>>,
@@ -127,7 +128,7 @@ impl World {
                     },
                     None => cube
                 };
-
+                
                 hitables.push(cube);
             }
         }

@@ -17,6 +17,7 @@ mod settings;
 mod rect;
 mod cube;
 mod transform;
+mod volume;
 
 use tdmath::{Vector3, Ray};
 use hitable::Hitable;

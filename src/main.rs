@@ -25,10 +25,6 @@ use world::World;
 use camera::Camera;
 use rand::Rng;
 use std::time::{SystemTime};
-use material::*;
-use sphere::{Sphere, MovingSphere};
-use texture::*;
-use noise::Perlin;
 use cmdpro::{CommandLineProcessor, ParameterType};
 use settings::Settings;
 use image::{ImageBuffer, Rgb};
@@ -62,7 +58,6 @@ fn main() {
 
     let mut image = ImageBuffer::new(settings.width(), settings.height());
 
-    //let world = random_scene(false);
     let world: Box<Hitable> = Box::new(World::from_toml(&scene));
     let camera = Camera::from_toml(&scene["camera"], nx as f32 / ny as f32);
     
@@ -118,58 +113,4 @@ fn color(ray: Ray, world: &Box<Hitable>, depth: i32) -> Vector3 {
             return Vector3::zero();
         }
     }
-}
-
-fn random_scene(place_random_spheres: bool) -> Box<Hitable> {
-    let mut world = World::new();
-    let mut rng = rand::thread_rng();
-
-    let perlin = Perlin::new();
-    let noise_texture = NoiseTexture::new(Box::new(perlin), 4.0, 7);
-    let ground_material = Lambertion::new(Box::new(noise_texture));
-    let ground = Sphere::new(Vector3::new(0.0, -1000.0, 0.0), 1000.0, Box::new(ground_material));
-    world.add_hitable(Box::new(ground));
-
-    if place_random_spheres {
-        for a in -11..11 {
-            for b in -11..11 {
-                let choose_mat = rng.gen::<f32>();
-                let center = Vector3::new(a as f32 + 0.9 * rng.gen::<f32>(), 0.2, b as f32 + 0.9 * rng.gen::<f32>());
-                if (center - Vector3::new(4.0, 0.2, 0.0)).length() > 0.9 {
-                    if choose_mat < 0.8 {
-                        let color = Vector3::new(rng.gen::<f32>() * rng.gen::<f32>(), rng.gen::<f32>() * rng.gen::<f32>(), rng.gen::<f32>() * rng.gen::<f32>());
-                        let center2 = center + Vector3::new(0.0, 0.5 * rng.gen::<f32>(), 0.0);
-                        let albedo = ConstantTexture::new(color);
-                        let sphere = MovingSphere::new(center, center2, 0.0, 1.0, 0.2, Box::new(Lambertion::new(Box::new(albedo))));
-                        world.add_hitable(Box::new(sphere));
-                    } else if choose_mat < 0.95 {
-                        let color = Vector3::new(0.5 * (1.0 + rng.gen::<f32>()), 0.5 * (1.0 + rng.gen::<f32>()), 0.5 * (1.0 + rng.gen::<f32>()));
-                        let sphere = Sphere::new(center, 0.2, Box::new(Metal::new(color, 0.5 * rng.gen::<f32>())));
-                        world.add_hitable(Box::new(sphere));
-                    } else {
-                        let sphere = Sphere::new(center, 0.2, Box::new(Dielectric::new(1.5)));
-                        world.add_hitable(Box::new(sphere));
-                    }
-                }
-            }
-        }
-    }
-
-    let sphere1 = Sphere::new(Vector3::new(0.0, 1.0, 0.0), 1.0, Box::new(Dielectric::new(1.5)));
-    let sphere2 = Sphere::new(Vector3::new(-4.0, 1.0, 0.0), 1.0, Box::new(Lambertion::new(Box::new(ConstantTexture::new(Vector3::new(0.4, 0.2, 0.1))))));
-    let sphere3 = Sphere::new(Vector3::new(4.0, 1.0, 0.0), 1.0, Box::new(Metal::new(Vector3::new(0.7, 0.6, 0.5), 0.0)));
-    world.add_hitable(Box::new(sphere1));
-    world.add_hitable(Box::new(sphere2));
-    world.add_hitable(Box::new(sphere3));
-
-    Box::new(world)
-}
-
-fn default_camera(aspect: f32) -> Camera {
-    let lookfrom = Vector3::new(13.0, 2.0, 3.0);
-    let lookat = Vector3::new(0.0, 0.0, 0.0);
-    let dist_to_focus = 10.0;
-    let aperture = 0.0;
-
-    Camera::new(lookfrom, lookat, Vector3::up(), 20.0, aspect, aperture, dist_to_focus, 0.0, 1.0)
 }

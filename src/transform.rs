@@ -9,7 +9,7 @@ pub struct Translate {
 }
 
 impl Translate {
-    pub fn new(hitable: Box<Hitable>, offset: Vector3) -> Translate {
+    pub fn new(hitable: Box<Hitable>, offset: Vector3) -> Self {
         Translate {
             hitable,
             offset,
@@ -47,7 +47,7 @@ pub struct RotateY {
 }
 
 impl RotateY {
-    pub fn new(hitable: Box<Hitable>, angle: f32) -> RotateY {
+    pub fn new(hitable: Box<Hitable>, angle: f32) -> Self {
         let radians = f32::consts::PI / 180.0 * angle;
         let sin_theta = radians.sin();
         let cos_theta = radians.cos();

@@ -19,13 +19,13 @@ pub struct World {
 }
 
 impl World {
-    pub fn new() -> World {
+    pub fn new() -> Self {
         World {
             hitables: Vec::new(),
         }
     }
 
-    pub fn from_toml(scene: &Value) -> World {
+    pub fn from_toml(scene: &Value) -> Self {
         let mut hitables: Vec<Box<Hitable>> = Vec::new();
 
         let objects = scene["objects"].as_table().unwrap();

@@ -22,7 +22,7 @@ pub struct Camera {
 }
 
 impl Camera {
-    pub fn new(lookfrom: Vector3, lookat: Vector3, vup: Vector3, vfov: f32, aspect: f32, aperture: f32, focus_dist: f32, time0: f32, time1: f32) -> Camera {
+    pub fn new(lookfrom: Vector3, lookat: Vector3, vup: Vector3, vfov: f32, aspect: f32, aperture: f32, focus_dist: f32, time0: f32, time1: f32) -> Self {
         let theta = vfov * consts::PI / 180.0;
         let half_height = (theta / 2.0).tan();
         let half_width = aspect * half_height;

@@ -15,7 +15,7 @@ pub struct XYRect {
 }
 
 impl XYRect {
-    pub fn new(x0: f32, x1: f32, y0: f32, y1: f32, k: f32, material: Box<Material>) -> XYRect {
+    pub fn new(x0: f32, x1: f32, y0: f32, y1: f32, k: f32, material: Box<Material>) -> Self {
         XYRect {
             x0,
             x1,
@@ -64,7 +64,7 @@ pub struct XZRect {
 }
 
 impl XZRect {
-    pub fn new(x0: f32, x1: f32, z0: f32, z1: f32, k: f32, material: Box<Material>) -> XZRect {
+    pub fn new(x0: f32, x1: f32, z0: f32, z1: f32, k: f32, material: Box<Material>) -> Self {
         XZRect {
             x0,
             x1,
@@ -111,7 +111,7 @@ pub struct YZRect {
 }
 
 impl YZRect {
-    pub fn new(y0: f32, y1: f32, z0: f32, z1: f32, k: f32, material: Box<Material>) -> YZRect {
+    pub fn new(y0: f32, y1: f32, z0: f32, z1: f32, k: f32, material: Box<Material>) -> Self {
         YZRect {
             y0,
             y1,

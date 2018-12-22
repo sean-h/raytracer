@@ -10,7 +10,7 @@ pub struct AABB {
 }
 
 impl AABB {
-    pub fn new(min: Vector3, max: Vector3) -> AABB {
+    pub fn new(min: Vector3, max: Vector3) -> Self {
         AABB {
             min,
             max,

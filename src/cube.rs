@@ -12,7 +12,7 @@ pub struct Cube {
 }
 
 impl Cube {
-    pub fn new(min: Vector3, max: Vector3, material: Box<Material>) -> Cube {
+    pub fn new(min: Vector3, max: Vector3, material: Box<Material>) -> Self {
         let mut faces: Vec<Box<Hitable>> = Vec::new();
 
         let mat1 = Lambertion::new(Box::new(ConstantTexture::new(Vector3::new(0.73, 0.73, 0.73))));

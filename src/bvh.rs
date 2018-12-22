@@ -14,7 +14,7 @@ pub struct BVH {
 }
 
 impl BVH {
-    pub fn from_list(mut hitables: Vec<Box<Hitable>>, t0: f32, t1: f32) -> BVH {
+    pub fn from_list(mut hitables: Vec<Box<Hitable>>, t0: f32, t1: f32) -> Self {
         hitables = BVH::sort_list_by_random_axis(hitables, t0, t1);
 
         if hitables.len() == 1 {

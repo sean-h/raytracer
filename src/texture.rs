@@ -14,7 +14,7 @@ pub struct ConstantTexture {
 }
 
 impl ConstantTexture {
-    pub fn new(color: Vector3) -> ConstantTexture {
+    pub fn new(color: Vector3) -> Self {
         ConstantTexture {
             color
         }
@@ -33,7 +33,7 @@ pub struct CheckerTexture {
 }
 
 impl CheckerTexture {
-    pub fn new(odd: Box<Texture>, even: Box<Texture>) -> CheckerTexture {
+    pub fn new(odd: Box<Texture>, even: Box<Texture>) -> Self {
         CheckerTexture {
             odd,
             even,
@@ -59,7 +59,7 @@ pub struct NoiseTexture {
 }
 
 impl NoiseTexture {
-    pub fn new(perlin: Box<Perlin>, scale: f32, turb: u32) -> NoiseTexture {
+    pub fn new(perlin: Box<Perlin>, scale: f32, turb: u32) -> Self {
         NoiseTexture {
             perlin,
             scale,
@@ -84,7 +84,7 @@ pub struct ImageTexture {
 }
 
 impl ImageTexture {
-    pub fn new(image: Box<ImageBuffer<Rgb<u8>, Vec<u8>>>) -> ImageTexture {
+    pub fn new(image: Box<ImageBuffer<Rgb<u8>, Vec<u8>>>) -> Self {
         ImageTexture {
             image
         }
@@ -113,8 +113,6 @@ impl Texture for ImageTexture {
         } else {
             j
         };
-
-        //println!("{} {}", u, v);
 
         let pixel = self.image.get_pixel(i as u32, j as u32);
         let r = pixel[0] as f32 / 255.0;

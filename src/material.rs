@@ -12,7 +12,7 @@ pub struct ScatterRecord {
 }
 
 impl ScatterRecord {
-    pub fn new(attenuation: Vector3, scattered: Ray) -> ScatterRecord {
+    pub fn new(attenuation: Vector3, scattered: Ray) -> Self {
         ScatterRecord {
             attenuation,
             scattered,
@@ -38,7 +38,7 @@ pub struct Lambertion {
 }
 
 impl Lambertion {
-    pub fn new(albedo: Box<Texture>) -> Lambertion {
+    pub fn new(albedo: Box<Texture>) -> Self {
         Lambertion {
             albedo,
         }
@@ -67,7 +67,7 @@ pub struct Metal {
 }
 
 impl Metal {
-    pub fn new(albedo: Vector3, fuzz: f32) -> Metal {
+    pub fn new(albedo: Vector3, fuzz: f32) -> Self {
         let fuzz = if fuzz < 1.0 {
             fuzz
         } else {
@@ -103,7 +103,7 @@ pub struct Dielectric {
 }
 
 impl Dielectric {
-    pub fn new(ref_index: f32) -> Dielectric {
+    pub fn new(ref_index: f32) -> Self {
         Dielectric {
             ref_index,
         }
@@ -175,7 +175,7 @@ pub struct DiffuseLight {
 }
 
 impl DiffuseLight {
-    pub fn new(emit: Box<Texture>) -> DiffuseLight {
+    pub fn new(emit: Box<Texture>) -> Self {
         DiffuseLight {
             emit,
         }

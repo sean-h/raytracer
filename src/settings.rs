@@ -12,7 +12,7 @@ pub struct Settings {
 }
 
 impl Settings {
-    pub fn from_commandline(commandline: &CommandLineProcessor) -> Settings {
+    pub fn from_commandline(commandline: &CommandLineProcessor) -> Self {
         let width = match commandline.get_parameter_value("width") {
             ParameterValue::UInteger(width) => *width,
             _ => 200,

@@ -14,7 +14,7 @@ pub struct Sphere {
 }
 
 impl Sphere {
-    pub fn new(center: Vector3, radius: f32, material: Box<Material>) -> Sphere {
+    pub fn new(center: Vector3, radius: f32, material: Box<Material>) -> Self {
         Sphere {
             center,
             radius,
@@ -82,7 +82,7 @@ pub struct MovingSphere {
 }
 
 impl MovingSphere {
-    pub fn new(center0: Vector3, center1: Vector3, time0: f32, time1: f32, radius: f32, material: Box<Material>) -> MovingSphere {
+    pub fn new(center0: Vector3, center1: Vector3, time0: f32, time1: f32, radius: f32, material: Box<Material>) -> Self {
         MovingSphere {
             center0,
             center1,

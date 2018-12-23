@@ -8,6 +8,7 @@ use std::f32::consts;
 use rand::Rng;
 use toml::Value;
 
+#[derive(Debug, Copy, Clone)]
 pub struct Camera {
     origin: Vector3,
     lower_left_corner: Vector3,

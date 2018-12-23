@@ -5,7 +5,7 @@ use tdmath::Vector3;
 use noise::Perlin;
 use image::{ImageBuffer, Rgb};
 
-pub trait Texture {
+pub trait Texture: Send + Sync {
     fn value(&self, u: f32, v: f32, p: Vector3) -> Vector3;
 }
 

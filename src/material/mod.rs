@@ -13,7 +13,7 @@ pub use self::diffuselight::DiffuseLight;
 use tdmath::{Vector3, Ray};
 use hitable::HitRecord;
 
-pub trait Material {
+pub trait Material: Send + Sync {
     fn scatter(&self, ray: Ray, hit_record: &HitRecord) -> Option<ScatterRecord>;
     fn emit(&self, u: f32, v: f32, p: Vector3) -> Vector3;
 }

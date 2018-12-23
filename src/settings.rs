@@ -9,6 +9,7 @@ pub struct Settings {
     samples: u32,
     export_path: PathBuf,
     scene_path: PathBuf,
+    threads: u32,
 }
 
 impl Settings {
@@ -38,12 +39,18 @@ impl Settings {
             _ => panic!("No scene specified"),
         };
 
+        let threads = match commandline.get_parameter_value("threads") {
+            ParameterValue::UInteger(threads) => *threads,
+            _ => 4,
+        };
+
         Settings {
             width,
             height,
             samples,
             export_path: output,
             scene_path: scene,
+            threads,
         }
     }
 
@@ -65,5 +72,9 @@ impl Settings {
 
     pub fn scene_path(&self) -> &PathBuf {
         &self.scene_path
+    }
+
+    pub fn threads(&self) -> u32 {
+        self.threads
     }
 }

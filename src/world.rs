@@ -29,7 +29,7 @@ impl World {
         let mut hitables: Vec<Box<Hitable>> = Vec::new();
 
         let objects = scene["objects"].as_table().unwrap();
-        for (obj_name, obj_data) in objects.iter() {
+        for (_, obj_data) in objects.iter() {
             let obj_type = obj_data["type"].as_str().unwrap();
             let material_name = obj_data["material"].as_str().unwrap();
             let material_data = &scene["materials"].as_table().unwrap()[material_name];

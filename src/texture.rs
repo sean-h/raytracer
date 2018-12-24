@@ -69,7 +69,7 @@ impl NoiseTexture {
 }
 
 impl Texture for NoiseTexture {
-    fn value(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
+    fn value(&self, _u: f32, _v: f32, p: Vector3) -> Vector3 {
         if self.turb > 0 {
             let noise = 1.0 + (self.scale * p.z + 10.0 * self.perlin.turb(p, 7)).sin();
             Vector3::new(1.0, 1.0, 1.0) * 0.5 * noise
@@ -92,7 +92,7 @@ impl ImageTexture {
 }
 
 impl Texture for ImageTexture {
-    fn value(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
+    fn value(&self, u: f32, v: f32, _p: Vector3) -> Vector3 {
         let (width, height) = self.image.dimensions();
         
         let i = u * width as f32;

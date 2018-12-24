@@ -14,7 +14,9 @@ use tdmath::{Vector3, Ray};
 use hitable::HitRecord;
 
 pub trait Material: Send + Sync {
-    fn scatter(&self, ray: Ray, hit_record: &HitRecord) -> Option<ScatterRecord>;
+    fn scatter(&self, _ray: Ray, _hit_record: &HitRecord) -> Option<ScatterRecord> {
+        None
+    }
 
     fn emit(&self, _u: f32, _v: f32, _p: Vector3) -> Vector3 {
         Vector3::zero()

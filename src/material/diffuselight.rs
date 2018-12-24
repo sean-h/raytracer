@@ -1,7 +1,6 @@
-use material::{Material, ScatterRecord};
+use material::Material;
 use texture::Texture;
-use tdmath::{Vector3, Ray};
-use hitable::HitRecord;
+use tdmath::Vector3;
 
 pub struct DiffuseLight {
     emit: Box<Texture>
@@ -16,10 +15,6 @@ impl DiffuseLight {
 }
 
 impl Material for DiffuseLight {
-    fn scatter(&self, ray: Ray, hit_record: &HitRecord) -> Option<ScatterRecord> {
-        None
-    }
-
     fn emit(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
         self.emit.value(u, v, p)
     }

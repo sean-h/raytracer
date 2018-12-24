@@ -30,8 +30,4 @@ impl Material for Metal {
 
         Some(ScatterRecord::new(self.albedo, scattered))
     }
-
-    fn emit(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
-        Vector3::zero()
-    }
 }

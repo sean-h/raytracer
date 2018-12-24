@@ -72,8 +72,4 @@ impl Material for Dielectric {
 
         return Some(ScatterRecord::new(attenuation, scattered));
     }
-
-    fn emit(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
-        Vector3::zero()
-    }
 }

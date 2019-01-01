@@ -86,7 +86,7 @@ impl Material for Isotropic {
         let scattered = Ray::new(hit_record.p(), Vector3::random_in_unit_sphere(), 0.0);
         let attenuation = self.albedo.value(hit_record.u(), hit_record.v(), hit_record.p());
 
-        Some(ScatterRecord::new(attenuation, scattered))
+        Some(ScatterRecord::new(attenuation, scattered, 1.0))
     }
 
     fn emit(&self, u: f32, v: f32, p: Vector3) -> Vector3 {

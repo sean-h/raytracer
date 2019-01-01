@@ -28,6 +28,6 @@ impl Material for Metal {
         let reflected = Vector3::reflect(ray.direction().normalized(), hit_record.normal());
         let scattered = Ray::new(hit_record.p(), reflected + Vector3::random_in_unit_sphere() * self.fuzz, ray.time());
 
-        Some(ScatterRecord::new(self.albedo, scattered))
+        Some(ScatterRecord::new(self.albedo, scattered, 1.0))
     }
 }

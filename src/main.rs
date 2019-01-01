@@ -20,6 +20,7 @@ mod cube;
 mod transform;
 mod volume;
 mod rendertile;
+mod onb;
 
 use tdmath::{Vector3, Ray};
 use hitable::Hitable;
@@ -142,7 +143,8 @@ fn color(ray: Ray, world: &Box<Hitable>, depth: i32) -> Vector3 {
             if depth < 50 {
                 match hit.material().scatter(ray, &hit) {
                     Some(scatter) => {
-                        return emitted + scatter.attenuation() * color(scatter.scattered(), world, depth+1);
+                        let pdf = hit.material().scattering_pdf(ray, &hit, scatter.scattered());
+                        return emitted + pdf * scatter.attenuation() * color(scatter.scattered(), world, depth+1) / pdf;
                     },
                     None => return emitted,
                 }

@@ -18,6 +18,10 @@ pub trait Material: Send + Sync {
         None
     }
 
+    fn scattering_pdf(&self, _ray: Ray, _hit_record: &HitRecord, _scattered: Ray) -> f32 {
+        0.0
+    }
+
     fn emit(&self, _u: f32, _v: f32, _p: Vector3) -> Vector3 {
         Vector3::zero()
     }

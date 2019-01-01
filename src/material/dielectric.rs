@@ -70,6 +70,6 @@ impl Material for Dielectric {
             Ray::new(hit_record.p(), refracted, ray.time())
         };
 
-        return Some(ScatterRecord::new(attenuation, scattered));
+        return Some(ScatterRecord::new(attenuation, scattered, 1.0));
     }
 }

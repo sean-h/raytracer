@@ -88,8 +88,4 @@ impl Material for Isotropic {
 
         Some(ScatterRecord::new(attenuation, scattered, 1.0))
     }
-
-    fn emit(&self, u: f32, v: f32, p: Vector3) -> Vector3 {
-        Vector3::zero()
-    }
 }

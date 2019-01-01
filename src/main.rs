@@ -136,15 +136,44 @@ fn render_tile(tile: &mut RenderTile, camera: &Camera, world: &Box<Hitable>, ima
 
 fn color(ray: Ray, world: &Box<Hitable>, depth: i32) -> Vector3 {
     let hit_record = world.hit(ray, 0.001, std::f32::MAX);
+    
 
     match hit_record {
         Some(hit) => {
-            let emitted = hit.material().emit(hit.u(), hit.v(), hit.p());
+            let emitted = hit.material().emit(ray, &hit, hit.u(), hit.v(), hit.p());
             if depth < 50 {
                 match hit.material().scatter(ray, &hit) {
                     Some(scatter) => {
-                        let pdf = hit.material().scattering_pdf(ray, &hit, scatter.scattered());
-                        return emitted + pdf * scatter.attenuation() * color(scatter.scattered(), world, depth+1) / pdf;
+                        // TEMP - Send all rays to the light
+                        let mut rng = rand::thread_rng();
+                        let l0 = Vector3::new(213.0, 554.0, 227.0);
+                        let l1 = Vector3::new(343.0, 554.0, 332.0);
+                        let x = l0.x + rng.gen::<f32>() * (l1.x - l0.x);
+                        let y = l0.y;
+                        let z = l0.z + rng.gen::<f32>() * (l1.z - l0.z);                        
+                        let random_point_on_light = Vector3::new(x, y, z);
+                        let to_light = random_point_on_light - hit.p();
+                        let distance_squared = to_light.length_squared();
+                        let to_light = to_light.normalized();
+                        if Vector3::dot(to_light, hit.normal()) < 0.0 {
+                            return emitted;
+                        }
+                        
+                        let light_cosine = to_light.y.abs();
+                        if light_cosine < 0.000001 {
+                            return emitted;
+                        }
+
+                        
+                        let light_area = (l1.x - l0.x) * (l1.z - l0.z);
+                        let pdf = distance_squared / (light_cosine * light_area);
+                        let scattered = Ray::new(hit.p(), to_light, ray.time());
+                        let mat_pdf = hit.material().scattering_pdf(ray, &hit, scattered);
+                        return emitted + mat_pdf * scatter.attenuation() * color(scattered, world, depth+1) / pdf;
+                        // END TEMP
+
+                        //let pdf = hit.material().scattering_pdf(ray, &hit, scatter.scattered());
+                        //return emitted + pdf * scatter.attenuation() * color(scatter.scattered(), world, depth+1) / pdf;
                     },
                     None => return emitted,
                 }

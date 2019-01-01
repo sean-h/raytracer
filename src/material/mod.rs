@@ -22,7 +22,7 @@ pub trait Material: Send + Sync {
         0.0
     }
 
-    fn emit(&self, _u: f32, _v: f32, _p: Vector3) -> Vector3 {
+    fn emit(&self, _ray: Ray, _hit: &HitRecord, _u: f32, _v: f32, _p: Vector3) -> Vector3 {
         Vector3::zero()
     }
 }

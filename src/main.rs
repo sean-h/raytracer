@@ -21,6 +21,7 @@ mod transform;
 mod volume;
 mod rendertile;
 mod onb;
+mod pdf;
 
 use tdmath::{Vector3, Ray};
 use hitable::Hitable;
@@ -39,6 +40,11 @@ use threadpool::ThreadPool;
 use std::sync::mpsc::channel;
 use std::sync::mpsc::{Sender, Receiver};
 use std::sync::Arc;
+use rect::XZRect;
+use pdf::*;
+use material::Lambertion;
+use texture::ConstantTexture;
+use std::rc::Rc;
 
 fn main() {
     let mut command_line_processor = CommandLineProcessor::new();
@@ -136,44 +142,22 @@ fn render_tile(tile: &mut RenderTile, camera: &Camera, world: &Box<Hitable>, ima
 
 fn color(ray: Ray, world: &Box<Hitable>, depth: i32) -> Vector3 {
     let hit_record = world.hit(ray, 0.001, std::f32::MAX);
-    
-
     match hit_record {
         Some(hit) => {
             let emitted = hit.material().emit(ray, &hit, hit.u(), hit.v(), hit.p());
             if depth < 50 {
                 match hit.material().scatter(ray, &hit) {
                     Some(scatter) => {
-                        // TEMP - Send all rays to the light
-                        let mut rng = rand::thread_rng();
-                        let l0 = Vector3::new(213.0, 554.0, 227.0);
-                        let l1 = Vector3::new(343.0, 554.0, 332.0);
-                        let x = l0.x + rng.gen::<f32>() * (l1.x - l0.x);
-                        let y = l0.y;
-                        let z = l0.z + rng.gen::<f32>() * (l1.z - l0.z);                        
-                        let random_point_on_light = Vector3::new(x, y, z);
-                        let to_light = random_point_on_light - hit.p();
-                        let distance_squared = to_light.length_squared();
-                        let to_light = to_light.normalized();
-                        if Vector3::dot(to_light, hit.normal()) < 0.0 {
-                            return emitted;
-                        }
-                        
-                        let light_cosine = to_light.y.abs();
-                        if light_cosine < 0.000001 {
-                            return emitted;
-                        }
+                        let fake_material = Lambertion::new(Box::new(ConstantTexture::new(Vector3::zero())));
+                        let light_shape: Rc<Hitable> = Rc::new(XZRect::new(213.0, 343.0, 227.0, 332.0, 554.0, Box::new(fake_material)));
+                        let p0: Box<PDF> = Box::new(HitablePDF::new(hit.p(), light_shape));
+                        let p1: Box<PDF> = Box::new(CosinePDF::new(hit.normal()));
+                        let p = MixturePDF::new(p0, p1);
 
-                        
-                        let light_area = (l1.x - l0.x) * (l1.z - l0.z);
-                        let pdf = distance_squared / (light_cosine * light_area);
-                        let scattered = Ray::new(hit.p(), to_light, ray.time());
-                        let mat_pdf = hit.material().scattering_pdf(ray, &hit, scattered);
-                        return emitted + mat_pdf * scatter.attenuation() * color(scattered, world, depth+1) / pdf;
-                        // END TEMP
+                        let scattered = Ray::new(hit.p(), p.generate(), ray.time());
+                        let pdf_val = p.value(scattered.direction());
 
-                        //let pdf = hit.material().scattering_pdf(ray, &hit, scatter.scattered());
-                        //return emitted + pdf * scatter.attenuation() * color(scatter.scattered(), world, depth+1) / pdf;
+                        return emitted + scatter.attenuation() * hit.material().scattering_pdf(ray, &hit, scattered) * color(scattered, world, depth+1) / pdf_val;
                     },
                     None => return emitted,
                 }

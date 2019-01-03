@@ -7,11 +7,12 @@ use tdmath::{Vector3, Ray};
 use aabb::AABB;
 use rand::Rng;
 use std::f32;
+use std::sync::Arc;
 
 pub struct ConstantMedium {
     boundary: Box<Hitable>,
     density: f32,
-    phase_function: Box<Material>,
+    phase_function: Arc<Material>,
 }
 
 impl ConstantMedium {
@@ -19,7 +20,7 @@ impl ConstantMedium {
         ConstantMedium {
             boundary,
             density,
-            phase_function: Box::new(Isotropic::new(texture)),
+            phase_function: Arc::new(Isotropic::new(texture)),
         }        
     }
 }
@@ -52,7 +53,7 @@ impl Hitable for ConstantMedium {
                             let p = ray.point_at_parameter(t);
                             let normal = Vector3::new(1.0, 0.0, 0.0);
 
-                            Some(HitRecord::new(t, p, hit1.u(), hit1.v(), normal, &self.phase_function))
+                            Some(HitRecord::new(t, p, hit1.u(), hit1.v(), normal, self.phase_function.clone()))
                         } else {
                             None
                         }
@@ -86,6 +87,6 @@ impl Material for Isotropic {
         let scattered = Ray::new(hit_record.p(), Vector3::random_in_unit_sphere(), 0.0);
         let attenuation = self.albedo.value(hit_record.u(), hit_record.v(), hit_record.p());
 
-        Some(ScatterRecord::new(attenuation, scattered, 1.0))
+        Some(ScatterRecord::new(attenuation, Some(scattered), None))
     }
 }

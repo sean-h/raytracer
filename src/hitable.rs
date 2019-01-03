@@ -4,18 +4,19 @@ use tdmath::Ray;
 use tdmath::Vector3;
 use material::Material;
 use aabb::AABB;
+use std::sync::Arc;
 
-pub struct HitRecord<'a> {
+pub struct HitRecord {
     pub t: f32,
     pub p: Vector3,
     u: f32,
     v: f32,
     pub normal: Vector3,
-    material: &'a Box<Material>,
+    material: Arc<Material>,
 }
 
-impl<'a> HitRecord<'a> {
-    pub fn new(t: f32, p: Vector3, u: f32, v: f32, normal: Vector3, material: &Box<Material>) -> HitRecord {
+impl HitRecord {
+    pub fn new(t: f32, p: Vector3, u: f32, v: f32, normal: Vector3, material: Arc<Material>) -> HitRecord {
         HitRecord {
             t,
             p,
@@ -46,8 +47,8 @@ impl<'a> HitRecord<'a> {
         self.normal
     }
 
-    pub fn material(&self) -> &Box<Material> {
-        self.material
+    pub fn material(&self) -> Arc<Material> {
+        self.material.clone()
     }
 
     pub fn flip_normal(&mut self) {

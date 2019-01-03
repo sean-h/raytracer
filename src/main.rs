@@ -148,16 +148,26 @@ fn color(ray: Ray, world: &Box<Hitable>, depth: i32) -> Vector3 {
             if depth < 50 {
                 match hit.material().scatter(ray, &hit) {
                     Some(scatter) => {
+                        if let Some(specular_ray) = scatter.specular_ray() {
+                            return scatter.attenuation() * color(specular_ray, world, depth+1);
+                        }
+
+                        let attenuation = scatter.attenuation();
+
                         let fake_material = Lambertion::new(Box::new(ConstantTexture::new(Vector3::zero())));
-                        let light_shape: Rc<Hitable> = Rc::new(XZRect::new(213.0, 343.0, 227.0, 332.0, 554.0, Box::new(fake_material)));
-                        let p0: Box<PDF> = Box::new(HitablePDF::new(hit.p(), light_shape));
-                        let p1: Box<PDF> = Box::new(CosinePDF::new(hit.normal()));
-                        let p = MixturePDF::new(p0, p1);
+                        let light_shape: Rc<Hitable> = Rc::new(XZRect::new(213.0, 343.0, 227.0, 332.0, 554.0, Arc::new(fake_material)));
+                        let plight: Box<PDF> = Box::new(HitablePDF::new(hit.p(), light_shape));
+                        let p = match scatter.pdf() {
+                            Some(pdf) => {
+                                Box::new(MixturePDF::new(plight, pdf))
+                            },
+                            None => plight
+                        };
 
                         let scattered = Ray::new(hit.p(), p.generate(), ray.time());
                         let pdf_val = p.value(scattered.direction());
 
-                        return emitted + scatter.attenuation() * hit.material().scattering_pdf(ray, &hit, scattered) * color(scattered, world, depth+1) / pdf_val;
+                        return emitted + attenuation * hit.material().scattering_pdf(ray, &hit, scattered) * color(scattered, world, depth+1) / pdf_val;
                     },
                     None => return emitted,
                 }

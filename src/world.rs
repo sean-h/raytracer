@@ -13,6 +13,7 @@ use rect::{XYRect, XZRect, YZRect};
 use cube::Cube;
 use transform::{Translate, RotateY};
 use volume::ConstantMedium;
+use std::sync::Arc;
 
 pub struct World {
     hitables: Vec<Box<Hitable>>,
@@ -138,29 +139,29 @@ impl World {
         }
     }
 
-    fn create_material_from_toml(material_data: &Value, textures: &Value) -> Box<Material> {
+    fn create_material_from_toml(material_data: &Value, textures: &Value) -> Arc<Material> {
         let material_type = material_data["type"].as_str().unwrap();
         
         if material_type == "lambertian" {
             let texture_name = material_data["texture"].as_str().unwrap();
             let texture_data = &textures[texture_name];
             let texture = World::create_texture_from_toml(texture_data);
-            Box::new(Lambertion::new(texture))
+            Arc::new(Lambertion::new(texture))
         } else if material_type == "dielectric" {
             let ref_index = material_data["ref_index"].as_float().unwrap() as f32;
-            Box::new(Dielectric::new(ref_index))
+            Arc::new(Dielectric::new(ref_index))
         } else if material_type == "metal" {
             let albedo = material_data["albedo"].as_array().unwrap();
             let r = albedo[0].as_float().unwrap() as f32;
             let g = albedo[1].as_float().unwrap() as f32;
             let b = albedo[2].as_float().unwrap() as f32;
             let fuzz = material_data["fuzz"].as_float().unwrap() as f32;
-            Box::new(Metal::new(Vector3::new(r, g, b), fuzz))
+            Arc::new(Metal::new(Vector3::new(r, g, b), fuzz))
         } else if material_type == "diffuse_light" {
             let texture_name = material_data["texture"].as_str().unwrap();
             let texture_data = &textures[texture_name];
             let texture = World::create_texture_from_toml(texture_data);
-            Box::new(DiffuseLight::new(texture))
+            Arc::new(DiffuseLight::new(texture))
         } else {
             panic!("Unknown material type")
         }

@@ -4,6 +4,7 @@ use tdmath::{Vector3, Ray};
 use hitable::HitRecord;
 use std::f32;
 use onb::ONB;
+use pdf::CosinePDF;
 
 pub struct Lambertion {
     albedo: Box<Texture>,
@@ -19,13 +20,10 @@ impl Lambertion {
 
 impl Material for Lambertion {
     fn scatter(&self, ray: Ray, hit_record: &HitRecord) -> Option<ScatterRecord> {
-        let uvw = ONB::from_w(hit_record.normal());
-        let direction = uvw.local(Vector3::random_cosine_direction());
-        let scattered = Ray::new(hit_record.p(), direction.normalized(), ray.time());
         let attenuation = self.albedo.value(hit_record.u(), hit_record.v(), hit_record.p());
-        let pdf = Vector3::dot(hit_record.normal(), scattered.direction()) / f32::consts::PI;
+        let pdf = CosinePDF::new(hit_record.normal());
 
-        Some(ScatterRecord::new(attenuation, scattered, pdf))
+        Some(ScatterRecord::new(attenuation, None, Some(Box::new(pdf))))
     }
 
     fn scattering_pdf(&self, _ray: Ray, hit_record: &HitRecord, scattered: Ray) -> f32 {

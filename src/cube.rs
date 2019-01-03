@@ -4,6 +4,7 @@ use rect::*;
 use material::{Material, Lambertion};
 use texture::ConstantTexture;
 use aabb::AABB;
+use std::sync::Arc;
 
 pub struct Cube {
     min: Vector3,
@@ -12,22 +13,15 @@ pub struct Cube {
 }
 
 impl Cube {
-    pub fn new(min: Vector3, max: Vector3, material: Box<Material>) -> Self {
+    pub fn new(min: Vector3, max: Vector3, material: Arc<Material>) -> Self {
         let mut faces: Vec<Box<Hitable>> = Vec::new();
 
-        let mat1 = Lambertion::new(Box::new(ConstantTexture::new(Vector3::new(0.73, 0.73, 0.73))));
-        let mat2 = Lambertion::new(Box::new(ConstantTexture::new(Vector3::new(0.73, 0.73, 0.73))));
-        let mat3 = Lambertion::new(Box::new(ConstantTexture::new(Vector3::new(0.73, 0.73, 0.73))));
-        let mat4 = Lambertion::new(Box::new(ConstantTexture::new(Vector3::new(0.73, 0.73, 0.73))));
-        let mat5 = Lambertion::new(Box::new(ConstantTexture::new(Vector3::new(0.73, 0.73, 0.73))));
-        let mat6 = Lambertion::new(Box::new(ConstantTexture::new(Vector3::new(0.73, 0.73, 0.73))));
-
-        faces.push(Box::new(XYRect::new(min.x, max.x, min.y, max.y, max.z, Box::new(mat1))));
-        faces.push(Box::new(FlipNormals::new(Box::new(XYRect::new(min.x, max.x, min.y, max.y, min.z, Box::new(mat2))))));
-        faces.push(Box::new(XZRect::new(min.x, max.x, min.z, max.z, max.y, Box::new(mat3))));
-        faces.push(Box::new(FlipNormals::new(Box::new(XZRect::new(min.x, max.x, min.z, max.z, min.y, Box::new(mat4))))));
-        faces.push(Box::new(YZRect::new(min.y, max.y, min.z, max.z, max.x, Box::new(mat5))));
-        faces.push(Box::new(FlipNormals::new(Box::new(YZRect::new(min.y, max.y, min.z, max.z, min.x, Box::new(mat6))))));
+        faces.push(Box::new(XYRect::new(min.x, max.x, min.y, max.y, max.z, material.clone())));
+        faces.push(Box::new(FlipNormals::new(Box::new(XYRect::new(min.x, max.x, min.y, max.y, min.z, material.clone())))));
+        faces.push(Box::new(XZRect::new(min.x, max.x, min.z, max.z, max.y, material.clone())));
+        faces.push(Box::new(FlipNormals::new(Box::new(XZRect::new(min.x, max.x, min.z, max.z, min.y, material.clone())))));
+        faces.push(Box::new(YZRect::new(min.y, max.y, min.z, max.z, max.x, material.clone())));
+        faces.push(Box::new(FlipNormals::new(Box::new(YZRect::new(min.y, max.y, min.z, max.z, min.x, material.clone())))));
 
         Cube {
             min,

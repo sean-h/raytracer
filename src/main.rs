@@ -24,7 +24,7 @@ mod onb;
 mod pdf;
 
 use tdmath::{Vector3, Ray};
-use hitable::Hitable;
+use hitable::{Hitable, HitableList};
 use world::World;
 use camera::Camera;
 use rand::Rng;
@@ -44,7 +44,7 @@ use rect::XZRect;
 use pdf::*;
 use material::Lambertion;
 use texture::ConstantTexture;
-use std::rc::Rc;
+use sphere::Sphere;
 
 fn main() {
     let mut command_line_processor = CommandLineProcessor::new();
@@ -126,14 +126,18 @@ fn render_tile(tile: &mut RenderTile, camera: &Camera, world: &Box<Hitable>, ima
                 let v = (j as f32 + rng.gen::<f32>()) / image_height as f32;
 
                 let r = camera.get_ray(u, v);
-                col = col + color(r, &world, 0);
+                let c = color(r, &world, 0);
+
+                if !c.has_nans() {
+                    col = col + c;
+                }
             }
             col = col / samples as f32;
             col = Vector3::new(col.r().sqrt(), col.g().sqrt(), col.b().sqrt());
 
-            let ir = (255.99 * col.r()) as u8;
-            let ig = (255.99 * col.g()) as u8;
-            let ib = (255.99 * col.b()) as u8;
+            let ir = clampf(255.99 * col.r(), 0.0, 255.0) as u8;
+            let ig = clampf(255.99 * col.g(), 0.0, 255.0) as u8;
+            let ib = clampf(255.99 * col.b(), 0.0, 255.0) as u8;
 
             tile.image.put_pixel(i - x, j - y, Rgba { data: [ir, ig, ib, 255] })
         }
@@ -154,20 +158,24 @@ fn color(ray: Ray, world: &Box<Hitable>, depth: i32) -> Vector3 {
 
                         let attenuation = scatter.attenuation();
 
-                        let fake_material = Lambertion::new(Box::new(ConstantTexture::new(Vector3::zero())));
-                        let light_shape: Rc<Hitable> = Rc::new(XZRect::new(213.0, 343.0, 227.0, 332.0, 554.0, Arc::new(fake_material)));
-                        let plight: Box<PDF> = Box::new(HitablePDF::new(hit.p(), light_shape));
+                        let fake_material = Arc::new(Lambertion::new(Box::new(ConstantTexture::new(Vector3::zero()))));
+                        let light_shape: Arc<Hitable> = Arc::new(XZRect::new(213.0, 343.0, 227.0, 332.0, 554.0, fake_material.clone()));
+                        let sphere_shape: Arc<Hitable> = Arc::new(Sphere::new(Vector3::new(190.0, 90.0, 190.0), 90.0, fake_material.clone()));
+                        let importance_objects: Arc<Hitable> = Arc::new(HitableList::new(vec![light_shape, sphere_shape]));
+
+                        let p_importance: Box<PDF> = Box::new(HitablePDF::new(hit.p(), importance_objects.clone()));
                         let p = match scatter.pdf() {
                             Some(pdf) => {
-                                Box::new(MixturePDF::new(plight, pdf))
+                                Box::new(MixturePDF::new(p_importance, pdf))
                             },
-                            None => plight
+                            None => p_importance
                         };
 
                         let scattered = Ray::new(hit.p(), p.generate(), ray.time());
                         let pdf_val = p.value(scattered.direction());
+                        let scattering_pdf = hit.material().scattering_pdf(ray, &hit, scattered);
 
-                        return emitted + attenuation * hit.material().scattering_pdf(ray, &hit, scattered) * color(scattered, world, depth+1) / pdf_val;
+                        return emitted + attenuation * scattering_pdf * color(scattered, world, depth+1) / pdf_val;
                     },
                     None => return emitted,
                 }
@@ -178,5 +186,15 @@ fn color(ray: Ray, world: &Box<Hitable>, depth: i32) -> Vector3 {
         None => {
             return Vector3::zero();
         }
+    }
+}
+
+fn clampf(val: f32, min: f32, max: f32) -> f32 {
+    if val < min {
+        min
+    } else if val > max {
+        max
+    } else {
+        val
     }
 }

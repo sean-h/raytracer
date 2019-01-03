@@ -108,6 +108,7 @@ impl Hitable for XZRect {
                 let area = (self.x1 - self.x0) * (self.z1 - self.z0);
                 let distance_squared = hit.t() * hit.t() * v.length_squared();
                 let cosine = (Vector3::dot(v, hit.normal()) / v.length()).abs();
+
                 distance_squared / (cosine * area)
             },
             None => 0.0

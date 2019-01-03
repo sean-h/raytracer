@@ -40,9 +40,6 @@ impl Dielectric {
 
 impl Material for Dielectric {
     fn scatter(&self, ray: Ray, hit_record: &HitRecord) -> Option<ScatterRecord> {        
-        let reflected = Vector3::reflect(ray.direction(), hit_record.normal());
-        let attenuation = Vector3::new(1.0, 1.0, 1.0);
-
         let (outward_normal, ni_over_nt, cosine) = if Vector3::dot(ray.direction(), hit_record.normal()) > 0.0 {
             (-hit_record.normal(),
              self.ref_index,
@@ -65,11 +62,12 @@ impl Material for Dielectric {
 
         let mut rng = rand::thread_rng();
         let scattered = if rng.gen::<f32>() < reflect_prob {
+            let reflected = Vector3::reflect(ray.direction(), hit_record.normal());
             Ray::new(hit_record.p(), reflected, ray.time())
         } else {
             Ray::new(hit_record.p(), refracted, ray.time())
         };
 
-        return Some(ScatterRecord::new(attenuation, None, None));
+        return Some(ScatterRecord::new(Vector3::new(1.0, 1.0, 1.0), Some(scattered), None));
     }
 }

@@ -71,6 +71,27 @@ impl Hitable for Sphere {
         let max = self.center + Vector3::new(self.radius, self.radius, self.radius);
         Some(AABB::new(min, max))
     }
+
+    fn pdf_value(&self, origin: Vector3, v: Vector3) -> f32 {
+        match self.hit(Ray::new(origin, v, 0.0), 0.001, f32::MAX) {
+            Some(_) => {
+                let r = self.radius;
+                let cos_theta_max = (1.0 - r*r / (self.center - origin).length_squared()).sqrt();
+                let solid_angle = 2.0 * f32::consts::PI * (1.0 - cos_theta_max);
+                return 1.0 / solid_angle;
+            },
+            None => 0.0
+        }
+    }
+
+    fn random(&self, origin: Vector3) -> Vector3 {
+        use onb::ONB;
+
+        let direction = self.center - origin;
+        let distance_squared = direction.length_squared();
+        let uvw = ONB::from_w(direction);
+        uvw.local(Vector3::random_to_sphere(self.radius, distance_squared))
+    }
 }
 
 pub struct MovingSphere {

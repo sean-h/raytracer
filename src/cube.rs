@@ -1,8 +1,7 @@
 use tdmath::{Vector3, Ray};
 use hitable::*;
 use rect::*;
-use material::{Material, Lambertion};
-use texture::ConstantTexture;
+use material::Material;
 use aabb::AABB;
 use std::sync::Arc;
 

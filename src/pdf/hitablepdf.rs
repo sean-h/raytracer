@@ -1,5 +1,5 @@
 use tdmath::Vector3;
-use pdf::PDF;
+use pdf::*;
 use std::f32;
 use hitable::Hitable;
 use std::sync::Arc;

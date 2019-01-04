@@ -4,7 +4,7 @@ pub mod dielectric;
 pub mod metal;
 pub mod diffuselight;
 
-pub use self::scatterrecord::ScatterRecord;
+pub use self::scatterrecord::{ScatterRecord, ScatterType};
 pub use self::lambertian::Lambertion;
 pub use self::dielectric::Dielectric;
 pub use self::metal::Metal;
@@ -24,5 +24,9 @@ pub trait Material: Send + Sync {
 
     fn emit(&self, _ray: Ray, _hit: &HitRecord, _u: f32, _v: f32, _p: Vector3) -> Vector3 {
         Vector3::zero()
+    }
+
+    fn sample(&self) -> bool {
+        false
     }
 }

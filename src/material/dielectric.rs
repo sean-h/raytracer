@@ -1,6 +1,6 @@
 extern crate rand;
 
-use material::{Material, ScatterRecord};
+use material::{Material, ScatterRecord, ScatterType};
 use tdmath::{Vector3, Ray};
 use hitable::HitRecord;
 use rand::Rng;
@@ -68,6 +68,12 @@ impl Material for Dielectric {
             Ray::new(hit_record.p(), refracted, ray.time())
         };
 
-        return Some(ScatterRecord::new(Vector3::new(1.0, 1.0, 1.0), Some(scattered), None));
+        let scatter_type = ScatterType::Specular(scattered);
+
+        return Some(ScatterRecord::new(Vector3::new(1.0, 1.0, 1.0), scatter_type));
+    }
+
+    fn sample(&self) -> bool {
+        true
     }
 }

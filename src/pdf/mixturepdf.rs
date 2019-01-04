@@ -1,7 +1,7 @@
 extern crate rand;
 
 use tdmath::Vector3;
-use pdf::PDF;
+use pdf::*;
 use std::f32;
 use rand::Rng;
 

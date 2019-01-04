@@ -1,18 +1,21 @@
 use tdmath::{Vector3, Ray};
 use pdf::PDF;
 
+pub enum ScatterType {
+    Specular(Ray),
+    Scatter(Box<PDF>)
+}
+
 pub struct ScatterRecord {
     attenuation: Vector3,
-    specular_ray: Option<Ray>,
-    pdf: Option<Box<PDF>>,
+    scatter_type: ScatterType
 }
 
 impl ScatterRecord {
-    pub fn new(attenuation: Vector3, specular_ray: Option<Ray>, pdf: Option<Box<PDF>>) -> Self {
+    pub fn new(attenuation: Vector3, scatter_type: ScatterType) -> Self {
         ScatterRecord {
             attenuation,
-            specular_ray,
-            pdf,
+            scatter_type,
         }
     }
 
@@ -20,18 +23,7 @@ impl ScatterRecord {
         self.attenuation
     }
 
-    pub fn specular_ray(&self) -> Option<Ray> {
-        self.specular_ray
-    }
-
-    pub fn is_specular(&self) -> bool {
-        match self.specular_ray {
-            Some(_) => true,
-            None => false
-        }
-    }
-
-    pub fn pdf(self) -> Option<Box<PDF>> {
-        self.pdf
+    pub fn scatter_type(self) -> ScatterType {
+        self.scatter_type
     }
 }

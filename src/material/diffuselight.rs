@@ -23,4 +23,8 @@ impl Material for DiffuseLight {
             Vector3::zero()
         }
     }
+
+    fn sample(&self) -> bool {
+        true
+    }
 }

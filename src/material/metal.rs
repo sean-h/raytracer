@@ -1,4 +1,4 @@
-use material::{Material, ScatterRecord};
+use material::{Material, ScatterRecord, ScatterType};
 use tdmath::{Vector3, Ray};
 use hitable::HitRecord;
 
@@ -27,7 +27,8 @@ impl Material for Metal {
     fn scatter(&self, ray: Ray, hit_record: &HitRecord) -> Option<ScatterRecord> {
         let reflected = Vector3::reflect(ray.direction().normalized(), hit_record.normal());
         let scattered = Ray::new(hit_record.p(), reflected + Vector3::random_in_unit_sphere() * self.fuzz, ray.time());
+        let scatter_type = ScatterType::Specular(scattered);
 
-        Some(ScatterRecord::new(self.albedo, Some(scattered), None))
+        Some(ScatterRecord::new(self.albedo, scatter_type))
     }
 }

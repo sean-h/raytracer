@@ -42,7 +42,7 @@ use std::sync::mpsc::{Sender, Receiver};
 use std::sync::Arc;
 use rect::XZRect;
 use pdf::*;
-use material::Lambertion;
+use material::{Lambertion, ScatterType};
 use texture::ConstantTexture;
 use sphere::Sphere;
 
@@ -71,8 +71,7 @@ fn main() {
     let ny = settings.height();
     let ns = settings.samples();
 
-    let world: Box<Hitable> = Box::new(World::from_toml(&scene));
-    let world = Arc::new(world);
+    let world = Arc::new(World::from_toml(&scene));
     let camera = Camera::from_toml(&scene["camera"], nx as f32 / ny as f32);
 
     let mut tiles = Vec::new();
@@ -90,7 +89,7 @@ fn main() {
         let world = Arc::clone(&world);
 
         pool.execute(move || {
-            render_tile(&mut tile, &camera, &world, nx, ny, ns);
+            render_tile(&mut tile, &camera, world, nx, ny, ns);
             tx.send(tile).expect("Unable to send data");
         });
     }
@@ -111,7 +110,7 @@ fn main() {
     image.save(settings.export_path()).unwrap();
 }
 
-fn render_tile(tile: &mut RenderTile, camera: &Camera, world: &Box<Hitable>, image_width: u32, image_height: u32, samples: u32) {
+fn render_tile(tile: &mut RenderTile, camera: &Camera, world: Arc<World>, image_width: u32, image_height: u32, samples: u32) {
     let x = tile.x();
     let y = tile.y();
     let x_end = x + tile.width();
@@ -126,7 +125,7 @@ fn render_tile(tile: &mut RenderTile, camera: &Camera, world: &Box<Hitable>, ima
                 let v = (j as f32 + rng.gen::<f32>()) / image_height as f32;
 
                 let r = camera.get_ray(u, v);
-                let c = color(r, &world, 0);
+                let c = color(r, world.clone(), 0);
 
                 if !c.has_nans() {
                     col = col + c;
@@ -144,7 +143,7 @@ fn render_tile(tile: &mut RenderTile, camera: &Camera, world: &Box<Hitable>, ima
     }
 }
 
-fn color(ray: Ray, world: &Box<Hitable>, depth: i32) -> Vector3 {
+fn color(ray: Ray, world: Arc<World>, depth: i32) -> Vector3 {
     let hit_record = world.hit(ray, 0.001, std::f32::MAX);
     match hit_record {
         Some(hit) => {
@@ -152,30 +151,26 @@ fn color(ray: Ray, world: &Box<Hitable>, depth: i32) -> Vector3 {
             if depth < 50 {
                 match hit.material().scatter(ray, &hit) {
                     Some(scatter) => {
-                        if let Some(specular_ray) = scatter.specular_ray() {
-                            return scatter.attenuation() * color(specular_ray, world, depth+1);
-                        }
-
                         let attenuation = scatter.attenuation();
 
-                        let fake_material = Arc::new(Lambertion::new(Box::new(ConstantTexture::new(Vector3::zero()))));
-                        let light_shape: Arc<Hitable> = Arc::new(XZRect::new(213.0, 343.0, 227.0, 332.0, 554.0, fake_material.clone()));
-                        let sphere_shape: Arc<Hitable> = Arc::new(Sphere::new(Vector3::new(190.0, 90.0, 190.0), 90.0, fake_material.clone()));
-                        let importance_objects: Arc<Hitable> = Arc::new(HitableList::new(vec![light_shape, sphere_shape]));
+                        match scatter.scatter_type() {
+                            ScatterType::Specular(specular_ray) => return attenuation * color(specular_ray, world, depth+1),
+                            ScatterType::Scatter(pdf) => {
+                                let fake_material = Arc::new(Lambertion::new(Box::new(ConstantTexture::new(Vector3::zero()))));
+                                let light_shape: Arc<Hitable> = Arc::new(XZRect::new(213.0, 343.0, 227.0, 332.0, 554.0, fake_material.clone()));
+                                let sphere_shape: Arc<Hitable> = Arc::new(Sphere::new(Vector3::new(190.0, 90.0, 190.0), 90.0, fake_material.clone()));
+                                let importance_objects: Arc<Hitable> = Arc::new(HitableList::new(vec![light_shape, sphere_shape]));
 
-                        let p_importance: Box<PDF> = Box::new(HitablePDF::new(hit.p(), importance_objects.clone()));
-                        let p = match scatter.pdf() {
-                            Some(pdf) => {
-                                Box::new(MixturePDF::new(p_importance, pdf))
-                            },
-                            None => p_importance
-                        };
+                                let p_importance: Box<PDF> = Box::new(HitablePDF::new(hit.p(), importance_objects.clone()));
+                                let p = Box::new(MixturePDF::new(p_importance, pdf));
 
-                        let scattered = Ray::new(hit.p(), p.generate(), ray.time());
-                        let pdf_val = p.value(scattered.direction());
-                        let scattering_pdf = hit.material().scattering_pdf(ray, &hit, scattered);
+                                let scattered = Ray::new(hit.p(), p.generate(), ray.time());
+                                let pdf_val = p.value(scattered.direction());
+                                let scattering_pdf = hit.material().scattering_pdf(ray, &hit, scattered);
 
-                        return emitted + attenuation * scattering_pdf * color(scattered, world, depth+1) / pdf_val;
+                                return emitted + attenuation * scattering_pdf * color(scattered, world, depth+1) / pdf_val;
+                            }
+                        }
                     },
                     None => return emitted,
                 }

@@ -1,7 +1,7 @@
 extern crate rand;
 
 use hitable::{Hitable, HitRecord};
-use material::{Material, ScatterRecord};
+use material::{Material, ScatterRecord, ScatterType};
 use texture::Texture;
 use tdmath::{Vector3, Ray};
 use aabb::AABB;
@@ -86,7 +86,8 @@ impl Material for Isotropic {
     fn scatter(&self, _ray: Ray, hit_record: &HitRecord) -> Option<ScatterRecord> {
         let scattered = Ray::new(hit_record.p(), Vector3::random_in_unit_sphere(), 0.0);
         let attenuation = self.albedo.value(hit_record.u(), hit_record.v(), hit_record.p());
+        let scatter_type = ScatterType::Specular(scattered);
 
-        Some(ScatterRecord::new(attenuation, Some(scattered), None))
+        Some(ScatterRecord::new(attenuation, scatter_type))
     }
 }

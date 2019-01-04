@@ -5,7 +5,7 @@ pub mod metal;
 pub mod diffuselight;
 
 pub use self::scatterrecord::{ScatterRecord, ScatterType};
-pub use self::lambertian::Lambertion;
+pub use self::lambertian::Lambertian;
 pub use self::dielectric::Dielectric;
 pub use self::metal::Metal;
 pub use self::diffuselight::DiffuseLight;

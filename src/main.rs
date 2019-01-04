@@ -42,7 +42,7 @@ use std::sync::mpsc::{Sender, Receiver};
 use std::sync::Arc;
 use rect::XZRect;
 use pdf::*;
-use material::{Lambertion, ScatterType};
+use material::{Lambertian, ScatterType};
 use texture::ConstantTexture;
 use sphere::Sphere;
 
@@ -156,7 +156,7 @@ fn color(ray: Ray, world: Arc<World>, depth: i32) -> Vector3 {
                         match scatter.scatter_type() {
                             ScatterType::Specular(specular_ray) => return attenuation * color(specular_ray, world, depth+1),
                             ScatterType::Scatter(pdf) => {
-                                let fake_material = Arc::new(Lambertion::new(Box::new(ConstantTexture::new(Vector3::zero()))));
+                                let fake_material = Arc::new(Lambertian::new(Box::new(ConstantTexture::new(Vector3::zero()))));
                                 let light_shape: Arc<Hitable> = Arc::new(XZRect::new(213.0, 343.0, 227.0, 332.0, 554.0, fake_material.clone()));
                                 let sphere_shape: Arc<Hitable> = Arc::new(Sphere::new(Vector3::new(190.0, 90.0, 190.0), 90.0, fake_material.clone()));
                                 let importance_objects: Arc<Hitable> = Arc::new(HitableList::new(vec![light_shape, sphere_shape]));

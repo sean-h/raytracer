@@ -45,7 +45,7 @@ impl World {
             let texture_name = material_data["texture"].as_str().unwrap();
             let texture_data = &textures[texture_name];
             let texture = World::create_texture_from_toml(texture_data);
-            Arc::new(Lambertion::new(texture))
+            Arc::new(Lambertian::new(texture))
         } else if material_type == "dielectric" {
             let ref_index = material_data["ref_index"].as_float().unwrap() as f32;
             Arc::new(Dielectric::new(ref_index))

@@ -5,13 +5,13 @@ use pdf::*;
 use std::f32;
 use rand::Rng;
 
-pub struct MixturePDF {
-    pdf0: Box<PDF>,
-    pdf1: Box<PDF>,
+pub struct MixturePDF<'a> {
+    pdf0: &'a PDF,
+    pdf1: &'a PDF,
 }
 
-impl MixturePDF {
-    pub fn new(pdf0: Box<PDF>, pdf1: Box<PDF>) -> MixturePDF {
+impl<'a> MixturePDF<'a> {
+    pub fn new(pdf0: &'a PDF, pdf1: &'a PDF) -> MixturePDF<'a> {
         MixturePDF {
             pdf0,
             pdf1,
@@ -19,7 +19,7 @@ impl MixturePDF {
     }
 }
 
-impl PDF for MixturePDF {
+impl<'a> PDF for MixturePDF<'a> {
     fn value(&self, direction: Vector3) -> f32 {
         0.5 * self.pdf0.value(direction) + 0.5 * self.pdf1.value(direction)
     }

@@ -6,7 +6,6 @@ use material::Material;
 use aabb::AABB;
 use tdmath::{Vector3, Ray};
 use rand::Rng;
-use std::sync::Arc;
 
 pub struct XYRect {
     x0: f32,
@@ -14,11 +13,11 @@ pub struct XYRect {
     y0: f32,
     y1: f32,
     k: f32,
-    material: Arc<Material>,
+    material: Box<Material>,
 }
 
 impl XYRect {
-    pub fn new(x0: f32, x1: f32, y0: f32, y1: f32, k: f32, material: Arc<Material>) -> Self {
+    pub fn new(x0: f32, x1: f32, y0: f32, y1: f32, k: f32, material: Box<Material>) -> Self {
         XYRect {
             x0,
             x1,
@@ -47,7 +46,7 @@ impl Hitable for XYRect {
         let v = (y - self.y0) / (self.y1 - self.y0);
         let p = ray.point_at_parameter(t);
 
-        Some(HitRecord::new(t, p, u, v, Vector3::new(0.0, 0.0, 1.0), self.material.clone()))
+        Some(HitRecord::new(t, p, u, v, Vector3::new(0.0, 0.0, 1.0), &*self.material))
     }
 
     fn bounding_box(&self, _t0: f32, _t1: f32) -> Option<AABB> {
@@ -61,11 +60,11 @@ pub struct XZRect {
     z0: f32,
     z1: f32,
     k: f32,
-    material: Arc<Material>,
+    material: Box<Material>,
 }
 
 impl XZRect {
-    pub fn new(x0: f32, x1: f32, z0: f32, z1: f32, k: f32, material: Arc<Material>) -> Self {
+    pub fn new(x0: f32, x1: f32, z0: f32, z1: f32, k: f32, material: Box<Material>) -> Self {
         XZRect {
             x0,
             x1,
@@ -94,7 +93,7 @@ impl Hitable for XZRect {
         let v = (z - self.z0) / (self.z1 - self.z0);
         let p = ray.point_at_parameter(t);
 
-        Some(HitRecord::new(t, p, u, v, Vector3::new(0.0, 1.0, 0.0), self.material.clone()))
+        Some(HitRecord::new(t, p, u, v, Vector3::new(0.0, 1.0, 0.0), &*self.material))
     }
 
     fn bounding_box(&self, _t0: f32, _t1: f32) -> Option<AABB> {
@@ -131,11 +130,11 @@ pub struct YZRect {
     z0: f32,
     z1: f32,
     k: f32,
-    material: Arc<Material>,
+    material: Box<Material>,
 }
 
 impl YZRect {
-    pub fn new(y0: f32, y1: f32, z0: f32, z1: f32, k: f32, material: Arc<Material>) -> Self {
+    pub fn new(y0: f32, y1: f32, z0: f32, z1: f32, k: f32, material: Box<Material>) -> Self {
         YZRect {
             y0,
             y1,
@@ -164,7 +163,7 @@ impl Hitable for YZRect {
         let v = (z - self.z0) / (self.z1 - self.z0);
         let p = ray.point_at_parameter(t);
 
-        Some(HitRecord::new(t, p, u, v, Vector3::new(1.0, 0.0, 0.0), self.material.clone()))
+        Some(HitRecord::new(t, p, u, v, Vector3::new(1.0, 0.0, 0.0), &*self.material))
     }
 
     fn bounding_box(&self, _t0: f32, _t1: f32) -> Option<AABB> {

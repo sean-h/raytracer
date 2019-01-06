@@ -1,5 +1,6 @@
 extern crate tdmath;
 extern crate toml;
+extern crate rand;
 
 use hitable::*;
 use tdmath::{Ray, Vector3};
@@ -12,7 +13,7 @@ use noise::Perlin;
 use rect::{XYRect, XZRect, YZRect};
 use cube::Cube;
 use transform::{Translate, RotateY};
-use std::sync::Arc;
+use rand::Rng;
 
 pub struct World {
     hitables: Vec<Box<Hitable>>,
@@ -27,9 +28,8 @@ impl World {
             let obj_type = obj_data["type"].as_str().unwrap();
             let material_name = obj_data["material"].as_str().unwrap();
             let material_data = &scene["materials"].as_table().unwrap()[material_name];
-            let material = World::create_material_from_toml(material_data, &scene["textures"]);
 
-            let hitable = World::create_object_from_toml(obj_type, obj_data, material);
+            let hitable = World::create_object_from_toml(obj_type, obj_data, material_name, material_data, &scene["textures"]);
             hitables.push(hitable);
         }
 
@@ -38,29 +38,59 @@ impl World {
         }
     }
 
-    fn create_material_from_toml(material_data: &Value, textures: &Value) -> Arc<Material> {
+    pub fn from_toml_samples(scene: &Value) -> Self {
+        let mut hitables: Vec<Box<Hitable>> = Vec::new();
+
+        let objects = scene["objects"].as_table().unwrap();
+        for (_, obj_data) in objects.iter() {
+            let obj_type = obj_data["type"].as_str().unwrap();
+            let material_name = obj_data["material"].as_str().unwrap();
+            let material_data = &scene["materials"].as_table().unwrap()[material_name];
+            let material = World::create_material_from_toml(material_data, &scene["textures"]);
+
+            if material.sample() {
+                let hitable = World::create_object_from_toml(obj_type, obj_data, material_name, material_data, &scene["textures"]);
+                hitables.push(hitable);
+            }
+        }
+
+        World {
+            hitables,
+        }
+    }
+
+    pub fn from_hitable(hitable: Box<Hitable>) -> Self {
+        let mut hitables: Vec<Box<Hitable>> = Vec::new();
+        hitables.push(hitable);
+
+        World {
+            hitables,
+        }
+    }
+
+    fn create_material_from_toml(material_data: &Value, textures: &Value) -> Box<Material> {
         let material_type = material_data["type"].as_str().unwrap();
         
         if material_type == "lambertian" {
             let texture_name = material_data["texture"].as_str().unwrap();
             let texture_data = &textures[texture_name];
             let texture = World::create_texture_from_toml(texture_data);
-            Arc::new(Lambertian::new(texture))
+            Box::new(Lambertian::new(texture))
         } else if material_type == "dielectric" {
             let ref_index = material_data["ref_index"].as_float().unwrap() as f32;
-            Arc::new(Dielectric::new(ref_index))
+            Box::new(Dielectric::new(ref_index))
         } else if material_type == "metal" {
             let albedo = material_data["albedo"].as_array().unwrap();
             let r = albedo[0].as_float().unwrap() as f32;
             let g = albedo[1].as_float().unwrap() as f32;
             let b = albedo[2].as_float().unwrap() as f32;
             let fuzz = material_data["fuzz"].as_float().unwrap() as f32;
-            Arc::new(Metal::new(Vector3::new(r, g, b), fuzz))
+            Box::new(Metal::new(Vector3::new(r, g, b), fuzz))
         } else if material_type == "diffuse_light" {
             let texture_name = material_data["texture"].as_str().unwrap();
             let texture_data = &textures[texture_name];
             let texture = World::create_texture_from_toml(texture_data);
-            Arc::new(DiffuseLight::new(texture))
+            Box::new(DiffuseLight::new(texture))
         } else {
             panic!("Unknown material type")
         }
@@ -85,14 +115,15 @@ impl World {
         }
     }
 
-    fn create_object_from_toml(obj_type: &str, obj_data: &Value, material: Arc<Material>) -> Box<Hitable> {
+    fn create_object_from_toml(obj_type: &str, obj_data: &Value, material_name: &str, material_data: &Value, textures: &Value) -> Box<Hitable> {
         if obj_type == "sphere" {
             let position = obj_data["position"].as_array().unwrap();
             let x = position[0].as_float().unwrap() as f32;
             let y = position[1].as_float().unwrap() as f32;
             let z = position[2].as_float().unwrap() as f32;
             let radius = obj_data["radius"].as_float().unwrap() as f32;
-
+            
+            let material = World::create_material_from_toml(material_data, textures);
             let sphere: Box<Hitable> = Box::new(Sphere::new(Vector3::new(x, y, z), radius, material));
 
             sphere
@@ -104,6 +135,7 @@ impl World {
             let y1 = bounds[3].as_float().unwrap() as f32;
             let k = obj_data["k"].as_float().unwrap() as f32;
 
+            let material = World::create_material_from_toml(material_data, textures);
             let rect = XYRect::new(x0, x1, y0, y1, k, material);
             let flip = obj_data["flip"].as_bool().unwrap_or(false);
             if flip {
@@ -121,6 +153,7 @@ impl World {
             let z1 = bounds[3].as_float().unwrap() as f32;
             let k = obj_data["k"].as_float().unwrap() as f32;
 
+            let material = World::create_material_from_toml(material_data, textures);
             let rect = XZRect::new(x0, x1, z0, z1, k, material);
             
             let flip = obj_data["flip"].as_bool().unwrap_or(false);
@@ -139,6 +172,7 @@ impl World {
             let z1 = bounds[3].as_float().unwrap() as f32;
             let k = obj_data["k"].as_float().unwrap() as f32;
 
+            let material = World::create_material_from_toml(material_data, textures);
             let rect = YZRect::new(y0, y1, z0, z1, k, material);
 
             let flip = obj_data["flip"].as_bool().unwrap_or(false);
@@ -162,7 +196,12 @@ impl World {
             let z = max[2].as_float().unwrap() as f32;
             let max = Vector3::new(x, y, z);
 
-            let cube = Box::new(Cube::new(min, max, material));
+
+            let mut materials = Vec::new();
+            for _ in 0..6 {
+                materials.push(World::create_material_from_toml(material_data, textures));
+            }
+            let cube = Box::new(Cube::new(min, max, &mut materials));
 
             let cube: Box<Hitable> = match obj_data.get("rotate_y") {
                 Some(rotate_y) => {
@@ -188,10 +227,6 @@ impl World {
         } else {
             panic!("Unknown object type");
         }
-    }
-
-    pub fn hitables(self) -> Vec<Box<Hitable>> {
-        self.hitables
     }
 }
 
@@ -233,5 +268,22 @@ impl Hitable for World {
         }
 
         Some(bbox)
+    }
+
+    fn pdf_value(&self, origin: Vector3, v: Vector3) -> f32 {
+        let weight = 1.0 / self.hitables.len() as f32;
+        let mut sum = 0.0;
+        for hitable in &self.hitables {
+            sum += weight * hitable.pdf_value(origin, v);
+        }
+
+        sum
+    }
+
+    fn random(&self, origin: Vector3) -> Vector3 {
+        let mut rng = rand::thread_rng();
+        let index = (rng.gen::<f32>() * self.hitables.len() as f32) as usize;
+
+        self.hitables[index].random(origin)
     }
 }

@@ -7,12 +7,11 @@ use tdmath::{Vector3, Ray};
 use aabb::AABB;
 use rand::Rng;
 use std::f32;
-use std::sync::Arc;
 
 pub struct ConstantMedium {
     boundary: Box<Hitable>,
     density: f32,
-    phase_function: Arc<Material>,
+    phase_function: Box<Material>,
 }
 
 impl ConstantMedium {
@@ -20,7 +19,7 @@ impl ConstantMedium {
         ConstantMedium {
             boundary,
             density,
-            phase_function: Arc::new(Isotropic::new(texture)),
+            phase_function: Box::new(Isotropic::new(texture)),
         }        
     }
 }
@@ -53,7 +52,7 @@ impl Hitable for ConstantMedium {
                             let p = ray.point_at_parameter(t);
                             let normal = Vector3::new(1.0, 0.0, 0.0);
 
-                            Some(HitRecord::new(t, p, hit1.u(), hit1.v(), normal, self.phase_function.clone()))
+                            Some(HitRecord::new(t, p, hit1.u(), hit1.v(), normal, &*self.phase_function))
                         } else {
                             None
                         }

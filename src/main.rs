@@ -24,7 +24,7 @@ mod onb;
 mod pdf;
 
 use tdmath::{Vector3, Ray};
-use hitable::{Hitable, HitableList};
+use hitable::Hitable;
 use world::World;
 use camera::Camera;
 use rand::Rng;
@@ -40,11 +40,8 @@ use threadpool::ThreadPool;
 use std::sync::mpsc::channel;
 use std::sync::mpsc::{Sender, Receiver};
 use std::sync::Arc;
-use rect::XZRect;
 use pdf::*;
-use material::{Lambertian, ScatterType};
-use texture::ConstantTexture;
-use sphere::Sphere;
+use material::ScatterType;
 
 fn main() {
     let mut command_line_processor = CommandLineProcessor::new();
@@ -72,6 +69,7 @@ fn main() {
     let ns = settings.samples();
 
     let world = Arc::new(World::from_toml(&scene));
+    let sample_world = Arc::new(World::from_toml_samples(&scene));
     let camera = Camera::from_toml(&scene["camera"], nx as f32 / ny as f32);
 
     let mut tiles = Vec::new();
@@ -87,9 +85,10 @@ fn main() {
     for mut tile in tiles {
         let tx = tx.clone();
         let world = Arc::clone(&world);
+        let sample_world = Arc::clone(&sample_world);
 
         pool.execute(move || {
-            render_tile(&mut tile, &camera, world, nx, ny, ns);
+            render_tile(&mut tile, &camera, world, sample_world, nx, ny, ns);
             tx.send(tile).expect("Unable to send data");
         });
     }
@@ -110,12 +109,15 @@ fn main() {
     image.save(settings.export_path()).unwrap();
 }
 
-fn render_tile(tile: &mut RenderTile, camera: &Camera, world: Arc<World>, image_width: u32, image_height: u32, samples: u32) {
+fn render_tile(tile: &mut RenderTile, camera: &Camera, world: Arc<World>, sample_world: Arc<World>, image_width: u32, image_height: u32, samples: u32) {
     let x = tile.x();
     let y = tile.y();
     let x_end = x + tile.width();
     let y_end = y + tile.height();
     let mut rng = rand::thread_rng();
+
+    let w: &Hitable = &*world;
+    let s: &Hitable = &*sample_world;
 
     for j in y..y_end {
         for i in x..x_end {
@@ -125,7 +127,7 @@ fn render_tile(tile: &mut RenderTile, camera: &Camera, world: Arc<World>, image_
                 let v = (j as f32 + rng.gen::<f32>()) / image_height as f32;
 
                 let r = camera.get_ray(u, v);
-                let c = color(r, world.clone(), 0);
+                let c = color(r, w, s, 0);
 
                 if !c.has_nans() {
                     col = col + c;
@@ -143,32 +145,31 @@ fn render_tile(tile: &mut RenderTile, camera: &Camera, world: Arc<World>, image_
     }
 }
 
-fn color(ray: Ray, world: Arc<World>, depth: i32) -> Vector3 {
-    let hit_record = world.hit(ray, 0.001, std::f32::MAX);
-    match hit_record {
+fn color<'a>(ray: Ray, world: &'a Hitable, sample_world: &'a Hitable, depth: i32) -> Vector3 {
+    match world.hit(ray, 0.001, std::f32::MAX) {
         Some(hit) => {
-            let emitted = hit.material().emit(ray, &hit, hit.u(), hit.v(), hit.p());
+            let emitted = hit.material.emit(ray, &hit, hit.u(), hit.v(), hit.p());
             if depth < 50 {
-                match hit.material().scatter(ray, &hit) {
+                match hit.material.scatter(ray, &hit) {
                     Some(scatter) => {
                         let attenuation = scatter.attenuation();
 
                         match scatter.scatter_type() {
-                            ScatterType::Specular(specular_ray) => return attenuation * color(specular_ray, world, depth+1),
+                            ScatterType::Specular(specular_ray) => return attenuation * color(specular_ray, world, sample_world, depth+1),
                             ScatterType::Scatter(pdf) => {
-                                let fake_material = Arc::new(Lambertian::new(Box::new(ConstantTexture::new(Vector3::zero()))));
-                                let light_shape: Arc<Hitable> = Arc::new(XZRect::new(213.0, 343.0, 227.0, 332.0, 554.0, fake_material.clone()));
-                                let sphere_shape: Arc<Hitable> = Arc::new(Sphere::new(Vector3::new(190.0, 90.0, 190.0), 90.0, fake_material.clone()));
-                                let importance_objects: Arc<Hitable> = Arc::new(HitableList::new(vec![light_shape, sphere_shape]));
+                                let (scattered, pdf_val, scattering_pdf) = {
+                                    let p_importance = HitablePDF::new(hit.p(), sample_world);
+                                    let p = MixturePDF::new(&p_importance, &*pdf);
 
-                                let p_importance: Box<PDF> = Box::new(HitablePDF::new(hit.p(), importance_objects.clone()));
-                                let p = Box::new(MixturePDF::new(p_importance, pdf));
+                                    let scattered = Ray::new(hit.p(), p.generate(), ray.time());
+                                    let pdf_val = p.value(scattered.direction());
 
-                                let scattered = Ray::new(hit.p(), p.generate(), ray.time());
-                                let pdf_val = p.value(scattered.direction());
-                                let scattering_pdf = hit.material().scattering_pdf(ray, &hit, scattered);
+                                    let scattering_pdf = hit.material.scattering_pdf(ray, &hit, scattered);
 
-                                return emitted + attenuation * scattering_pdf * color(scattered, world, depth+1) / pdf_val;
+                                    (scattered, pdf_val, scattering_pdf)
+                                };
+
+                                return emitted + attenuation * scattering_pdf * color(scattered, world, sample_world, depth+1) / pdf_val;
                             }
                         }
                     },

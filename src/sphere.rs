@@ -6,16 +6,15 @@ use tdmath::Ray;
 use material::Material;
 use aabb::AABB;
 use std::f32;
-use std::sync::Arc;
 
 pub struct Sphere {
     center: Vector3,
     radius: f32,
-    material: Arc<Material>,
+    material: Box<Material>,
 }
 
 impl Sphere {
-    pub fn new(center: Vector3, radius: f32, material: Arc<Material>) -> Self {
+    pub fn new(center: Vector3, radius: f32, material: Box<Material>) -> Self {
         Sphere {
             center,
             radius,
@@ -49,7 +48,7 @@ impl Hitable for Sphere {
                 let (u, v) = Sphere::get_sphere_uv((p - self.center) / self.radius);
                 let normal = (p - self.center) / self.radius;
                 
-                return Some(HitRecord::new(t, p, u, v, normal, self.material.clone()));
+                return Some(HitRecord::new(t, p, u, v, normal, &*self.material));
             }
 
             let temp = (-b + (b * b - a * c).sqrt()) / a;
@@ -59,7 +58,7 @@ impl Hitable for Sphere {
                 let (u, v) = Sphere::get_sphere_uv((p - self.center) / self.radius);
                 let normal = (p - self.center) / self.radius;
 
-                return Some(HitRecord::new(t, p, u, v, normal, self.material.clone()));
+                return Some(HitRecord::new(t, p, u, v, normal, &*self.material));
             }
         }
 
@@ -98,13 +97,13 @@ pub struct MovingSphere {
     center0: Vector3,
     center1: Vector3,
     radius: f32,
-    material: Arc<Material>,
+    material: Box<Material>,
     time0: f32,
     time1: f32,
 }
 
 impl MovingSphere {
-    pub fn new(center0: Vector3, center1: Vector3, time0: f32, time1: f32, radius: f32, material: Arc<Material>) -> Self {
+    pub fn new(center0: Vector3, center1: Vector3, time0: f32, time1: f32, radius: f32, material: Box<Material>) -> Self {
         MovingSphere {
             center0,
             center1,
@@ -137,7 +136,7 @@ impl Hitable for MovingSphere {
                 let (u, v) = Sphere::get_sphere_uv((p - center) / self.radius);
                 let normal = (p - center) / self.radius;
 
-                return Some(HitRecord::new(t, p, u, v, normal, self.material.clone()));
+                return Some(HitRecord::new(t, p, u, v, normal, &*self.material));
             }
 
             let temp = (-b + (b * b - a * c).sqrt()) / a;
@@ -147,7 +146,7 @@ impl Hitable for MovingSphere {
                 let (u, v) = Sphere::get_sphere_uv((p - center) / self.radius);
                 let normal = (p - center) / self.radius;
 
-                return Some(HitRecord::new(t, p, u, v, normal, self.material.clone()));
+                return Some(HitRecord::new(t, p, u, v, normal, &*self.material));
             }
         }
 

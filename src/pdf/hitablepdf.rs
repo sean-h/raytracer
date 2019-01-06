@@ -2,15 +2,14 @@ use tdmath::Vector3;
 use pdf::*;
 use std::f32;
 use hitable::Hitable;
-use std::sync::Arc;
 
-pub struct HitablePDF {
+pub struct HitablePDF<'a> {
     origin: Vector3,
-    hitable: Arc<Hitable>,
+    hitable: &'a Hitable,
 }
 
-impl HitablePDF {
-    pub fn new(origin: Vector3, hitable: Arc<Hitable>) -> HitablePDF {
+impl<'a> HitablePDF<'a> {
+    pub fn new(origin: Vector3, hitable: &'a Hitable) -> HitablePDF {
         HitablePDF {
             origin,
             hitable,
@@ -18,7 +17,7 @@ impl HitablePDF {
     }
 }
 
-impl PDF for HitablePDF {
+impl<'a> PDF for HitablePDF<'a> {
     fn value(&self, direction: Vector3) -> f32 {
         self.hitable.pdf_value(self.origin, direction)
     }

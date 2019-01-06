@@ -29,7 +29,7 @@ impl World {
             let material_name = obj_data["material"].as_str().unwrap();
             let material_data = &scene["materials"].as_table().unwrap()[material_name];
 
-            let hitable = World::create_object_from_toml(obj_type, obj_data, material_name, material_data, &scene["textures"]);
+            let hitable = World::create_object_from_toml(obj_type, obj_data, material_data, &scene["textures"]);
             hitables.push(hitable);
         }
 
@@ -49,19 +49,10 @@ impl World {
             let material = World::create_material_from_toml(material_data, &scene["textures"]);
 
             if material.sample() {
-                let hitable = World::create_object_from_toml(obj_type, obj_data, material_name, material_data, &scene["textures"]);
+                let hitable = World::create_object_from_toml(obj_type, obj_data, material_data, &scene["textures"]);
                 hitables.push(hitable);
             }
         }
-
-        World {
-            hitables,
-        }
-    }
-
-    pub fn from_hitable(hitable: Box<Hitable>) -> Self {
-        let mut hitables: Vec<Box<Hitable>> = Vec::new();
-        hitables.push(hitable);
 
         World {
             hitables,
@@ -115,7 +106,7 @@ impl World {
         }
     }
 
-    fn create_object_from_toml(obj_type: &str, obj_data: &Value, material_name: &str, material_data: &Value, textures: &Value) -> Box<Hitable> {
+    fn create_object_from_toml(obj_type: &str, obj_data: &Value, material_data: &Value, textures: &Value) -> Box<Hitable> {
         if obj_type == "sphere" {
             let position = obj_data["position"].as_array().unwrap();
             let x = position[0].as_float().unwrap() as f32;

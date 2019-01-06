@@ -1,6 +1,6 @@
 extern crate cmdpro;
 
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use cmdpro::{CommandLineProcessor, ParameterValue};
 
 pub struct Settings {

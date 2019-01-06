@@ -60,11 +60,11 @@ pub trait Hitable: Send + Sync {
     fn hit(&self, ray: Ray, t_min: f32, t_max: f32) -> Option<HitRecord>;
     fn bounding_box(&self, t0: f32, t1: f32) -> Option<AABB>;
 
-    fn pdf_value(&self, origin: Vector3, v: Vector3) -> f32 {
+    fn pdf_value(&self, _origin: Vector3, _v: Vector3) -> f32 {
         0.0
     }
 
-    fn random(&self, origin: Vector3) -> Vector3 {
+    fn random(&self, _origin: Vector3) -> Vector3 {
         Vector3::new(1.0, 0.0, 0.0)
     }
 }

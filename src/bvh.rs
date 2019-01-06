@@ -3,7 +3,6 @@ extern crate tdmath;
 
 use hitable::*;
 use aabb::AABB;
-use tdmath::Vector3;
 use tdmath::Ray;
 use rand::Rng;
 

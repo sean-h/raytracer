@@ -1,0 +1,10 @@
+USAGE:
+    application [OPTIONS]
+
+OPTIONS:
+    -S, --scene     The scene file to render
+    -w, --width     Render image width (default 200)
+    -h, --height    Render image height (default 100)
+    -s, --samples   Number of samples to generate per pixel (default 100)
+    -o, --output    Output image file (default output.png)
+    -t, --threads   Number of threads to use (default 4)

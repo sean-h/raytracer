@@ -41,12 +41,14 @@ use material::ScatterType;
 
 fn main() {
     let mut command_line_processor = CommandLineProcessor::new();
-    command_line_processor.add_parameter("width", ParameterType::UInteger, vec!["--width".to_owned(), "--w".to_owned()]);
-    command_line_processor.add_parameter("height", ParameterType::UInteger, vec!["--height".to_owned(), "--h".to_owned()]);
-    command_line_processor.add_parameter("samples", ParameterType::UInteger, vec!["--samples".to_owned(), "--s".to_owned()]);
-    command_line_processor.add_parameter("output", ParameterType::Path, vec!["--output".to_owned(), "--o".to_owned()]);
-    command_line_processor.add_parameter("scene", ParameterType::Path, vec!["--scene".to_owned(), "--S".to_owned()]);
-    command_line_processor.add_parameter("threads", ParameterType::UInteger, vec!["--threads".to_owned(), "--t".to_owned()]);
+    command_line_processor.add_parameter("width", ParameterType::UInteger, vec!["--width".to_owned(), "-w".to_owned()]);
+    command_line_processor.add_parameter("height", ParameterType::UInteger, vec!["--height".to_owned(), "-h".to_owned()]);
+    command_line_processor.add_parameter("samples", ParameterType::UInteger, vec!["--samples".to_owned(), "-s".to_owned()]);
+    command_line_processor.add_parameter("output", ParameterType::Path, vec!["--output".to_owned(), "-o".to_owned()]);
+    command_line_processor.add_parameter("scene", ParameterType::Path, vec!["--scene".to_owned(), "-S".to_owned()]);
+    command_line_processor.add_parameter("threads", ParameterType::UInteger, vec!["--threads".to_owned(), "-t".to_owned()]);
+    command_line_processor.set_help_text(include_str!("help.txt"));
+
     command_line_processor.parse_command_line();
 
     if command_line_processor.abort_flag() {

@@ -6,7 +6,6 @@ extern crate toml;
 extern crate threadpool;
 
 mod hitable;
-mod sphere;
 mod world;
 mod camera;
 mod material;
@@ -15,10 +14,7 @@ mod bvh;
 mod texture;
 mod noise;
 mod settings;
-mod rect;
-mod cube;
 mod transform;
-mod volume;
 mod rendertile;
 mod onb;
 mod pdf;

@@ -1,6 +1,15 @@
 extern crate tdmath;
 extern crate rand;
 
+pub mod cube;
+pub mod rect;
+pub mod sphere;
+pub mod volume;
+
+pub use self::cube::Cube;
+pub use self::rect::{XYRect, XZRect, YZRect};
+pub use self::sphere::Sphere;
+
 use tdmath::Ray;
 use tdmath::Vector3;
 use material::Material;

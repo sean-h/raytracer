@@ -1,6 +1,5 @@
 use tdmath::{Vector3, Ray};
 use hitable::*;
-use rect::*;
 use material::Material;
 use aabb::AABB;
 

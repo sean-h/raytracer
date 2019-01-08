@@ -6,12 +6,9 @@ use hitable::*;
 use tdmath::{Ray, Vector3};
 use aabb::AABB;
 use self::toml::Value;
-use sphere::Sphere;
 use material::*;
 use texture::*;
 use noise::Perlin;
-use rect::{XYRect, XZRect, YZRect};
-use cube::Cube;
 use transform::{Translate, RotateY};
 use rand::Rng;
 

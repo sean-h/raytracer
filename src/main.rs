@@ -114,7 +114,7 @@ fn render_tile(tile: &mut RenderTile, camera: &Camera, world: Arc<World>, sample
     let y_end = y + tile.height();
     let mut rng = rand::thread_rng();
 
-    let w: &Hitable = &*world;
+    let w: &World = &*world;
     let s: &Hitable = &*sample_world;
 
     for j in y..y_end {
@@ -143,7 +143,7 @@ fn render_tile(tile: &mut RenderTile, camera: &Camera, world: Arc<World>, sample
     }
 }
 
-fn color<'a>(ray: Ray, world: &'a Hitable, sample_world: &'a Hitable, depth: i32) -> Vector3 {
+fn color<'a>(ray: Ray, world: &'a World, sample_world: &'a Hitable, depth: i32) -> Vector3 {
     match world.hit(ray, 0.001, std::f32::MAX) {
         Some(hit) => {
             let emitted = hit.material.emit(ray, &hit, hit.u(), hit.v(), hit.p());
@@ -178,7 +178,7 @@ fn color<'a>(ray: Ray, world: &'a Hitable, sample_world: &'a Hitable, depth: i32
             }
         },
         None => {
-            return Vector3::zero();
+            return world.ambient_color_from_ray(ray);
         }
     }
 }

@@ -14,6 +14,7 @@ use rand::Rng;
 
 pub struct World {
     hitables: Vec<Box<Hitable>>,
+    ambient_color: Vector3,
 }
 
 impl World {
@@ -30,8 +31,31 @@ impl World {
             hitables.push(hitable);
         }
 
+        let ambient_color = match scene.get("world") {
+            Some(world_data) => {
+                match world_data.get("ambient") {
+                    Some(ambient) => {
+                        match ambient.get("color") {
+                            Some(color) => {
+                                let c = color.as_array().unwrap();
+                                let r = c[0].as_float().unwrap() as f32;
+                                let g = c[1].as_float().unwrap() as f32;
+                                let b = c[2].as_float().unwrap() as f32;
+
+                                Vector3::new(r, g, b)
+                            },
+                            None => Vector3::zero()
+                        }
+                    },
+                    None => Vector3::zero()
+                }
+            },
+            None => Vector3::zero()
+        };
+
         World {
             hitables,
+            ambient_color,
         }
     }
 
@@ -53,6 +77,7 @@ impl World {
 
         World {
             hitables,
+            ambient_color: Vector3::zero(), // Not needed for samples world
         }
     }
 
@@ -215,6 +240,10 @@ impl World {
         } else {
             panic!("Unknown object type");
         }
+    }
+
+    pub fn ambient_color_from_ray(&self, ray: Ray) -> Vector3 {
+        self.ambient_color
     }
 }
 

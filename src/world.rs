@@ -14,7 +14,7 @@ use rand::Rng;
 
 pub struct World {
     hitables: Vec<Box<Hitable>>,
-    ambient_color: Vector3,
+    ambient_color: AmbientColor,
 }
 
 impl World {
@@ -35,22 +35,12 @@ impl World {
             Some(world_data) => {
                 match world_data.get("ambient") {
                     Some(ambient) => {
-                        match ambient.get("color") {
-                            Some(color) => {
-                                let c = color.as_array().unwrap();
-                                let r = c[0].as_float().unwrap() as f32;
-                                let g = c[1].as_float().unwrap() as f32;
-                                let b = c[2].as_float().unwrap() as f32;
-
-                                Vector3::new(r, g, b)
-                            },
-                            None => Vector3::zero()
-                        }
+                        World::get_ambient_color_from_toml(ambient)
                     },
-                    None => Vector3::zero()
+                    None => AmbientColor::Constant(Vector3::zero())
                 }
             },
-            None => Vector3::zero()
+            None => AmbientColor::Constant(Vector3::zero())
         };
 
         World {
@@ -77,7 +67,7 @@ impl World {
 
         World {
             hitables,
-            ambient_color: Vector3::zero(), // Not needed for samples world
+            ambient_color: AmbientColor::Constant(Vector3::zero()), // Not needed for samples world
         }
     }
 
@@ -242,8 +232,46 @@ impl World {
         }
     }
 
+    fn get_ambient_color_from_toml(ambient_data: &Value) -> AmbientColor {
+        let ambient_type = match ambient_data.get("type") {
+            Some(ambient_type) => ambient_type.as_str().unwrap(),
+            None => return AmbientColor::Constant(Vector3::zero())
+        };
+
+        if ambient_type == "constant" {
+            let c = ambient_data["color"].as_array().unwrap();
+            let r = c[0].as_float().unwrap() as f32;
+            let g = c[1].as_float().unwrap() as f32;
+            let b = c[2].as_float().unwrap() as f32;
+
+            return AmbientColor::Constant(Vector3::new(r, g, b));
+        } else if ambient_type == "blended" {
+            let start = ambient_data["start"].as_array().unwrap();
+            let r = start[0].as_float().unwrap() as f32;
+            let g = start[1].as_float().unwrap() as f32;
+            let b = start[2].as_float().unwrap() as f32;
+            let start = Vector3::new(r, g, b);
+
+            let end = ambient_data["end"].as_array().unwrap();
+            let r = end[0].as_float().unwrap() as f32;
+            let g = end[1].as_float().unwrap() as f32;
+            let b = end[2].as_float().unwrap() as f32;
+            let end = Vector3::new(r, g, b);
+
+            return AmbientColor::Blended(start, end);
+        }
+
+        AmbientColor::Constant(Vector3::zero())
+    }
+
     pub fn ambient_color_from_ray(&self, ray: Ray) -> Vector3 {
-        self.ambient_color
+        match self.ambient_color {
+            AmbientColor::Constant(color) => color,
+            AmbientColor::Blended(start, end) => {
+                let t = 0.5 * (ray.direction().y  + 1.0);
+                (1.0 - t) * start + t * end
+            }
+        }
     }
 }
 
@@ -303,4 +331,9 @@ impl Hitable for World {
 
         self.hitables[index].random(origin)
     }
+}
+
+enum AmbientColor {
+    Constant(Vector3),
+    Blended(Vector3, Vector3),
 }

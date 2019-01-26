@@ -11,12 +11,12 @@ A Ray Tracer written in Rust based on the ray tracer from [Ray Tracing in One We
 
 ## Dependencies
 
-- [rand]()
-- [image]()
-- [toml]()
-- [threadpool]()
-- [tdmath]()
-- [cmdpro]()
+- [rand](https://crates.io/crates/rand)
+- [image](https://crates.io/crates/image)
+- [toml](https://github.com/alexcrichton/toml-rs)
+- [threadpool](https://crates.io/crates/threadpool)
+- [tdmath](https://github.com/sean-h/tdmath)
+- [cmdpro](https://github.com/sean-h/cmdpro)
 
 ## Usage
 

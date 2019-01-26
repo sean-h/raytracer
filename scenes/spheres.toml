@@ -1,0 +1,3043 @@
+[world]
+  [world.ambient]
+  type = "blended"
+  start = [1.0, 1.0, 1.0]
+  end = [0.5, 0.7, 1.0]
+
+[camera]
+position = [13.0, 2.0, 3.0]
+look = [0.0, 0.0, 0.0]
+focus_dist = 10.0
+aperture = 0.1
+fov = 20.0
+t0 = 0.0
+t1 = 1.0
+
+[textures]
+  [textures.ground]
+  type = "constant"
+  color = [0.45, 0.45, 0.50]
+
+  [textures.tex2]
+  type = "constant"
+  color = [0.2, 0.6, 0.2]
+
+  [textures.tex10]
+  type = "constant"
+  color = [0.67, 0.234, 0.876]
+
+  [textures.tex11]
+  type = "constant"
+  color = [0.4, 0.6, 0.0]
+
+  [textures.tex12]
+  type = "constant"
+  color = [0.34, 0.7, 0.78]
+
+  [textures.tex13]
+  type = "constant"
+  color = [0.8, 0.6, 0.2]
+
+  [textures.tex14]
+  type = "constant"
+  color = [0.245, 0.60, 0.97]
+
+  [textures.tex15]
+  type = "constant"
+  color = [0.12, 0.12, 0.34]
+
+  [textures.tex16]
+  type = "constant"
+  color = [0.98, 0.98, 0.98]
+
+  [textures.tex17]
+  type = "constant"
+  color = [0.98, 0.76, 0.98]
+
+[materials]
+  [materials.ground]
+  type = "lambertian"
+  texture = "ground"
+
+  [materials.mat1]
+  type = "dielectric"
+  ref_index = 1.5
+
+  [materials.mat2]
+  type = "lambertian"
+  texture = "tex2"
+
+  [materials.mat3]
+  type = "metal"
+  albedo = [0.7, 0.6, 0.5]
+  fuzz = 0.0
+
+  [materials.mat10]
+  type = "lambertian"
+  texture = "tex10"
+
+  [materials.mat11]
+  type = "lambertian"
+  texture = "tex11"
+
+  [materials.mat12]
+  type = "lambertian"
+  texture = "tex12"
+
+  [materials.mat13]
+  type = "lambertian"
+  texture = "tex13"
+
+  [materials.mat14]
+  type = "lambertian"
+  texture = "tex14"
+
+  [materials.mat15]
+  type = "lambertian"
+  texture = "tex15"
+
+  [materials.mat16]
+  type = "lambertian"
+  texture = "tex16"
+
+  [materials.mat17]
+  type = "lambertian"
+  texture = "tex17"
+
+  [materials.mat18]
+  type = "metal"
+  albedo = [0.3, 0.6, 0.5]
+  fuzz = 0.0
+
+  [materials.mat19]
+  type = "dielectric"
+  ref_index = 1.5
+
+[objects]
+  [objects.ground]
+  type = "sphere"
+  position = [0.0, -1000.0, 0.0]
+  radius = 1000.0
+  material = "ground"
+
+  [objects.sphere1]
+  type = "sphere"
+  position = [0.0, 1.0, 0.0]
+  radius = 1.0
+  material = "mat1"
+
+  [objects.sphere2]
+  type = "sphere"
+  position = [-4.0, 1.0, 0.0]
+  radius = 1.0
+  material = "mat2"
+
+  [objects.sphere3]
+  type = "sphere"
+  position = [4.0, 1.0, 0.0]
+  radius = 1.0
+  material = "mat3"
+
+  [objects.smallsphere1]
+  type = "sphere"
+  position = [-10.328965, 0.2, -10.705732]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere2]
+  type = "sphere"
+  position = [-10.983192, 0.2, -9.858143]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere3]
+  type = "sphere"
+  position = [-10.17722, 0.2, -8.371386]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere4]
+  type = "sphere"
+  position = [-10.385191, 0.2, -7.37153]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere5]
+  type = "sphere"
+  position = [-10.280163, 0.2, -6.334379]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere6]
+  type = "sphere"
+  position = [-10.293296, 0.2, -5.4699163]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere7]
+  type = "sphere"
+  position = [-10.652196, 0.2, -4.299946]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere8]
+  type = "sphere"
+  position = [-10.299714, 0.2, -3.8744607]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere9]
+  type = "sphere"
+  position = [-10.898464, 0.2, -2.440436]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere10]
+  type = "sphere"
+  position = [-10.435196, 0.2, -1.9737095]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere11]
+  type = "sphere"
+  position = [-10.358617, 0.2, -0.15089613]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere12]
+  type = "sphere"
+  position = [-10.569989, 0.2, 0.44024947]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere13]
+  type = "sphere"
+  position = [-10.789594, 0.2, 1.7034329]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere14]
+  type = "sphere"
+  position = [-10.155202, 0.2, 2.3229413]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere15]
+  type = "sphere"
+  position = [-10.704206, 0.2, 3.4157658]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere16]
+  type = "sphere"
+  position = [-10.252707, 0.2, 4.065258]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere17]
+  type = "sphere"
+  position = [-10.362628, 0.2, 5.152393]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere18]
+  type = "sphere"
+  position = [-10.56484, 0.2, 6.180759]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere19]
+  type = "sphere"
+  position = [-10.338146, 0.2, 7.192606]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere20]
+  type = "sphere"
+  position = [-10.1342945, 0.2, 8.514829]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere21]
+  type = "sphere"
+  position = [-10.160651, 0.2, 9.02163]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere22]
+  type = "sphere"
+  position = [-10.932235, 0.2, 10.835255]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere23]
+  type = "sphere"
+  position = [-9.253325, 0.2, -10.643576]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere24]
+  type = "sphere"
+  position = [-9.289194, 0.2, -9.573404]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere25]
+  type = "sphere"
+  position = [-9.660457, 0.2, -8.827164]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere26]
+  type = "sphere"
+  position = [-9.361064, 0.2, -7.862122]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere27]
+  type = "sphere"
+  position = [-9.89755, 0.2, -6.9631977]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere28]
+  type = "sphere"
+  position = [-9.123889, 0.2, -5.840558]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere29]
+  type = "sphere"
+  position = [-9.2362995, 0.2, -4.110302]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere30]
+  type = "sphere"
+  position = [-9.465448, 0.2, -3.339293]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere31]
+  type = "sphere"
+  position = [-9.6517315, 0.2, -2.5714355]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere32]
+  type = "sphere"
+  position = [-9.701413, 0.2, -1.2675581]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere33]
+  type = "sphere"
+  position = [-9.722387, 0.2, -0.9834285]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere34]
+  type = "sphere"
+  position = [-9.164722, 0.2, 0.85096216]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere35]
+  type = "sphere"
+  position = [-9.895613, 0.2, 1.3870343]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere36]
+  type = "sphere"
+  position = [-9.677669, 0.2, 2.514711]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere37]
+  type = "sphere"
+  position = [-9.1765175, 0.2, 3.2186627]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere38]
+  type = "sphere"
+  position = [-9.251167, 0.2, 4.6418777]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere39]
+  type = "sphere"
+  position = [-9.645544, 0.2, 5.157425]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere40]
+  type = "sphere"
+  position = [-9.716625, 0.2, 6.4199486]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere41]
+  type = "sphere"
+  position = [-9.56022, 0.2, 7.086253]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere42]
+  type = "sphere"
+  position = [-9.608782, 0.2, 8.781778]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere43]
+  type = "sphere"
+  position = [-9.453796, 0.2, 9.662709]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere44]
+  type = "sphere"
+  position = [-9.188026, 0.2, 10.331265]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere45]
+  type = "sphere"
+  position = [-8.77614, 0.2, -10.663458]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere46]
+  type = "sphere"
+  position = [-8.254555, 0.2, -9.616096]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere47]
+  type = "sphere"
+  position = [-8.563157, 0.2, -8.891904]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere48]
+  type = "sphere"
+  position = [-8.847944, 0.2, -7.4274087]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere49]
+  type = "sphere"
+  position = [-8.445729, 0.2, -6.6541514]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere50]
+  type = "sphere"
+  position = [-8.743652, 0.2, -5.1128488]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere51]
+  type = "sphere"
+  position = [-8.990409, 0.2, -4.5088058]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere52]
+  type = "sphere"
+  position = [-8.785351, 0.2, -3.2569954]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere53]
+  type = "sphere"
+  position = [-8.18298, 0.2, -2.2030861]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere54]
+  type = "sphere"
+  position = [-8.787165, 0.2, -1.3288934]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere55]
+  type = "sphere"
+  position = [-8.130863, 0.2, -0.6147059]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere56]
+  type = "sphere"
+  position = [-8.152763, 0.2, 0.5829462]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere57]
+  type = "sphere"
+  position = [-8.795706, 0.2, 1.1176451]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere58]
+  type = "sphere"
+  position = [-8.2620125, 0.2, 2.6496425]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere59]
+  type = "sphere"
+  position = [-8.636325, 0.2, 3.383143]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere60]
+  type = "sphere"
+  position = [-8.91001, 0.2, 4.295581]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere61]
+  type = "sphere"
+  position = [-8.371071, 0.2, 5.609724]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere62]
+  type = "sphere"
+  position = [-8.695763, 0.2, 6.7720222]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere63]
+  type = "sphere"
+  position = [-8.376751, 0.2, 7.0547123]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere64]
+  type = "sphere"
+  position = [-8.222739, 0.2, 8.64565]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere65]
+  type = "sphere"
+  position = [-8.217391, 0.2, 9.57329]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere66]
+  type = "sphere"
+  position = [-8.248842, 0.2, 10.29852]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere67]
+  type = "sphere"
+  position = [-7.2259626, 0.2, -10.909126]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere68]
+  type = "sphere"
+  position = [-7.1995325, 0.2, -9.373439]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere69]
+  type = "sphere"
+  position = [-7.943512, 0.2, -8.6683855]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere70]
+  type = "sphere"
+  position = [-7.4504676, 0.2, -7.47607]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere71]
+  type = "sphere"
+  position = [-7.7870407, 0.2, -6.308212]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere72]
+  type = "sphere"
+  position = [-7.8897157, 0.2, -5.3692226]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere73]
+  type = "sphere"
+  position = [-7.251665, 0.2, -4.25995]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere74]
+  type = "sphere"
+  position = [-7.6323786, 0.2, -3.4889178]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere75]
+  type = "sphere"
+  position = [-7.9937434, 0.2, -2.407664]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere76]
+  type = "sphere"
+  position = [-7.499921, 0.2, -1.9814273]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere77]
+  type = "sphere"
+  position = [-7.5759597, 0.2, -0.26303983]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere78]
+  type = "sphere"
+  position = [-7.4367867, 0.2, 0.69167304]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere79]
+  type = "sphere"
+  position = [-7.479226, 0.2, 1.3298209]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere80]
+  type = "sphere"
+  position = [-7.7480774, 0.2, 2.2773347]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere81]
+  type = "sphere"
+  position = [-7.918517, 0.2, 3.6370687]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere82]
+  type = "sphere"
+  position = [-7.1743183, 0.2, 4.5771494]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere83]
+  type = "sphere"
+  position = [-7.1061273, 0.2, 5.646135]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere84]
+  type = "sphere"
+  position = [-7.486865, 0.2, 6.4852276]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere85]
+  type = "sphere"
+  position = [-7.6265755, 0.2, 7.554472]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere86]
+  type = "sphere"
+  position = [-7.9973774, 0.2, 8.292214]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere87]
+  type = "sphere"
+  position = [-7.5214763, 0.2, 9.313702]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere88]
+  type = "sphere"
+  position = [-7.4430714, 0.2, 10.153873]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere89]
+  type = "sphere"
+  position = [-6.6599636, 0.2, -10.327634]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere90]
+  type = "sphere"
+  position = [-6.8010054, 0.2, -9.223675]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere91]
+  type = "sphere"
+  position = [-6.569663, 0.2, -8.918743]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere92]
+  type = "sphere"
+  position = [-6.9126706, 0.2, -7.1380897]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere93]
+  type = "sphere"
+  position = [-6.361329, 0.2, -6.3893504]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere94]
+  type = "sphere"
+  position = [-6.930303, 0.2, -5.513525]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere95]
+  type = "sphere"
+  position = [-6.155264, 0.2, -4.1156006]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere96]
+  type = "sphere"
+  position = [-6.690416, 0.2, -3.4710176]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere97]
+  type = "sphere"
+  position = [-6.3088665, 0.2, -2.9264772]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere98]
+  type = "sphere"
+  position = [-6.9880714, 0.2, -1.2130494]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere99]
+  type = "sphere"
+  position = [-6.162692, 0.2, -0.19760829]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere100]
+  type = "sphere"
+  position = [-6.8860607, 0.2, 0.8985091]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere101]
+  type = "sphere"
+  position = [-6.3466067, 0.2, 1.8510827]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere102]
+  type = "sphere"
+  position = [-6.8940334, 0.2, 2.6277957]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere103]
+  type = "sphere"
+  position = [-6.6390862, 0.2, 3.581347]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere104]
+  type = "sphere"
+  position = [-6.978616, 0.2, 4.250894]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere105]
+  type = "sphere"
+  position = [-6.417635, 0.2, 5.5429015]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere106]
+  type = "sphere"
+  position = [-6.363185, 0.2, 6.8075447]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere107]
+  type = "sphere"
+  position = [-6.2510943, 0.2, 7.1412306]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere108]
+  type = "sphere"
+  position = [-6.641529, 0.2, 8.558959]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere109]
+  type = "sphere"
+  position = [-6.1117325, 0.2, 9.2721615]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere110]
+  type = "sphere"
+  position = [-6.458316, 0.2, 10.361223]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere111]
+  type = "sphere"
+  position = [-5.821507, 0.2, -10.943662]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere112]
+  type = "sphere"
+  position = [-5.875822, 0.2, -9.836141]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere113]
+  type = "sphere"
+  position = [-5.498584, 0.2, -8.781885]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere114]
+  type = "sphere"
+  position = [-5.3849177, 0.2, -7.8080196]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere115]
+  type = "sphere"
+  position = [-5.4350433, 0.2, -6.7400317]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere116]
+  type = "sphere"
+  position = [-5.9769945, 0.2, -5.6958203]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere117]
+  type = "sphere"
+  position = [-5.754353, 0.2, -4.6464767]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere118]
+  type = "sphere"
+  position = [-5.7033677, 0.2, -3.788077]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere119]
+  type = "sphere"
+  position = [-5.424645, 0.2, -2.331488]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere120]
+  type = "sphere"
+  position = [-5.837661, 0.2, -1.1635487]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere121]
+  type = "sphere"
+  position = [-5.3655224, 0.2, -0.3551789]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere122]
+  type = "sphere"
+  position = [-5.972039, 0.2, 0.016531527]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere123]
+  type = "sphere"
+  position = [-5.858138, 0.2, 1.5524864]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere124]
+  type = "sphere"
+  position = [-5.621595, 0.2, 2.7201552]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere125]
+  type = "sphere"
+  position = [-5.9507804, 0.2, 3.8177028]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere126]
+  type = "sphere"
+  position = [-5.6221485, 0.2, 4.7584486]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere127]
+  type = "sphere"
+  position = [-5.2538614, 0.2, 5.2331176]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere128]
+  type = "sphere"
+  position = [-5.1552014, 0.2, 6.879153]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere129]
+  type = "sphere"
+  position = [-5.2010937, 0.2, 7.1838756]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere130]
+  type = "sphere"
+  position = [-5.7638235, 0.2, 8.307021]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere131]
+  type = "sphere"
+  position = [-5.6517353, 0.2, 9.832181]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere132]
+  type = "sphere"
+  position = [-5.3574734, 0.2, 10.450133]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere133]
+  type = "sphere"
+  position = [-4.3705015, 0.2, -10.850122]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere134]
+  type = "sphere"
+  position = [-4.5698767, 0.2, -9.851699]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere135]
+  type = "sphere"
+  position = [-4.940238, 0.2, -8.385705]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere136]
+  type = "sphere"
+  position = [-4.6159763, 0.2, -7.1600266]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere137]
+  type = "sphere"
+  position = [-4.789561, 0.2, -6.539222]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere138]
+  type = "sphere"
+  position = [-4.14961, 0.2, -5.6872883]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere139]
+  type = "sphere"
+  position = [-4.724517, 0.2, -4.4504232]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere140]
+  type = "sphere"
+  position = [-4.450578, 0.2, -3.8656042]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere141]
+  type = "sphere"
+  position = [-4.850243, 0.2, -2.2115178]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere142]
+  type = "sphere"
+  position = [-4.778556, 0.2, -1.346391]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere143]
+  type = "sphere"
+  position = [-4.6758323, 0.2, -0.19010782]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere144]
+  type = "sphere"
+  position = [-4.337308, 0.2, 0.35873902]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere145]
+  type = "sphere"
+  position = [-4.6429415, 0.2, 1.6416798]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere146]
+  type = "sphere"
+  position = [-4.2803574, 0.2, 2.7528348]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere147]
+  type = "sphere"
+  position = [-4.477468, 0.2, 3.7002292]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere148]
+  type = "sphere"
+  position = [-4.601167, 0.2, 4.6175203]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere149]
+  type = "sphere"
+  position = [-4.560478, 0.2, 5.7725577]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere150]
+  type = "sphere"
+  position = [-4.589899, 0.2, 6.3652506]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere151]
+  type = "sphere"
+  position = [-4.473068, 0.2, 7.1749563]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere152]
+  type = "sphere"
+  position = [-4.445473, 0.2, 8.358754]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere153]
+  type = "sphere"
+  position = [-4.7648354, 0.2, 9.094851]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere154]
+  type = "sphere"
+  position = [-4.235125, 0.2, 10.586872]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere155]
+  type = "sphere"
+  position = [-3.1878295, 0.2, -10.953493]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere156]
+  type = "sphere"
+  position = [-3.3494687, 0.2, -9.561922]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere157]
+  type = "sphere"
+  position = [-3.39701, 0.2, -8.791493]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere158]
+  type = "sphere"
+  position = [-3.850119, 0.2, -7.1005607]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere159]
+  type = "sphere"
+  position = [-3.8877082, 0.2, -6.9347734]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere160]
+  type = "sphere"
+  position = [-3.1046448, 0.2, -5.766284]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere161]
+  type = "sphere"
+  position = [-3.2446208, 0.2, -4.646796]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere162]
+  type = "sphere"
+  position = [-3.880527, 0.2, -3.9721913]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere163]
+  type = "sphere"
+  position = [-3.5081885, 0.2, -2.1216273]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere164]
+  type = "sphere"
+  position = [-3.2142663, 0.2, -1.7703874]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere165]
+  type = "sphere"
+  position = [-3.9801512, 0.2, -0.2409023]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere166]
+  type = "sphere"
+  position = [-3.8074641, 0.2, 0.4672261]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere167]
+  type = "sphere"
+  position = [-3.7546506, 0.2, 1.4342334]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere168]
+  type = "sphere"
+  position = [-3.2935164, 0.2, 2.5894914]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere169]
+  type = "sphere"
+  position = [-3.835427, 0.2, 3.799895]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere170]
+  type = "sphere"
+  position = [-3.9725304, 0.2, 4.1204886]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere171]
+  type = "sphere"
+  position = [-3.8153493, 0.2, 5.513097]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere172]
+  type = "sphere"
+  position = [-3.8453624, 0.2, 6.06524]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere173]
+  type = "sphere"
+  position = [-3.5871418, 0.2, 7.090719]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere174]
+  type = "sphere"
+  position = [-3.2620716, 0.2, 8.3886]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere175]
+  type = "sphere"
+  position = [-3.202858, 0.2, 9.494423]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere176]
+  type = "sphere"
+  position = [-3.1265256, 0.2, 10.500532]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere177]
+  type = "sphere"
+  position = [-2.7364094, 0.2, -10.966238]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere178]
+  type = "sphere"
+  position = [-2.5040684, 0.2, -9.133978]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere179]
+  type = "sphere"
+  position = [-2.7858744, 0.2, -8.373344]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere180]
+  type = "sphere"
+  position = [-2.3226838, 0.2, -7.952582]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere181]
+  type = "sphere"
+  position = [-2.6245346, 0.2, -6.5351205]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere182]
+  type = "sphere"
+  position = [-2.4688258, 0.2, -5.2996597]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere183]
+  type = "sphere"
+  position = [-2.5638525, 0.2, -4.925077]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere184]
+  type = "sphere"
+  position = [-2.625589, 0.2, -3.6128304]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere185]
+  type = "sphere"
+  position = [-2.3726368, 0.2, -2.5855634]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere186]
+  type = "sphere"
+  position = [-2.3706565, 0.2, -1.976295]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere187]
+  type = "sphere"
+  position = [-2.8421433, 0.2, -0.87702864]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere188]
+  type = "sphere"
+  position = [-2.2196414, 0.2, 0.002460712]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere189]
+  type = "sphere"
+  position = [-2.144308, 0.2, 1.5625911]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere190]
+  type = "sphere"
+  position = [-2.7566833, 0.2, 2.0276437]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere191]
+  type = "sphere"
+  position = [-2.8430898, 0.2, 3.0175402]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere192]
+  type = "sphere"
+  position = [-2.311246, 0.2, 4.149061]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere193]
+  type = "sphere"
+  position = [-2.5920684, 0.2, 5.371]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere194]
+  type = "sphere"
+  position = [-2.2730045, 0.2, 6.8757324]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere195]
+  type = "sphere"
+  position = [-2.7344236, 0.2, 7.187536]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere196]
+  type = "sphere"
+  position = [-2.8296852, 0.2, 8.079959]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere197]
+  type = "sphere"
+  position = [-2.9003136, 0.2, 9.017469]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere198]
+  type = "sphere"
+  position = [-2.837468, 0.2, 10.202159]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere199]
+  type = "sphere"
+  position = [-1.3683965, 0.2, -10.945117]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere200]
+  type = "sphere"
+  position = [-1.705858, 0.2, -9.523991]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere201]
+  type = "sphere"
+  position = [-1.1589794, 0.2, -8.913318]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere202]
+  type = "sphere"
+  position = [-1.7510535, 0.2, -7.793541]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere203]
+  type = "sphere"
+  position = [-1.5357251, 0.2, -6.560543]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere204]
+  type = "sphere"
+  position = [-1.102432, 0.2, -5.3331637]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere205]
+  type = "sphere"
+  position = [-1.9015679, 0.2, -4.2789702]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere206]
+  type = "sphere"
+  position = [-1.3521276, 0.2, -3.7101464]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere207]
+  type = "sphere"
+  position = [-1.8273458, 0.2, -2.1697383]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere208]
+  type = "sphere"
+  position = [-1.376559, 0.2, -1.1280959]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere209]
+  type = "sphere"
+  position = [-1.5785512, 0.2, -0.4484604]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere210]
+  type = "sphere"
+  position = [-1.1281892, 0.2, 0.8153865]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere211]
+  type = "sphere"
+  position = [-1.9811202, 0.2, 1.3087492]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere212]
+  type = "sphere"
+  position = [-1.5534306, 0.2, 2.339795]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere213]
+  type = "sphere"
+  position = [-1.5060474, 0.2, 3.608955]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere214]
+  type = "sphere"
+  position = [-1.9858918, 0.2, 4.6796303]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere215]
+  type = "sphere"
+  position = [-1.2727579, 0.2, 5.192138]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere216]
+  type = "sphere"
+  position = [-1.426367, 0.2, 6.4896407]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere217]
+  type = "sphere"
+  position = [-1.1047733, 0.2, 7.4970026]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere218]
+  type = "sphere"
+  position = [-1.8343389, 0.2, 8.557382]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere219]
+  type = "sphere"
+  position = [-1.8059624, 0.2, 9.674264]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere220]
+  type = "sphere"
+  position = [-1.3540437, 0.2, 10.527521]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere221]
+  type = "sphere"
+  position = [-0.29280168, 0.2, -10.2721405]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere222]
+  type = "sphere"
+  position = [-0.7178217, 0.2, -9.761975]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere223]
+  type = "sphere"
+  position = [-0.8522135, 0.2, -8.977859]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere224]
+  type = "sphere"
+  position = [-0.2824145, 0.2, -7.1991553]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere225]
+  type = "sphere"
+  position = [-0.3673393, 0.2, -6.514466]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere226]
+  type = "sphere"
+  position = [-0.7645122, 0.2, -5.6413574]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere227]
+  type = "sphere"
+  position = [-0.2549367, 0.2, -4.5115647]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere228]
+  type = "sphere"
+  position = [-0.5185362, 0.2, -3.8884385]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere229]
+  type = "sphere"
+  position = [-0.94672185, 0.2, -2.9912608]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere230]
+  type = "sphere"
+  position = [-0.7590605, 0.2, -1.5913575]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere231]
+  type = "sphere"
+  position = [-0.4493382, 0.2, -0.4985025]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere232]
+  type = "sphere"
+  position = [-0.7324697, 0.2, 0.20448582]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere233]
+  type = "sphere"
+  position = [-0.7799993, 0.2, 1.1334212]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere234]
+  type = "sphere"
+  position = [-0.3704192, 0.2, 2.4191785]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere235]
+  type = "sphere"
+  position = [-0.8779473, 0.2, 3.0141132]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere236]
+  type = "sphere"
+  position = [-0.5213767, 0.2, 4.5384254]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere237]
+  type = "sphere"
+  position = [-0.6534833, 0.2, 5.8390656]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere238]
+  type = "sphere"
+  position = [-0.9284943, 0.2, 6.134654]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere239]
+  type = "sphere"
+  position = [-0.20436406, 0.2, 7.1703596]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere240]
+  type = "sphere"
+  position = [-0.87465954, 0.2, 8.754287]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere241]
+  type = "sphere"
+  position = [-0.38527972, 0.2, 9.665538]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere242]
+  type = "sphere"
+  position = [-0.6188661, 0.2, 10.750219]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere243]
+  type = "sphere"
+  position = [0.5951587, 0.2, -10.274886]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere244]
+  type = "sphere"
+  position = [0.63713205, 0.2, -9.17226]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere245]
+  type = "sphere"
+  position = [0.1430745, 0.2, -8.299506]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere246]
+  type = "sphere"
+  position = [0.723348, 0.2, -7.492636]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere247]
+  type = "sphere"
+  position = [0.32070518, 0.2, -6.316491]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere248]
+  type = "sphere"
+  position = [0.21200147, 0.2, -5.4671526]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere249]
+  type = "sphere"
+  position = [0.8875171, 0.2, -4.4214754]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere250]
+  type = "sphere"
+  position = [0.55172265, 0.2, -3.9556646]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere251]
+  type = "sphere"
+  position = [0.3795399, 0.2, -2.1408277]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere252]
+  type = "sphere"
+  position = [0.23549746, 0.2, -1.5424162]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere253]
+  type = "sphere"
+  position = [0.05631657, 0.2, -0.27888703]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere254]
+  type = "sphere"
+  position = [0.63396865, 0.2, 0.34879413]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere255]
+  type = "sphere"
+  position = [0.8245186, 0.2, 1.451035]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere256]
+  type = "sphere"
+  position = [0.8878064, 0.2, 2.2005167]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere257]
+  type = "sphere"
+  position = [0.70595276, 0.2, 3.3012125]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere258]
+  type = "sphere"
+  position = [0.40269, 0.2, 4.6160116]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere259]
+  type = "sphere"
+  position = [0.32075292, 0.2, 5.709203]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere260]
+  type = "sphere"
+  position = [0.5987181, 0.2, 6.1823783]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere261]
+  type = "sphere"
+  position = [0.36430195, 0.2, 7.570028]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere262]
+  type = "sphere"
+  position = [0.22127564, 0.2, 8.242203]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere263]
+  type = "sphere"
+  position = [0.73427373, 0.2, 9.864064]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere264]
+  type = "sphere"
+  position = [0.23740269, 0.2, 10.210754]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere265]
+  type = "sphere"
+  position = [1.6128411, 0.2, -10.391109]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere266]
+  type = "sphere"
+  position = [1.4275038, 0.2, -9.642138]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere267]
+  type = "sphere"
+  position = [1.4105998, 0.2, -8.652894]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere268]
+  type = "sphere"
+  position = [1.5065253, 0.2, -7.868091]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere269]
+  type = "sphere"
+  position = [1.4555346, 0.2, -6.36369]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere270]
+  type = "sphere"
+  position = [1.078172, 0.2, -5.8902254]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere271]
+  type = "sphere"
+  position = [1.5295233, 0.2, -4.5608664]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere272]
+  type = "sphere"
+  position = [1.1666402, 0.2, -3.8557625]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere273]
+  type = "sphere"
+  position = [1.430439, 0.2, -2.5007725]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere274]
+  type = "sphere"
+  position = [1.0148441, 0.2, -1.4772847]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere275]
+  type = "sphere"
+  position = [1.0992008, 0.2, -0.92059773]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere276]
+  type = "sphere"
+  position = [1.1923149, 0.2, 0.48641816]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere277]
+  type = "sphere"
+  position = [1.3165796, 0.2, 1.1922132]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere278]
+  type = "sphere"
+  position = [1.0986695, 0.2, 2.1147451]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere279]
+  type = "sphere"
+  position = [1.7525508, 0.2, 3.6053472]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere280]
+  type = "sphere"
+  position = [1.2930272, 0.2, 4.6480584]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere281]
+  type = "sphere"
+  position = [1.1708907, 0.2, 5.1986337]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere282]
+  type = "sphere"
+  position = [1.0633684, 0.2, 6.1500444]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere283]
+  type = "sphere"
+  position = [1.8370488, 0.2, 7.750253]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere284]
+  type = "sphere"
+  position = [1.5134135, 0.2, 8.502367]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere285]
+  type = "sphere"
+  position = [1.8960633, 0.2, 9.697915]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere286]
+  type = "sphere"
+  position = [1.1884513, 0.2, 10.706177]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere287]
+  type = "sphere"
+  position = [2.4947965, 0.2, -10.354532]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere288]
+  type = "sphere"
+  position = [2.3721852, 0.2, -9.840924]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere289]
+  type = "sphere"
+  position = [2.2121263, 0.2, -8.663945]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere290]
+  type = "sphere"
+  position = [2.0351229, 0.2, -7.9648085]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere291]
+  type = "sphere"
+  position = [2.4795716, 0.2, -6.5478115]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere292]
+  type = "sphere"
+  position = [2.7812126, 0.2, -5.2615466]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere293]
+  type = "sphere"
+  position = [2.8483868, 0.2, -4.966655]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere294]
+  type = "sphere"
+  position = [2.4809906, 0.2, -3.169337]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere295]
+  type = "sphere"
+  position = [2.0963306, 0.2, -2.1189504]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere296]
+  type = "sphere"
+  position = [2.7579346, 0.2, -1.2492251]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere297]
+  type = "sphere"
+  position = [2.1184146, 0.2, -0.9750277]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere298]
+  type = "sphere"
+  position = [2.3883548, 0.2, 0.724292]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere299]
+  type = "sphere"
+  position = [2.5662303, 0.2, 1.6876353]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere300]
+  type = "sphere"
+  position = [2.4369347, 0.2, 2.5461762]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere301]
+  type = "sphere"
+  position = [2.5701356, 0.2, 3.4957304]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere302]
+  type = "sphere"
+  position = [2.2702572, 0.2, 4.4855866]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere303]
+  type = "sphere"
+  position = [2.892991, 0.2, 5.759029]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere304]
+  type = "sphere"
+  position = [2.6044092, 0.2, 6.1027026]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere305]
+  type = "sphere"
+  position = [2.705884, 0.2, 7.153886]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere306]
+  type = "sphere"
+  position = [2.8511343, 0.2, 8.256638]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere307]
+  type = "sphere"
+  position = [2.1982083, 0.2, 9.214025]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere308]
+  type = "sphere"
+  position = [2.0350316, 0.2, 10.075569]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere309]
+  type = "sphere"
+  position = [3.5670362, 0.2, -10.873929]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere310]
+  type = "sphere"
+  position = [3.4832766, 0.2, -9.771371]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere311]
+  type = "sphere"
+  position = [3.7851713, 0.2, -8.921243]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere312]
+  type = "sphere"
+  position = [3.7516978, 0.2, -7.819971]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere313]
+  type = "sphere"
+  position = [3.647778, 0.2, -6.8585563]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere314]
+  type = "sphere"
+  position = [3.0482225, 0.2, -5.2551236]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere315]
+  type = "sphere"
+  position = [3.4381838, 0.2, -4.900059]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere316]
+  type = "sphere"
+  position = [3.554124, 0.2, -3.7139313]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere317]
+  type = "sphere"
+  position = [3.6221662, 0.2, -2.124294]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere318]
+  type = "sphere"
+  position = [3.3053465, 0.2, -1.1925962]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere319]
+  type = "sphere"
+  position = [3.0821562, 0.2, -0.8274413]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere320]
+  type = "sphere"
+  position = [3.190443, 0.2, 0.5636949]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere321]
+  type = "sphere"
+  position = [3.3333592, 0.2, 1.1677428]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere322]
+  type = "sphere"
+  position = [3.0847852, 0.2, 2.1472085]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere323]
+  type = "sphere"
+  position = [3.3117785, 0.2, 3.6864443]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere324]
+  type = "sphere"
+  position = [3.045535, 0.2, 4.2020926]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere325]
+  type = "sphere"
+  position = [3.6570947, 0.2, 5.601281]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere326]
+  type = "sphere"
+  position = [3.7877803, 0.2, 6.231918]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere327]
+  type = "sphere"
+  position = [3.7853606, 0.2, 7.768017]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere328]
+  type = "sphere"
+  position = [3.006933, 0.2, 8.039638]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere329]
+  type = "sphere"
+  position = [3.0690377, 0.2, 9.813706]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere330]
+  type = "sphere"
+  position = [3.7054193, 0.2, 10.252715]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere331]
+  type = "sphere"
+  position = [4.284722, 0.2, -10.155199]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere332]
+  type = "sphere"
+  position = [4.8447466, 0.2, -9.613525]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere333]
+  type = "sphere"
+  position = [4.3947325, 0.2, -8.315068]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere334]
+  type = "sphere"
+  position = [4.534334, 0.2, -7.572757]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere335]
+  type = "sphere"
+  position = [4.7511225, 0.2, -6.1019506]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere336]
+  type = "sphere"
+  position = [4.5671015, 0.2, -5.669788]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere337]
+  type = "sphere"
+  position = [4.5359077, 0.2, -4.9165354]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere338]
+  type = "sphere"
+  position = [4.7437983, 0.2, -3.7257264]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere339]
+  type = "sphere"
+  position = [4.721602, 0.2, -2.5729494]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere340]
+  type = "sphere"
+  position = [4.1901317, 0.2, -1.4452772]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere341]
+  type = "sphere"
+  position = [4.6173916, 0.2, -0.5797102]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere342]
+  type = "sphere"
+  position = [4.0840826, 0.2, 0.18475114]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere343]
+  type = "sphere"
+  position = [4.336326, 0.2, 1.0462352]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere344]
+  type = "sphere"
+  position = [4.143025, 0.2, 2.54039]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere345]
+  type = "sphere"
+  position = [4.8895054, 0.2, 3.2117634]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere346]
+  type = "sphere"
+  position = [4.7744217, 0.2, 4.636318]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere347]
+  type = "sphere"
+  position = [4.869477, 0.2, 5.700774]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere348]
+  type = "sphere"
+  position = [4.495012, 0.2, 6.8308516]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere349]
+  type = "sphere"
+  position = [4.3102746, 0.2, 7.513011]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere350]
+  type = "sphere"
+  position = [4.444542, 0.2, 8.437954]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere351]
+  type = "sphere"
+  position = [4.1915126, 0.2, 9.5460415]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere352]
+  type = "sphere"
+  position = [4.235988, 0.2, 10.051746]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere353]
+  type = "sphere"
+  position = [5.6858897, 0.2, -10.488524]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere354]
+  type = "sphere"
+  position = [5.2981005, 0.2, -9.416059]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere355]
+  type = "sphere"
+  position = [5.222967, 0.2, -8.95737]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere356]
+  type = "sphere"
+  position = [5.3132515, 0.2, -7.31025]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere357]
+  type = "sphere"
+  position = [5.036307, 0.2, -6.8684773]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere358]
+  type = "sphere"
+  position = [5.085389, 0.2, -5.3093386]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere359]
+  type = "sphere"
+  position = [5.627131, 0.2, -4.6235847]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere360]
+  type = "sphere"
+  position = [5.4762373, 0.2, -3.7470403]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere361]
+  type = "sphere"
+  position = [5.6955743, 0.2, -2.418758]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere362]
+  type = "sphere"
+  position = [5.4335003, 0.2, -1.1439797]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere363]
+  type = "sphere"
+  position = [5.14432, 0.2, -0.41984963]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere364]
+  type = "sphere"
+  position = [5.326167, 0.2, 0.6367104]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere365]
+  type = "sphere"
+  position = [5.693642, 0.2, 1.0688843]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere366]
+  type = "sphere"
+  position = [5.209229, 0.2, 2.4924436]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere367]
+  type = "sphere"
+  position = [5.6303997, 0.2, 3.5896583]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere368]
+  type = "sphere"
+  position = [5.3916373, 0.2, 4.4975495]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere369]
+  type = "sphere"
+  position = [5.831184, 0.2, 5.365867]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere370]
+  type = "sphere"
+  position = [5.7622995, 0.2, 6.6949635]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere371]
+  type = "sphere"
+  position = [5.2955265, 0.2, 7.5001216]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere372]
+  type = "sphere"
+  position = [5.5737844, 0.2, 8.02539]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere373]
+  type = "sphere"
+  position = [5.654276, 0.2, 9.825839]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere374]
+  type = "sphere"
+  position = [5.7632403, 0.2, 10.542493]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere375]
+  type = "sphere"
+  position = [6.3212647, 0.2, -10.731588]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere376]
+  type = "sphere"
+  position = [6.6284866, 0.2, -9.793034]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere377]
+  type = "sphere"
+  position = [6.268574, 0.2, -8.426208]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere378]
+  type = "sphere"
+  position = [6.686265, 0.2, -7.4276247]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere379]
+  type = "sphere"
+  position = [6.008175, 0.2, -6.8696218]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere380]
+  type = "sphere"
+  position = [6.415884, 0.2, -5.9312797]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere381]
+  type = "sphere"
+  position = [6.5749445, 0.2, -4.994652]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere382]
+  type = "sphere"
+  position = [6.8869114, 0.2, -3.304179]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere383]
+  type = "sphere"
+  position = [6.03655, 0.2, -2.1225379]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere384]
+  type = "sphere"
+  position = [6.7057357, 0.2, -1.718011]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere385]
+  type = "sphere"
+  position = [6.871003, 0.2, -0.4387532]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere386]
+  type = "sphere"
+  position = [6.72444, 0.2, 0.8604815]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere387]
+  type = "sphere"
+  position = [6.603918, 0.2, 1.8658326]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere388]
+  type = "sphere"
+  position = [6.8976808, 0.2, 2.8661025]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere389]
+  type = "sphere"
+  position = [6.1989837, 0.2, 3.3173342]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere390]
+  type = "sphere"
+  position = [6.7466288, 0.2, 4.1965203]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere391]
+  type = "sphere"
+  position = [6.2220526, 0.2, 5.6720023]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere392]
+  type = "sphere"
+  position = [6.549493, 0.2, 6.33112]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere393]
+  type = "sphere"
+  position = [6.5009785, 0.2, 7.8651667]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere394]
+  type = "sphere"
+  position = [6.123472, 0.2, 8.75371]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere395]
+  type = "sphere"
+  position = [6.1050515, 0.2, 9.8724575]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere396]
+  type = "sphere"
+  position = [6.160156, 0.2, 10.644537]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere397]
+  type = "sphere"
+  position = [7.8705254, 0.2, -10.203328]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere398]
+  type = "sphere"
+  position = [7.3817573, 0.2, -9.354045]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere399]
+  type = "sphere"
+  position = [7.5147333, 0.2, -8.932958]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere400]
+  type = "sphere"
+  position = [7.6412735, 0.2, -7.1417327]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere401]
+  type = "sphere"
+  position = [7.7600102, 0.2, -6.3724246]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere402]
+  type = "sphere"
+  position = [7.578828, 0.2, -5.5248256]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere403]
+  type = "sphere"
+  position = [7.558987, 0.2, -4.503669]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere404]
+  type = "sphere"
+  position = [7.8226967, 0.2, -3.6197047]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere405]
+  type = "sphere"
+  position = [7.363899, 0.2, -2.537867]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere406]
+  type = "sphere"
+  position = [7.5959406, 0.2, -1.6870222]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere407]
+  type = "sphere"
+  position = [7.2430243, 0.2, -0.2467407]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere408]
+  type = "sphere"
+  position = [7.4119964, 0.2, 0.7722042]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere409]
+  type = "sphere"
+  position = [7.5546885, 0.2, 1.1483817]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere410]
+  type = "sphere"
+  position = [7.6954274, 0.2, 2.2555718]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere411]
+  type = "sphere"
+  position = [7.7547655, 0.2, 3.460406]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere412]
+  type = "sphere"
+  position = [7.8868647, 0.2, 4.657194]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere413]
+  type = "sphere"
+  position = [7.680142, 0.2, 5.8411927]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere414]
+  type = "sphere"
+  position = [7.667565, 0.2, 6.797456]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere415]
+  type = "sphere"
+  position = [7.67745, 0.2, 7.5465403]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere416]
+  type = "sphere"
+  position = [7.7047763, 0.2, 8.823098]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere417]
+  type = "sphere"
+  position = [7.242663, 0.2, 9.53192]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere418]
+  type = "sphere"
+  position = [7.740711, 0.2, 10.613828]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere419]
+  type = "sphere"
+  position = [8.120303, 0.2, -10.308199]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere420]
+  type = "sphere"
+  position = [8.242315, 0.2, -9.933169]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere421]
+  type = "sphere"
+  position = [8.499127, 0.2, -8.268828]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere422]
+  type = "sphere"
+  position = [8.27442, 0.2, -7.6185336]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere423]
+  type = "sphere"
+  position = [8.804645, 0.2, -6.8563104]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere424]
+  type = "sphere"
+  position = [8.449796, 0.2, -5.551211]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere425]
+  type = "sphere"
+  position = [8.756633, 0.2, -4.537061]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere426]
+  type = "sphere"
+  position = [8.4561825, 0.2, -3.2308173]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere427]
+  type = "sphere"
+  position = [8.308617, 0.2, -2.826914]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere428]
+  type = "sphere"
+  position = [8.883121, 0.2, -1.8241364]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere429]
+  type = "sphere"
+  position = [8.390003, 0.2, -0.20571256]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere430]
+  type = "sphere"
+  position = [8.0334015, 0.2, 0.31131825]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere431]
+  type = "sphere"
+  position = [8.472418, 0.2, 1.2811234]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere432]
+  type = "sphere"
+  position = [8.657118, 0.2, 2.3002574]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere433]
+  type = "sphere"
+  position = [8.681333, 0.2, 3.494541]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere434]
+  type = "sphere"
+  position = [8.565242, 0.2, 4.584704]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere435]
+  type = "sphere"
+  position = [8.822417, 0.2, 5.4978094]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere436]
+  type = "sphere"
+  position = [8.746816, 0.2, 6.253282]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere437]
+  type = "sphere"
+  position = [8.129059, 0.2, 7.1523404]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere438]
+  type = "sphere"
+  position = [8.796623, 0.2, 8.795262]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere439]
+  type = "sphere"
+  position = [8.726163, 0.2, 9.202665]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere440]
+  type = "sphere"
+  position = [8.329602, 0.2, 10.1135]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere441]
+  type = "sphere"
+  position = [9.295041, 0.2, -10.882918]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere442]
+  type = "sphere"
+  position = [9.454419, 0.2, -9.283907]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere443]
+  type = "sphere"
+  position = [9.059574, 0.2, -8.203254]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere444]
+  type = "sphere"
+  position = [9.389297, 0.2, -7.2901134]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere445]
+  type = "sphere"
+  position = [9.162498, 0.2, -6.8511667]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere446]
+  type = "sphere"
+  position = [9.031143, 0.2, -5.6229315]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere447]
+  type = "sphere"
+  position = [9.208834, 0.2, -4.3734455]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere448]
+  type = "sphere"
+  position = [9.737385, 0.2, -3.9249194]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere449]
+  type = "sphere"
+  position = [9.095134, 0.2, -2.5343175]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere450]
+  type = "sphere"
+  position = [9.297764, 0.2, -1.1572125]
+  radius = 0.2
+  material = "mat17"
+
+  [objects.smallsphere451]
+  type = "sphere"
+  position = [9.468354, 0.2, -0.9608361]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere452]
+  type = "sphere"
+  position = [9.542661, 0.2, 0.08241404]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere453]
+  type = "sphere"
+  position = [9.242644, 0.2, 1.5858123]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere454]
+  type = "sphere"
+  position = [9.723514, 0.2, 2.8513687]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere455]
+  type = "sphere"
+  position = [9.52106, 0.2, 3.2838595]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere456]
+  type = "sphere"
+  position = [9.507168, 0.2, 4.1891894]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere457]
+  type = "sphere"
+  position = [9.162186, 0.2, 5.472294]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere458]
+  type = "sphere"
+  position = [9.646846, 0.2, 6.442846]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere459]
+  type = "sphere"
+  position = [9.868165, 0.2, 7.283217]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere460]
+  type = "sphere"
+  position = [9.728893, 0.2, 8.633539]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere461]
+  type = "sphere"
+  position = [9.380349, 0.2, 9.152722]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere462]
+  type = "sphere"
+  position = [9.261243, 0.2, 10.484562]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere463]
+  type = "sphere"
+  position = [10.020254, 0.2, -10.610203]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere464]
+  type = "sphere"
+  position = [10.728302, 0.2, -9.706048]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere465]
+  type = "sphere"
+  position = [10.2880335, 0.2, -8.229741]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere466]
+  type = "sphere"
+  position = [10.277559, 0.2, -7.919493]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere467]
+  type = "sphere"
+  position = [10.46174, 0.2, -6.2377243]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere468]
+  type = "sphere"
+  position = [10.015946, 0.2, -5.6221657]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere469]
+  type = "sphere"
+  position = [10.600431, 0.2, -4.206237]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere470]
+  type = "sphere"
+  position = [10.255131, 0.2, -3.5844603]
+  radius = 0.2
+  material = "mat16"
+
+  [objects.smallsphere471]
+  type = "sphere"
+  position = [10.887039, 0.2, -2.214124]
+  radius = 0.2
+  material = "mat10"
+
+  [objects.smallsphere472]
+  type = "sphere"
+  position = [10.774429, 0.2, -1.99789]
+  radius = 0.2
+  material = "mat15"
+
+  [objects.smallsphere473]
+  type = "sphere"
+  position = [10.355814, 0.2, -0.22597665]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere474]
+  type = "sphere"
+  position = [10.182389, 0.2, 0.7039885]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere475]
+  type = "sphere"
+  position = [10.723953, 0.2, 1.8762283]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere476]
+  type = "sphere"
+  position = [10.316389, 0.2, 2.1253963]
+  radius = 0.2
+  material = "mat19"
+
+  [objects.smallsphere477]
+  type = "sphere"
+  position = [10.301153, 0.2, 3.7602403]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere478]
+  type = "sphere"
+  position = [10.646736, 0.2, 4.0553555]
+  radius = 0.2
+  material = "mat13"
+
+  [objects.smallsphere479]
+  type = "sphere"
+  position = [10.671995, 0.2, 5.556173]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere480]
+  type = "sphere"
+  position = [10.43813, 0.2, 6.648668]
+  radius = 0.2
+  material = "mat11"
+
+  [objects.smallsphere481]
+  type = "sphere"
+  position = [10.172719, 0.2, 7.5423813]
+  radius = 0.2
+  material = "mat12"
+
+  [objects.smallsphere482]
+  type = "sphere"
+  position = [10.17227, 0.2, 8.337556]
+  radius = 0.2
+  material = "mat14"
+
+  [objects.smallsphere483]
+  type = "sphere"
+  position = [10.837853, 0.2, 9.839897]
+  radius = 0.2
+  material = "mat18"
+
+  [objects.smallsphere484]
+  type = "sphere"
+  position = [10.104396, 0.2, 10.8946085]
+  radius = 0.2
+  material = "mat15"

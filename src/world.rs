@@ -227,6 +227,27 @@ impl World {
             };
             
             cube
+        } else if obj_type == "triangle" {
+            let v0 = obj_data["v0"].as_array().unwrap();
+            let x = v0[0].as_float().unwrap() as f32;
+            let y = v0[1].as_float().unwrap() as f32;
+            let z = v0[2].as_float().unwrap() as f32;
+            let v0 = Vector3::new(x, y, z);
+
+            let v1 = obj_data["v1"].as_array().unwrap();
+            let x = v1[0].as_float().unwrap() as f32;
+            let y = v1[1].as_float().unwrap() as f32;
+            let z = v1[2].as_float().unwrap() as f32;
+            let v1 = Vector3::new(x, y, z);
+
+            let v2 = obj_data["v2"].as_array().unwrap();
+            let x = v2[0].as_float().unwrap() as f32;
+            let y = v2[1].as_float().unwrap() as f32;
+            let z = v2[2].as_float().unwrap() as f32;
+            let v2 = Vector3::new(x, y, z);
+
+            let material = World::create_material_from_toml(material_data, textures);
+            Box::new(Triangle::new(v0, v1, v2, material))
         } else {
             panic!("Unknown object type");
         }

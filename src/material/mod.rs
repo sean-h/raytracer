@@ -3,12 +3,14 @@ pub mod lambertian;
 pub mod dielectric;
 pub mod metal;
 pub mod diffuselight;
+pub mod nomaterial;
 
 pub use self::scatterrecord::{ScatterRecord, ScatterType};
 pub use self::lambertian::Lambertian;
 pub use self::dielectric::Dielectric;
 pub use self::metal::Metal;
 pub use self::diffuselight::DiffuseLight;
+pub use self::nomaterial::NoMaterial;
 
 use tdmath::{Vector3, Ray};
 use hitable::HitRecord;

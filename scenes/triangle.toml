@@ -1,0 +1,114 @@
+[camera]
+position = [278.0, 278.0, -800.0]
+look = [278.0, 278.0, 0.0]
+focus_dist = 10.0
+aperture = 0.0
+fov = 40.0
+t0 = 0.0
+t1 = 1.0
+
+[textures]
+  [textures.green]
+  type = "constant"
+  color = [0.12, 0.45, 0.15]
+
+  [textures.red]
+  type = "constant"
+  color = [0.65, 0.05, 0.05]
+
+  [textures.white]
+  type = "constant"
+  color = [0.73, 0.73, 0.73]
+
+  [textures.light]
+  type = "constant"
+  color = [15.0, 15.0, 15.0]
+
+[materials]
+  [materials.green]
+  type = "lambertian"
+  texture = "green"
+
+  [materials.red]
+  type = "lambertian"
+  texture = "red"
+
+  [materials.white]
+  type = "lambertian"
+  texture = "white"
+
+  [materials.light]
+  type = "diffuse_light"
+  texture = "light"
+
+[objects]
+  [objects.left]
+  type = "yzrect"
+  bounds = [0.0, 555.0, 0.0, 555.0]
+  k = 555.0
+  material = "green"
+  flip = true
+
+  [objects.right]
+  type = "yzrect"
+  bounds = [0.0, 555.0, 0.0, 555.0]
+  k = 0.0
+  material = "red"
+  flip = false
+
+  [objects.bottom]
+  type = "xzrect"
+  bounds = [0.0, 555.0, 0.0, 555.0]
+  k = 0.0
+  material = "white"
+  flip = false
+
+  [objects.top]
+  type = "xzrect"
+  bounds = [0.0, 555.0, 0.0, 555.0]
+  k = 555.0
+  material = "white"
+  flip = true
+
+  [objects.back]
+  type = "xyrect"
+  bounds = [0.0, 555.0, 0.0, 555.0]
+  k = 555.0
+  material = "white"
+  flip = true
+
+  [objects.light]
+  type = "xzrect"
+  bounds = [213.0, 343.0, 227.0, 332.0]
+  k = 554.0
+  material = "light"
+  flip = true
+
+  [objects.rightbox]
+  type = "cube"
+  min = [0.0, 0.0, 0.0]
+  max = [165.0, 165.0, 165.0]
+  translate = [130.0, 0.0, 65.0]
+  rotate_y = -18.0
+  material = "white"
+
+  [objects.leftbox]
+  type = "cube"
+  min = [0.0, 0.0, 0.0]
+  max = [165.0, 330.0, 165.0]
+  translate = [265.0, 0.0, 295.0]
+  rotate_y = 15.0
+  material = "white"
+
+  [objects.triangle]
+  type = "triangle"
+  v0 = [0.0, 400.0, 400.0]
+  v1 = [400.0, 400.0, 400.0]
+  v2 = [0.0, 0.0, 400.0]
+  material = "green"
+
+  #[objects.testcube]
+  #type = "cube"
+  #min = [0.0, 0.0, 200.0]
+  #max = [400.0, 400.0, 200.0]
+  #material = "green"

@@ -6,11 +6,13 @@ pub mod rect;
 pub mod sphere;
 pub mod volume;
 pub mod triangle;
+pub mod mesh;
 
 pub use self::cube::Cube;
 pub use self::rect::{XYRect, XZRect, YZRect};
 pub use self::sphere::Sphere;
 pub use self::triangle::Triangle;
+pub use self::mesh::Mesh;
 
 use tdmath::Ray;
 use tdmath::Vector3;

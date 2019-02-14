@@ -4,6 +4,7 @@ extern crate cmdpro;
 extern crate image;
 extern crate toml;
 extern crate threadpool;
+extern crate modelloader;
 
 mod hitable;
 mod world;

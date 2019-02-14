@@ -11,6 +11,7 @@ use texture::*;
 use noise::Perlin;
 use transform::{Translate, RotateY};
 use rand::Rng;
+use std::path::Path;
 
 pub struct World {
     hitables: Vec<Box<Hitable>>,
@@ -248,6 +249,10 @@ impl World {
 
             let material = World::create_material_from_toml(material_data, textures);
             Box::new(Triangle::new(v0, v1, v2, material))
+        } else if obj_type == "mesh" {
+            let mesh_path = obj_data["path"].as_str().unwrap();
+            let material = World::create_material_from_toml(material_data, textures);
+            Box::new(Mesh::new(&Path::new(mesh_path), material))
         } else {
             panic!("Unknown object type");
         }

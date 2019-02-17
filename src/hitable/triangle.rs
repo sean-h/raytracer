@@ -7,15 +7,35 @@ pub struct Triangle {
     v0: Vector3,
     v1: Vector3,
     v2: Vector3,
+    bounding_box: AABB,
     material: Box<Material>,
 }
 
 impl Triangle {
     pub fn new(v0: Vector3, v1: Vector3, v2: Vector3, material: Box<Material>) -> Self {
+        let min = Vector3::new(
+            min3f(v0.x, v1.x, v2.x),
+            min3f(v0.y, v1.y, v2.y),
+            min3f(v0.z, v1.z, v2.z)
+        );
+
+        let mut max = Vector3::new(
+            max3f(v0.x, v1.x, v2.x),
+            max3f(v0.y, v1.y, v2.y),
+            max3f(v0.z, v1.z, v2.z)
+        );
+
+        for i in 0..3 {
+            if max[i] - min[i] < 0.001 {
+                max[i] = min[i] + 0.001;
+            }
+        }
+
         Triangle {
             v0,
             v1,
             v2,
+            bounding_box: AABB::new(min, max),
             material,
         }
     }
@@ -60,7 +80,27 @@ impl Hitable for Triangle {
         }
     }
 
-    fn bounding_box(&self, t0: f32, t1: f32) -> Option<AABB> {
-        None
+    fn bounding_box(&self, _t0: f32, _t1: f32) -> Option<AABB> {
+        Some(self.bounding_box)
+    }
+}
+
+fn min3f(a: f32, b: f32, c: f32) -> f32 {
+    if a <= b && a <= c {
+        a
+    } else if b <= a && b <= c {
+        b
+    } else {
+        c
+    }
+}
+
+fn max3f(a: f32, b: f32, c: f32) -> f32 {
+    if a >= b && a >= c {
+        a
+    } else if b >= a && b >= c {
+        b
+    } else {
+        c
     }
 }

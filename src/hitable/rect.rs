@@ -52,6 +52,29 @@ impl Hitable for XYRect {
     fn bounding_box(&self, _t0: f32, _t1: f32) -> Option<AABB> {
         Some(AABB::new(Vector3::new(self.x0, self.y0, self.k - 0.0001), Vector3::new(self.x1, self.y1, self.k + 0.0001)))
     }
+
+    fn pdf_value(&self, origin: Vector3, v: Vector3) -> f32 {
+        use std::f32;
+        match self.hit(Ray::new(origin, v, 0.0), 0.001, f32::MAX) {
+            Some(hit) => {
+                let area = (self.x1 - self.x0) * (self.y1 - self.y0);
+                let distance_squared = hit.t() * hit.t() * v.length_squared();
+                let cosine = (Vector3::dot(v, hit.normal()) / v.length()).abs();
+
+                distance_squared / (cosine * area)
+            },
+            None => 0.0
+        }
+    }
+
+    fn random(&self, origin: Vector3) -> Vector3 {
+        let mut rng = rand::thread_rng();
+        let x = self.x0 + rng.gen::<f32>() * (self.x1 - self.x0);
+        let y = self.y0 + rng.gen::<f32>() * (self.y1 - self.y0);
+        let random_point = Vector3::new(x, y, self.k);
+
+        random_point - origin
+    }
 }
 
 pub struct XZRect {
@@ -168,5 +191,28 @@ impl Hitable for YZRect {
 
     fn bounding_box(&self, _t0: f32, _t1: f32) -> Option<AABB> {
         Some(AABB::new(Vector3::new(self.k - 0.0001, self.y0, self.z0), Vector3::new(self.k + 0.0001, self.y1, self.z1)))
+    }
+
+    fn pdf_value(&self, origin: Vector3, v: Vector3) -> f32 {
+        use std::f32;
+        match self.hit(Ray::new(origin, v, 0.0), 0.001, f32::MAX) {
+            Some(hit) => {
+                let area = (self.y1 - self.y0) * (self.z1 - self.z0);
+                let distance_squared = hit.t() * hit.t() * v.length_squared();
+                let cosine = (Vector3::dot(v, hit.normal()) / v.length()).abs();
+
+                distance_squared / (cosine * area)
+            },
+            None => 0.0
+        }
+    }
+
+    fn random(&self, origin: Vector3) -> Vector3 {
+        let mut rng = rand::thread_rng();
+        let y = self.y0 + rng.gen::<f32>() * (self.y1 - self.y0);
+        let z = self.z0 + rng.gen::<f32>() * (self.z1 - self.z0);
+        let random_point = Vector3::new(self.k, y, z);
+
+        random_point - origin
     }
 }

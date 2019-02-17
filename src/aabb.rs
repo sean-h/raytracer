@@ -17,18 +17,29 @@ impl AABB {
         }
     }
 
-    // TODO: Replace with optimized version
     pub fn hit(&self, r: &Ray, tmin: f32, tmax: f32) -> bool {
         for i in 0..3 {
-            let a = (self.min[i] - r.origin()[i]) / r.direction()[i];
-            let b = (self.max[i] - r.origin()[i]) / r.direction()[i];
+            let inv_d = 1.0 / r.direction()[i];
+            let mut t0 = (self.min[i] - r.origin()[i]) * inv_d;
+            let mut t1 = (self.max[i] - r.origin()[i]) * inv_d;
+            if inv_d < 0.0 {
+                std::mem::swap(&mut t0, &mut t1);
+            }
 
-            let t0 = fmin(a, b);
-            let t1 = fmax(a, b);
-            let tmin = fmax(t0, tmin);
-            let tmax = fmin(t1, tmax);
+            let tmin = if t0 > tmin {
+                t0
+            } else {
+                tmin
+            };
+
+            let tmax = if t1 < tmax {
+                t1
+            } else {
+                tmax
+            };
+
             if tmax <= tmin {
-                return false
+                return false;
             }
         }
 
